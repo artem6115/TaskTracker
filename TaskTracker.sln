@@ -17,7 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTrackerAPI", "TaskTrackerAPI\TaskTrackerAPI.csproj", "{8FCF8DD8-59E7-4C59-A48A-FA8ABC54726C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +32,17 @@ Global
 		{ACD277C9-1BDD-427C-8E3C-9B8DD38268CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACD277C9-1BDD-427C-8E3C-9B8DD38268CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACD277C9-1BDD-427C-8E3C-9B8DD38268CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FCF8DD8-59E7-4C59-A48A-FA8ABC54726C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FCF8DD8-59E7-4C59-A48A-FA8ABC54726C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FCF8DD8-59E7-4C59-A48A-FA8ABC54726C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FCF8DD8-59E7-4C59-A48A-FA8ABC54726C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ACD277C9-1BDD-427C-8E3C-9B8DD38268CA} = {21AA1640-B310-4092-A9FF-311FAA8075A7}
+		{8FCF8DD8-59E7-4C59-A48A-FA8ABC54726C} = {9F931B0A-D538-45C2-9BA7-A981B668E02D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2FFA442D-2908-469D-A9FF-2DCB7E6E4536}
