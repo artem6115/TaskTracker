@@ -11,16 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{21
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F64C970D-7236-4832-AB9D-02CE0428B1E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{ACD277C9-1BDD-427C-8E3C-9B8DD38268CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{ACD277C9-1BDD-427C-8E3C-9B8DD38268CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{8576D6E2-F884-4E75-921A-0E838DE1CAB2}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		README.md = README.md
+		RouteMap.md = RouteMap.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTrackerAPI", "TaskTrackerAPI\TaskTrackerAPI.csproj", "{8FCF8DD8-59E7-4C59-A48A-FA8ABC54726C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTrackerAPI", "TaskTrackerAPI\TaskTrackerAPI.csproj", "{8FCF8DD8-59E7-4C59-A48A-FA8ABC54726C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
