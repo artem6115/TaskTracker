@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infrastructure.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Auth
 {
-    public class User
+    public abstract class ApplicationUser
     {
-        public required long Id { get; set; }
         public required string Name { get; set; }
 
         public required string Surname { get; set; }
@@ -26,7 +26,6 @@ namespace Infrastructure.Auth
         public bool UserDeleted { get; set; }
 
         public string? Phone { get; set; }
-
 
     }
 }

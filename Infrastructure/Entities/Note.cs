@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Infrastructure.Auth;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,8 @@ namespace Infrastructure.Entities
         public DateTime? DateOfCreate { get; set; }
         public DateTime? DateOfEdit { get; set; }
 
+        public User? User { get; set; }
+        public required long UserId { get; set; }
 
     }
 }

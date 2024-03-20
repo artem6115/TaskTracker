@@ -1,3 +1,4 @@
+using Infrastructure.Utilits;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.Extensions.Options;
@@ -14,7 +15,7 @@ builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt => AuthOptions.Options(opt,builder.Configuration));
 var app = builder.Build();
-
+new TaskTrackerDbContext();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
