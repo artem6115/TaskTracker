@@ -7,13 +7,27 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Auth
 {
-    public class User : ApplicationUser
+    public class User
     {
-        public required long Id { get; set; }
+        public long Id { get; private set; }
+        public required string FullName { get; set; }
 
-        public HashSet<Note>? Notes { get; set; }
-        public HashSet<Project>? Projects { get; set; }
-        public HashSet<ProjectTask>? Tasks { get; set; }
+        public required string Email { get; set; }
+
+        public required string Password { get; set; }
+
+        public int AccessFaildCount { get; set; }
+
+        public bool Banned { get; set; }
+
+        public bool Confirmed { get; set; }
+
+        public bool Deleted { get; set; }
+
+        public string? Phone { get; set; }
+        public List<Note>? Notes { get; set; }
+        public List<Project>? Projects { get; set; }
+        public List<ProjectTask>? Tasks { get; set; }
 
 
     }

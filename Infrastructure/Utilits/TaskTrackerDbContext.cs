@@ -16,7 +16,9 @@ public partial class TaskTrackerDbContext : DbContext
     public DbSet<Note> Notes { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<ProjectTask> ProjectTasks { get; set; }
-    public DbSet<StatusTask> StatusTasks { get; set; }
+    public DbSet<Epic> Epics { get; set; }
+
+
 
 
 

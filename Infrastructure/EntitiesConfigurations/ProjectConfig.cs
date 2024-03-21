@@ -8,10 +8,10 @@ namespace Infrastructure.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Project> builder)
         {
-            builder.HasMany(x => x.Users).WithMany(x => x.Projects);
             builder.HasOne(x=>x.Author).WithMany(x=>x.Projects)
                 .HasForeignKey(x=>x.AuthorId)
                 .OnDelete(DeleteBehavior.Restrict);
+            
         }
     }
 }

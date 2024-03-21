@@ -10,13 +10,15 @@ namespace Infrastructure.Entities
 {
     public class Project
     {
-        public required long Id { get; set; }
+        public long Id { get; private set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
-        public long AuthorId { get; set; }
-        public required User Author { get; set; }
-        public HashSet<User> Users { get; set; } = null!;
-        public HashSet<ProjectTask> ProjectTasks { get; set; } = null!;
+
+        public required long AuthorId { get; set; }
+        public User Author { get; set; } = null!;
+        public List<User> Users { get; set; } = null!;
+        public List<Epic> Epics { get; set; } = null!;
+
 
     }
 }

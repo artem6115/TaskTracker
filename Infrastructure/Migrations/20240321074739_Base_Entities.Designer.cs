@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(TaskTrackerDbContext))]
-    [Migration("20240320054656_test_model_db")]
-    partial class test_model_db
+    [Migration("20240321074739_Base_Entities")]
+    partial class Base_Entities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,11 +36,20 @@ namespace Infrastructure.Migrations
                     b.Property<int>("AccessFaildCount")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Banned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Confirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -54,24 +63,37 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("ProjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("UserBanned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("UserConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("UserDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Infrastructure.Entities.Epic", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ProjectId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Epics");
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Note", b =>
@@ -82,17 +104,22 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTime?>("DateOfCreate")
+                    b.Property<DateTime?>("DateOfChanged")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfEdit")
+                    b.Property<DateTime>("DateOfCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notes");
                 });
@@ -130,46 +157,47 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime?>("ApproximateDateOfCompleted")
+                        .HasColumnType("datetime2");
 
-                    b.Property<long?>("ProjectTaskId")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime?>("DateOfClosed")
+                        .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("ProjectTaskId");
-
-                    b.ToTable("Tasks");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.StatusTask", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    b.Property<DateTime>("DateOfCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDone")
-                        .HasColumnType("bit");
+                    b.Property<long>("EpicId")
+                        .HasColumnType("bigint");
 
-                    b.Property<int>("OrderNumber")
+                    b.Property<byte?>("Importance")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("PreviousTaskId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("StatusTask")
                         .HasColumnType("int");
 
-                    b.Property<long>("ProjectTaskId")
+                    b.Property<long?>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectTaskId");
+                    b.HasIndex("EpicId");
 
-                    b.ToTable("StatusTasks");
+                    b.HasIndex("PreviousTaskId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Infrastructure.Auth.User", b =>
@@ -179,12 +207,34 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ProjectId");
                 });
 
+            modelBuilder.Entity("Infrastructure.Entities.Epic", b =>
+                {
+                    b.HasOne("Infrastructure.Entities.Project", "Project")
+                        .WithMany("Epics")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("Infrastructure.Entities.Note", b =>
+                {
+                    b.HasOne("Infrastructure.Auth.User", "User")
+                        .WithMany("Notes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Infrastructure.Entities.Project", b =>
                 {
                     b.HasOne("Infrastructure.Auth.User", "Author")
-                        .WithMany()
+                        .WithMany("Projects")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -192,42 +242,46 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Entities.ProjectTask", b =>
                 {
-                    b.HasOne("Infrastructure.Entities.Project", "Project")
-                        .WithMany("ProjectTasks")
-                        .HasForeignKey("ProjectId")
+                    b.HasOne("Infrastructure.Entities.Epic", "Epic")
+                        .WithMany("Tasks")
+                        .HasForeignKey("EpicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Infrastructure.Entities.ProjectTask", null)
-                        .WithMany("InternalTasks")
-                        .HasForeignKey("ProjectTaskId");
+                    b.HasOne("Infrastructure.Entities.ProjectTask", "PreviousTask")
+                        .WithMany()
+                        .HasForeignKey("PreviousTaskId");
 
-                    b.Navigation("Project");
+                    b.HasOne("Infrastructure.Auth.User", "User")
+                        .WithMany("Tasks")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Epic");
+
+                    b.Navigation("PreviousTask");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Infrastructure.Entities.StatusTask", b =>
+            modelBuilder.Entity("Infrastructure.Auth.User", b =>
                 {
-                    b.HasOne("Infrastructure.Entities.ProjectTask", "ProjectTask")
-                        .WithMany("StatusTask")
-                        .HasForeignKey("ProjectTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Notes");
 
-                    b.Navigation("ProjectTask");
+                    b.Navigation("Projects");
+
+                    b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("Infrastructure.Entities.Epic", b =>
+                {
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Project", b =>
                 {
-                    b.Navigation("ProjectTasks");
+                    b.Navigation("Epics");
 
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Infrastructure.Entities.ProjectTask", b =>
-                {
-                    b.Navigation("InternalTasks");
-
-                    b.Navigation("StatusTask");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,4 @@
-﻿using Infrastructure.Auth;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class Note
+    public class Comments
     {
-        public Note() => DateOfCreated = DateTime.Now;
+        public Comments() => Date = DateTime.Now;
+
         public long Id { get; private set; }
         public required string Description { get; set; }
-        public DateTime DateOfCreated { get; private set; }
-        public DateTime? DateOfChanged { get; set; }
 
         public User User { get; set; } = null!;
-        public required long UserId { get; set; }
 
+        public ProjectTask ProjectTask { get; set; } = null!;
+        public DateTime Date { get; private set; }
     }
 }
