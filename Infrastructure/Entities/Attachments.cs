@@ -9,7 +9,9 @@ namespace Infrastructure.Entities
     public class Attachments
     {
         public long Id { get; private set; }
-        public Stream Data { get; set; } = null!;
+        public byte[] Data { get; set; } = null!;
+        public AttachmentTypes Type { get; set; }
+        public required string Extention { get; set; }
 
         public required long UserId { get; set; }
         public User User { get; set; } = null!;

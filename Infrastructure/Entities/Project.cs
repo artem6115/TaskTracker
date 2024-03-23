@@ -16,7 +16,7 @@ namespace Infrastructure.Entities
 
         public required long AuthorId { get; set; }
         public User Author { get; set; } = null!;
-        public List<User> Users { get; set; } = null!;
+        public List<UserProject> Users { get; set; } = null!;
         public List<Epic> Epics { get; set; } = null!;
 
 

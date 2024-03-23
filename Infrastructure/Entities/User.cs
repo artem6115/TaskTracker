@@ -26,7 +26,7 @@ namespace Infrastructure.Auth
 
         public string? Phone { get; set; }
         public List<Note>? Notes { get; set; }
-        public List<Project>? Projects { get; set; }
+        public List<UserProject>? Projects { get; set; } = null!;
         public List<ProjectTask>? Tasks { get; set; }
 
 
