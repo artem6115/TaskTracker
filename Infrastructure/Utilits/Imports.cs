@@ -5,6 +5,11 @@ global using Infrastructure.Entities;
 global using Infrastructure.EntitiesConfigurations;
 global using Infrastructure.Migrations;
 global using Infrastructure.Utilits;
+global using Infrastructure.Repository.Interfaces;
+global using Infrastructure.Repository.Repositories;
+
+
+
 
 //Ef Core
 global using Microsoft.EntityFrameworkCore;

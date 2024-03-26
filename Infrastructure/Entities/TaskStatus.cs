@@ -5,6 +5,7 @@
         Free,
         Work,
         Pause,
+        Blocked,
         Completed
     }
 }

@@ -13,8 +13,7 @@ namespace Infrastructure.Entities
         public long Id { get; private set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
-
-        public required long AuthorId { get; set; }
+        public long AuthorId { get; set; }
         public User Author { get; set; } = null!;
         public List<UserProject> Users { get; set; } = null!;
         public List<Epic> Epics { get; set; } = null!;

@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskTrackerAPI", "TaskTrackerAPI\TaskTrackerAPI.csproj", "{8FCF8DD8-59E7-4C59-A48A-FA8ABC54726C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuisnnesService", "BuisnnesService\BuisnnesService.csproj", "{20E7C5D0-B1C4-4159-AB74-957813D52877}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuisnnesService", "BuisnnesService\BuisnnesService.csproj", "{20E7C5D0-B1C4-4159-AB74-957813D52877}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

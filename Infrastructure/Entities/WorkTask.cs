@@ -3,9 +3,9 @@
 namespace Infrastructure.Entities
 {
     [Table("Tasks")]
-    public class ProjectTask
+    public class WorkTask
     {
-        public ProjectTask()=> DateOfCreated = DateTime.Now;
+        public WorkTask()=> DateOfCreated = DateTime.Now;
         public long Id { get; private set; }
         public byte? Importance { get; set; }
         public required string Title { get; set; }
@@ -16,18 +16,18 @@ namespace Infrastructure.Entities
         public DateTime? ApproximateDateOfCompleted { get; set; }
 
         public TaskStatus StatusTask { get; set; }
+           
+        public WorkTask? PreviousTask {  get; set; }
+        public long? PreviousTaskId { get; set; }
 
+
+        public long? EpicId { get; set; }
+        public Epic? Epic { get; set; }
         public long? UserId { get; set; }
         public User? User { get; set; }
 
-        public long? PreviousTaskId { get; set; }
-        public ProjectTask? PreviousTask {  get; set; }
-
-        public required long EpicId { get; set; }
-        public Epic Epic { get; set; } = null!;
-
-        public List<Attachments> Attachments { get; set; } = null!;
-        public List<Comments> Comments { get; set; } = null!;
+        public List<Attachment> Attachments { get; set; } = null!;
+        public List<Comment> Comments { get; set; } = null!;
 
 
 

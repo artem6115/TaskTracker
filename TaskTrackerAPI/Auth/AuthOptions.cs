@@ -13,7 +13,7 @@ namespace TaskTrackerAPI.Auth
                 // укзывает, будет ли валидироваться издатель при валидации токена
                 ValidateIssuer = true,
                 // строка, представляющая издателя
-                ValidIssuer = Configuration["Auth:ISSURE"],
+                ValidIssuer = Configuration["Auth:ISSUER"],
 
                 // будет ли валидироваться потребитель токена
                 ValidateAudience = true,
@@ -26,6 +26,8 @@ namespace TaskTrackerAPI.Auth
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:KEY"]??"DEFOULT_KEY")),
                 // валидация ключа безопасности
                 ValidateIssuerSigningKey = true,
+
+                ClockSkew = TimeSpan.Zero
             };
         }
     }

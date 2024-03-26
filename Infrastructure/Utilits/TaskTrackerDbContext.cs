@@ -2,28 +2,31 @@
 namespace Infrastructure.Utilits;
 public partial class TaskTrackerDbContext : DbContext
 {
-    public TaskTrackerDbContext()
+    public  TaskTrackerDbContext()
     {
+
+
     }
 
     public TaskTrackerDbContext(DbContextOptions<TaskTrackerDbContext> options)
         : base(options)
     {
-        Database.EnsureDeleted();
-        Database.EnsureCreated();
 
     }
+    public DbSet<User> Users { get; set; }
     public DbSet<Note> Notes { get; set; }
     public DbSet<Project> Projects { get; set; }
-    public DbSet<ProjectTask> ProjectTasks { get; set; }
+    public DbSet<WorkTask> Tasks { get; set; }
     public DbSet<Epic> Epics { get; set; }
+    public DbSet<Notify> Notifies { get; set; }
 
 
 
 
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=MSI;Database=TaskTrackerDB;Trusted_Connection=True;Encrypt=False");
+    protected async override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,5 +34,4 @@ public partial class TaskTrackerDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(TaskTrackerDbContext).Assembly);
     }
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

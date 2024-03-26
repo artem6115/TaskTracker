@@ -14,7 +14,7 @@ namespace Infrastructure.Entities
 
         public required long ProjectId { get; set; }
         public Project Project { get; set; } = null!;
-        public List<ProjectTask> Tasks { get; set; } = null!;
+        public List<WorkTask> Tasks { get; set; } = null!;
 
     }
 }
