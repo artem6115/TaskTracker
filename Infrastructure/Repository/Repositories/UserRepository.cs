@@ -19,11 +19,12 @@ namespace Infrastructure.Repository.Repositories
             _logger = logger;
         }
 
-        public async Task AddUserAcync(User user)
+        public async Task<User> AddUserAcync(User user)
         {
-            await _context.AddAsync(user);
+            var AddedUser = await _context.AddAsync(user);
             await _context.SaveChangesAsync();
             _logger.LogTrace($"User added, full name {user.FullName}");
+            return AddedUser.Entity;
         }
 
         public async Task DeleteUserAcync(User user)
@@ -31,6 +32,13 @@ namespace Infrastructure.Repository.Repositories
             _context.Remove(user);
             await _context.SaveChangesAsync();
             _logger.LogTrace($"User deleted, full name {user.FullName}");
+        }
+
+        public async Task Delete_RefreshToken()
+        {
+           var user = await _context.Users.SingleAsync(x => x.Id == UserClaims.User.Id);
+           user.RefreshToken = null;
+           await _context.SaveChangesAsync();
         }
 
         public async Task<List<User>> GetAllUsersAsync()
@@ -41,6 +49,12 @@ namespace Infrastructure.Repository.Repositories
         public async Task<User> GetUserByIdAsync(long Id)
         {
             return await _context.Users.AsNoTracking().SingleAsync(x => x.Id == Id);
+        }
+
+        public async Task<User> GetUserByLoginAsync(string email)
+        {
+            return await _context.Users.AsNoTracking().SingleAsync(x => x.Email == email);
+
         }
 
         public async Task UpdateUserAccountAcync(User user)

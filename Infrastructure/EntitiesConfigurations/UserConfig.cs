@@ -14,6 +14,7 @@ namespace Infrastructure.EntitiesConfigurations
            builder.Property(x => x.Confirmed).HasDefaultValue(false);
            builder.Property(x => x.Banned).HasDefaultValue(false);
            builder.Property(x => x.Deleted).HasDefaultValue(false);
+            builder.HasIndex(x => x.Email).IsUnique();
 
         }
     }

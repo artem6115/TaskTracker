@@ -11,8 +11,13 @@ using System.Reflection;
 using System.Text;
 using TaskTrackerAPI.Auth;
 using TaskTrackerAPI.DIExtentions;
+using TaskTrackerAPI.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<TaskTrackerDbContext>(x => {
+    x.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLConnectionString"));
+});
 
 builder.Services.Configure<TokenInfo>( 
     builder.Configuration.GetSection("Auth")); 
@@ -31,12 +36,11 @@ builder.Services
 builder.Services.AddMapping();
 builder.Services.AddMediatR(cfg =>
      cfg.RegisterServicesFromAssembly(typeof(JwtAutorizationService).Assembly));
-builder.Services.AddDbContext<TaskTrackerDbContext>(x => {
-    x.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLConnectionString"));
-    });
 
+//builder.Services.AddRepository();
+builder.Services.AddStoredProceduresRepository();
 builder.Services.AddServices();
-builder.Services.AddRepository();
+
 //builder.Services.AddMemoryCache();
 
 var app = builder.Build();
@@ -55,5 +59,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseAuthMiddleware();
 app.Run();

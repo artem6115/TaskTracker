@@ -21,8 +21,8 @@ namespace Infrastructure.Migrations
                     @FullName nvarchar(max),
                     @Email nvarchar(max),
                     @Password nvarchar(max),
-                    @RefreshToken nvarchar(max),
-                    @Phone nvarchar(max)
+                    @RefreshToken nvarchar(max) = NULL,
+                    @Phone nvarchar(max) = NULL
                 AS
                 BEGIN
                 	SET NOCOUNT ON;
@@ -42,18 +42,18 @@ namespace Infrastructure.Migrations
                 CREATE PROCEDURE Update_User
                     @Id bigint,
                     @FullName nvarchar(max),
-                    @RefreshToken nvarchar(max),
+                    @RefreshToken nvarchar(max) = NULL,
                     @Password nvarchar(max),
-                    @Phone nvarchar(max)
+                    @Phone nvarchar(max) = NULL
                 AS
                 BEGIN
                 	SET NOCOUNT ON;
                     UPDATE USERS SET 
                     FullName = @FullName,
-                    Password = @FullName,
+                    Password = @Password,
                     RefreshToken = @RefreshToken,
                     Phone = @Phone
-                    Where  Id = @Id
+                    Where Id = @Id
                 END
                 GO
                 
@@ -437,12 +437,12 @@ namespace Infrastructure.Migrations
                 GO
 
                 CREATE PROCEDURE Create_Task
-                    @Importance tinyint,
+                    @Importance tinyint = NULL,
                     @Title nvarchar(max),
                     @Description nvarchar(max),
-                    @UserId bigint,
-                    @PreviousTaskId bigint,
-                    @EpicId bigint
+                    @UserId bigint = NULL,
+                    @PreviousTaskId bigint = NULL,
+                    @EpicId bigint = NULL
                 
                 AS
                 BEGIN
@@ -465,15 +465,15 @@ namespace Infrastructure.Migrations
 
                 CREATE PROCEDURE Update_Task
                     @Id bigint,
-                    @Importance tinyint,
+                    @Importance tinyint = NULL,
                     @Title nvarchar(max),
                     @StatusTask int,
                     @Description nvarchar(max),
-                    @DateOfClosed datetime2(7),
-                    @ApproximateDateOfCompleted datetime2(7),
-                    @UserId bigint,
-                    @PreviousTaskId bigint,
-                    @EpicId bigint
+                    @DateOfClosed datetime2(7) = NULL,
+                    @ApproximateDateOfCompleted datetime2(7) = NULL,
+                    @UserId bigint = NULL,
+                    @PreviousTaskId bigint = NULL,
+                    @EpicId bigint = NULL
                 
                 AS
                 BEGIN

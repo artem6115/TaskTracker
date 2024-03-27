@@ -16,8 +16,8 @@ namespace Infrastructure.Utilits
                 new SqlParameter("@FullName",user.FullName),
                 new SqlParameter("@Email", user.Email),
                 new SqlParameter("@Password", user.Password),
-                new SqlParameter("@RefreshToken", user.RefreshToken),
-                new SqlParameter("@Phone", user.Phone));
+                new SqlParameter("@RefreshToken", user.RefreshToken??""),
+                new SqlParameter("@Phone", user.Phone??""));
         }
         public async static Task Create_Attachment(this TaskTrackerDbContext context, Attachment attachment)
         {
@@ -99,12 +99,12 @@ namespace Infrastructure.Utilits
         #region Update
         public async static Task Update_User(this TaskTrackerDbContext context, User user)
         {
-            await context.Database.ExecuteSqlRawAsync("Update_User @Id, @FullName, @Password, @RefreshToken, @Phone",
-                new SqlParameter("@FullName", user.FullName),
+            await context.Database.ExecuteSqlRawAsync("Update_User @Id, @FullName, @RefreshToken, @Password,  @Phone",
                 new SqlParameter("@Id", user.Id),
+                new SqlParameter("@FullName", user.FullName),
+                new SqlParameter("@RefreshToken", user.RefreshToken ?? ""),
                 new SqlParameter("@Password", user.Password),
-                new SqlParameter("@RefreshToken", user.RefreshToken),
-                new SqlParameter("@Phone", user.Phone));
+                new SqlParameter("@Phone", user.Phone ?? ""));
         }
         public async static Task Update_Account_User(this TaskTrackerDbContext context, User user)
         {

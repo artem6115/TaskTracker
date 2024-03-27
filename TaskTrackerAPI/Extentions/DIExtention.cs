@@ -1,4 +1,5 @@
-﻿using BuisnnesService.Services;
+﻿using AutoMapper;
+using BuisnnesService.Services;
 using Infrastructure.Repository.Interfaces;
 using Infrastructure.Repository.Repositories;
 
@@ -11,13 +12,14 @@ namespace TaskTrackerAPI.DIExtentions
             services.AddAutoMapper(
                 typeof(JwtAutorizationService).Assembly,
                 typeof(Infrastructure.Utilits.TaskTrackerDbContext).Assembly,
-                typeof(Program).Assembly);
+                typeof(Program).Assembly)
+                .AddScoped<Mapper>();
             return services;
         }
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped<JwtAutorizationService>();
-            services.AddTransient<UserManagerService>();
+            services.AddScoped<JwtAutorizationService>().
+            AddTransient<UserManagerService>();
 
             return services;
         }

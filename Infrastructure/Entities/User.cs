@@ -24,7 +24,6 @@ namespace Infrastructure.Auth
         public bool Deleted { get; set; }
         public string? Phone { get; set; }
         public string? RefreshToken { get; set; }
-        public int? СonfirmationCode { get; set; }
         public List<Note>? Notes { get; set; }
         public List<UserProject>? Projects { get; set; } = null!;
         public List<WorkTask>? Tasks { get; set; }

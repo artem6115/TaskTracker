@@ -17,10 +17,11 @@ namespace Infrastructure.Repository.Repositories
             _context = context;
             _logger = logger;
         }
-        public async Task AddUserAcync(User user)
+        public async Task<User> AddUserAcync(User user)
         {
             await _context.Create_User(user);
             _logger.LogTrace($"User added, full name {user.FullName}");
+            return await _context.Users.AsNoTracking().SingleAsync(x=>x.Email == user.Email);
 
         }
 
@@ -28,6 +29,13 @@ namespace Infrastructure.Repository.Repositories
         {
             await _context.Delete_User(user.Id);
             _logger.LogTrace($"User deleted, full name {user.FullName}");
+        }
+
+        public async Task Delete_RefreshToken()
+        {
+            var user = await _context.Users.SingleAsync(x => x.Id == UserClaims.User.Id);
+            user.RefreshToken = null;
+            await _context.Update_User(user);
         }
 
         public async Task<List<User>> GetAllUsersAsync()
@@ -39,7 +47,11 @@ namespace Infrastructure.Repository.Repositories
         {
             return await _context.Users.AsNoTracking().SingleAsync(x => x.Id == Id);
         }
+        public async Task<User> GetUserByLoginAsync(string email)
+        {
+            return await _context.Users.AsNoTracking().SingleAsync(x => x.Email == email);
 
+        }
         public async Task UpdateUserAccountAcync(User user)
         {
             await _context.Update_Account_User(user);
