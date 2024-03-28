@@ -25,6 +25,7 @@ namespace Infrastructure.Migrations
                     Confirmed = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Deleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Spice = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>

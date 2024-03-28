@@ -1,4 +1,5 @@
 using BuisnnesService.Services;
+using FluentValidation.AspNetCore;
 using Infrastructure.Auth;
 using Infrastructure.Utilits;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -37,9 +38,11 @@ builder.Services.AddMapping();
 builder.Services.AddMediatR(cfg =>
      cfg.RegisterServicesFromAssembly(typeof(JwtAutorizationService).Assembly));
 
-//builder.Services.AddRepository();
-builder.Services.AddStoredProceduresRepository();
+builder.Services.AddRepository();
+//builder.Services.AddStoredProceduresRepository();
 builder.Services.AddServices();
+builder.Services.AddFluentValidation(x=>x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+//builder.Services.AddFluentValidationAutoValidation();
 
 //builder.Services.AddMemoryCache();
 

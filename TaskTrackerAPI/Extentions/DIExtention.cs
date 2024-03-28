@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BuisnnesService.Services;
+using Infrastructure.EntitiesConfigurations;
 using Infrastructure.Repository.Interfaces;
 using Infrastructure.Repository.Repositories;
 
@@ -19,6 +20,7 @@ namespace TaskTrackerAPI.DIExtentions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<JwtAutorizationService>().
+            AddSingleton<SpiceGenerator>().
             AddTransient<UserManagerService>();
 
             return services;

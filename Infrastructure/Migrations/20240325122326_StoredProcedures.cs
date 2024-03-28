@@ -21,12 +21,12 @@ namespace Infrastructure.Migrations
                     @FullName nvarchar(max),
                     @Email nvarchar(max),
                     @Password nvarchar(max),
-                    @RefreshToken nvarchar(max) = NULL,
+                    @Spice nvarchar(max)=NULL,
                     @Phone nvarchar(max) = NULL
                 AS
                 BEGIN
                 	SET NOCOUNT ON;
-                    INSERT INTO USERS (FullName,Email,Password,Phone,RefreshToken) VALUES (@FullName,@Email,@Password,@RefreshToken,@Phone)
+                    INSERT INTO USERS (FullName,Email,Password,Spice,Phone) VALUES (@FullName,@Email,@Password,@Spice,@Phone)
                 END
                 GO
                 
@@ -44,6 +44,7 @@ namespace Infrastructure.Migrations
                     @FullName nvarchar(max),
                     @RefreshToken nvarchar(max) = NULL,
                     @Password nvarchar(max),
+                    @Spice nvarchar(max) = NULL,
                     @Phone nvarchar(max) = NULL
                 AS
                 BEGIN
@@ -52,7 +53,8 @@ namespace Infrastructure.Migrations
                     FullName = @FullName,
                     Password = @Password,
                     RefreshToken = @RefreshToken,
-                    Phone = @Phone
+                    Phone = @Phone,
+                    Spice = @Spice      
                     Where Id = @Id
                 END
                 GO

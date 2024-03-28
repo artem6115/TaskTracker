@@ -18,6 +18,8 @@ namespace Infrastructure.Auth
         public required string Email { get; set; }
 
         public required string Password { get; set; }
+        public string Spice { get; set; }
+
         public int AccessFaildCount { get; set; }
         public bool Banned { get; set; }
         public bool Confirmed { get; set; }

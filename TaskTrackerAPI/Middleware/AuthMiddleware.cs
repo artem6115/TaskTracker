@@ -19,7 +19,6 @@ namespace TaskTrackerAPI.Middleware
                     FullName = context.User.Claims.First(x => x.Type == "FullName").Value
                 };
                 UserClaims.User = user;
-                Console.WriteLine($"email :{UserClaims.User.Email}; fullname{UserClaims.User.FullName}");
             }
             catch { }
             await _next(context);

@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using BuisnnesService.Models;
 using Infrastructure.Auth;
+using Infrastructure.EntitiesConfigurations;
+using Infrastructure.Migrations;
 using Infrastructure.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,24 +17,27 @@ namespace BuisnnesService.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly JwtAutorizationService _jwtService;
-
+        private readonly SpiceGenerator _generator;
         private readonly Mapper _mapper;
 
-        public UserManagerService(IUserRepository repository, JwtAutorizationService jwtService, Mapper mapper)
+        public UserManagerService(IUserRepository repository, JwtAutorizationService jwtService, SpiceGenerator generator , Mapper mapper)
         {
             _userRepository = repository;
             _jwtService = jwtService;
             _mapper = mapper;
+            _generator = generator;
         }
 
         public async Task<AuthResult> LoginAsync(UserDto userDto)
         {
             UserClaims userClaims;
             User User;
+            NormolizeDto(userDto);
             try
             {
                 User = await _userRepository.GetUserByLoginAsync(userDto.Email.ToLower());
-                if (GetPasswordHash(userDto.Password) != User.Password)
+                var password = GetPasswordHash(userDto.Password + User.Spice);
+                if ( password != User.Password)
                     throw new ArgumentException();
 
                 userClaims = _mapper.Map<UserClaims>(User);
@@ -101,11 +107,10 @@ namespace BuisnnesService.Services
         public async Task<AuthResult> RegistAsync(UserDto user)
         {
             UserClaims userClaims;
+            NormolizeDto(user);
             var User = _mapper.Map<User>(user);
-            User.FullName = NormolizeName(User.FullName);
-            User.Email = User.Email.ToLower();
-            User.Password = GetPasswordHash(User.Password);
-
+            User.Spice = await _generator.NextAsync(null!);
+            User.Password = GetPasswordHash(User.Password+User.Spice);
             try
             {
                 User = await _userRepository.AddUserAcync(User);
@@ -129,6 +134,7 @@ namespace BuisnnesService.Services
                 };
             
         }
+        
 
         private string NormolizeName(string Name)
         {
@@ -146,8 +152,27 @@ namespace BuisnnesService.Services
 
         private string GetPasswordHash(string password)
         {
-            return password;
+            using (var sha256 = SHA256.Create())
+            {
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+
+                return hash;
+            }
+        }
+        private void NormolizeDto(UserDto User)
+        {
+            User.FullName = NormolizeName(User.FullName.Trim());
+            User.Email = User.Email.ToLower().Trim();
+            User.Password = User.Password.Trim();
         }
 
+        public async Task RemovePassword(string password)
+        {
+            var User = await _userRepository.GetUserByIdAsync(UserClaims.User.Id);
+            User.Password = GetPasswordHash(password+User.Spice);
+            await _userRepository.UpdateUserAcync(User);
+        }
     }
 }
