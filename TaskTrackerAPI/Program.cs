@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NLog.Web;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
@@ -15,6 +16,8 @@ using TaskTrackerAPI.DIExtentions;
 using TaskTrackerAPI.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureLogging(cnf => { cnf.ClearProviders();cnf.AddNLog("NLog.config"); }).UseNLog();
 
 builder.Services.AddDbContext<TaskTrackerDbContext>(x => {
     x.UseSqlServer(builder.Configuration.GetConnectionString("MSSQLConnectionString"));
