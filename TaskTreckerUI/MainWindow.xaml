@@ -6,16 +6,64 @@
         xmlns:local="clr-namespace:TaskTreckerUI"       
         mc:Ignorable="d"
         Height="450" Width="800"
+        MinHeight="450" MinWidth="800"
         WindowState="Maximized"
         WindowStyle="ThreeDBorderWindow"
         WindowStartupLocation="CenterScreen"
         
-        Background="Transparent"
         Title="Task Trecker"
         >
    
-    <Grid Background="#FF0A0319">
-        
+    <Grid Background="#FF1D1D1F">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"  Background="#FF2E3034">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="1" Text="Main Page" Style="{StaticResource Title}"/>
+            <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Width="30" Margin="10 0" Style="{StaticResource MenuButton}" >
+                    <Button.Background >
+                        <ImageBrush ImageSource ="Assets/Images/Back.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Width="30" Margin="0 0 15 0" BorderThickness="0.5" Style="{StaticResource MenuButton}" >
+                    <Button.Background >
+                        <ImageBrush ImageSource ="Assets/Images/Next.png"/>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Background="#FF201E1E">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" MaxHeight="50"/>
+                    <RowDefinition Height="*" MaxHeight="50"/>
+                    <RowDefinition Height="*" MaxHeight="50"/>
+                    <RowDefinition Height="*" MaxHeight="50"/>
+                    <RowDefinition Height="*" MaxHeight="50"/>
+                    <RowDefinition Height="*" MaxHeight="50"/>
+
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0"  Content="Главная" Style="{StaticResource MenuButton}"  />
+                <Button  Grid.Row="1"  Content="Уведомления" Style="{StaticResource  MenuButton}"/>
+                <Button Grid.Row="2"  Content="Заметки" Style="{StaticResource MenuButton}"/>
+                <Button Grid.Row="3"  Content="Задачи" Style="{StaticResource MenuButton}"/>
+                <Button Grid.Row="4"  Content="Проекты" Style="{StaticResource MenuButton}"/>
+                <Button Grid.Row="5"  Content="Настройки" Style="{StaticResource MenuButton}"/>
+
+            </Grid>
+        </Grid>
     </Grid>
     
 </Window>

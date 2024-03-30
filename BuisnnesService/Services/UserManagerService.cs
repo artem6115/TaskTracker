@@ -176,5 +176,16 @@ namespace BuisnnesService.Services
             User.Password = GetPasswordHash(password+User.Spice);
             await _userRepository.UpdateUserAcync(User);
         }
+
+        public async Task<User> GetUser()
+        {
+            User user;
+            try
+            {
+                user = await _userRepository.GetUserByIdAsync(UserClaims.User.Id);
+            }
+            catch { return null!; }
+            return user;
+        }
     }
 }

@@ -20,6 +20,15 @@ namespace TaskTrackerAPI.Controllers
             _userManager = service;
         }
 
+        [HttpGet("GetUser")]
+        [Authorize]
+        public async Task<IActionResult> GetUser()
+        {
+            User user = await _userManager.GetUser();
+            if (user is null) return NotFound();
+            return Ok(user);    
+        }
+
         [HttpGet("Login")]
         public async Task<IActionResult> Login([FromQuery] UserDto user)
         {
