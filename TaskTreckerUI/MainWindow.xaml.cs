@@ -8,7 +8,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaskTreckerUI.Services;
 using TaskTreckerUI.Views;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TaskTreckerUI
 {
@@ -20,10 +22,25 @@ namespace TaskTreckerUI
         public MainWindow()
         {
             InitializeComponent();
-            var auth = new AuthWindow();
-            auth.ShowDialog();
+            var connection = new ConnectionWindow();
+            connection.ShowDialog();
+            if(LocalConnectionService.Adress is null)
+            {
+                Close();
+                return;
+            }
+            if (AuthService.User is null)
+            {
+                var auth = new AuthWindow();
+                auth.ShowDialog();
+                if (!auth.IsAuthorized) Close();
+            }
+
         }
 
-
+        private void Window_Closed(object sender, EventArgs e)
+        {
+           
+        }
     }
 }

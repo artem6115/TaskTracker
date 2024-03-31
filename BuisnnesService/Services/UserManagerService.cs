@@ -33,7 +33,7 @@ namespace BuisnnesService.Services
             UserClaims userClaims;
             User User;
             NormolizeDto(userDto);
-            throw new Exception("Testing error");
+
 
             try
             {

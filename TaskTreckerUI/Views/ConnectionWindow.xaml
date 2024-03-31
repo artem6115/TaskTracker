@@ -1,0 +1,51 @@
+﻿<Window x:Class="TaskTreckerUI.Views.ConnectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TaskTreckerUI.Views"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Title="ConnectionWindow" Height="192" Width="600"
+        Background="#FF2E3034" Loaded="Window_Loaded">
+    <Grid>
+        <Image x:Name="LoadImage" Width="100" Height="100" RenderTransformOrigin="0.5,0.5" Source="/Assets/Images/Loading64.png" Margin="50,0,397,0" >
+
+            <Image.RenderTransform>
+                <RotateTransform x:Name="AnimatedRotateTransform" Angle="0" />
+            </Image.RenderTransform>
+            <Image.Triggers>
+                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="AnimatedRotateTransform"
+                                 Storyboard.TargetProperty="Angle" 
+                                To="360" Duration="0:0:1" RepeatBehavior="Forever" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Image.Triggers>
+
+        </Image>
+        <TextBlock x:Name="InfoText" 
+            Foreground="White"
+            FontSize="20"
+            FontWeight="Bold"
+            Height="50"
+            Text="Поиск сервера..." Margin="302,14,24,128"
+            />
+        <TextBlock x:Name="ErrorText" 
+            Foreground="red"
+            FontSize="16"
+            Height="50"
+            Text="Ошибка сервер не был найден" Margin="300,54,38,88" 
+            />
+        <Button HorizontalAlignment="Left" Content="Отмена" Width="80" Height="25" Margin="426,142,0,25" Click="Button_Click"/>
+        <Button HorizontalAlignment="Left" Visibility="Visible" Name="RetryButton" Content="Повторить" Width="80" Height="25" Margin="276,142,0,25" Click="Retry_ButtonClick"/>
+
+    </Grid>
+</Window>

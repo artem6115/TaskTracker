@@ -9,12 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+
     <None Remove="Assets\Images\Back.png" />
+
+    <None Remove="Assets\Images\Loading128.png" />
+
+    <None Remove="Assets\Images\Loading64.png" />
+    <None Remove="Assets\Images\MainIco.ico" />
+    <None Remove="Assets\Images\MainIco.png" />
     <None Remove="Assets\Images\Next.png" />
-    <None Remove="close.svg" />
-    <None Remove="remove_3egkdi1091di.svg" />
-    <None Remove="Снимок1.PNG" />
-    <None Remove="Снимок2.PNG" />
+
+
+
   </ItemGroup>
 
   <ItemGroup>
@@ -44,7 +50,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\Auth1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Auth2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Auth3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\Back.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Loading64.png" />
+    <Resource Include="Assets\Images\MainIco.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\Next.png">

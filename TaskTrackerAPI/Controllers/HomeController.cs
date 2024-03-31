@@ -15,6 +15,11 @@ namespace TaskTrackerAPI.Controllers
         {
             return "Вы в общей области" ;
         }
+        [HttpGet("/")]
+        public object Get()
+        {
+            return Ok();
+        }
 
         [HttpGet("Auth")]
         [Authorize]

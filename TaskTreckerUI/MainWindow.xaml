@@ -11,9 +11,9 @@
         WindowStyle="ThreeDBorderWindow"
         WindowStartupLocation="CenterScreen"
         
-        Title="Task Trecker"
+        Title="Task Trecker" Closed="Window_Closed" Icon="Assets/Images/MainIco.png"
         >
-   
+
     <Grid Background="#FF1D1D1F">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -43,7 +43,8 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="23*"/>
+                <ColumnDefinition Width="177*"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0" Background="#FF201E1E">
                 <Grid.RowDefinitions>
@@ -65,5 +66,5 @@
             </Grid>
         </Grid>
     </Grid>
-    
+
 </Window>

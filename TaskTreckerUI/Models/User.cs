@@ -6,13 +6,24 @@ using System.Threading.Tasks;
 
 namespace TaskTreckerUI.Models
 {
-    public static class User
+    public class User
     {
-        public static string FullName { get; set; }
-        public static string Email { get; set; }
-        public static string Phone { get; set; }
-        public static string Token { get; set; }
-        public static string RefrashToken { get; set; }
+        public  string FullName { get; set; }
+        public  string Email { get; set; }
+        public  string Phone { get; set; }
+        public string Token { get; set; }
+        public string RefrashToken { get; set; }
+        public long Id { get;  set; }
+
+        public string Password { get; set; }
+        public string Spice { get; set; }
+
+        public int AccessFaildCount { get; set; }
+        public bool Banned { get; set; }
+        public bool Confirmed { get; set; }
+        public bool Deleted { get; set; }
+
+
 
     }
 }

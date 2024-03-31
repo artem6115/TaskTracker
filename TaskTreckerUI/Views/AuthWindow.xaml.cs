@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TaskTreckerUI.Services;
 
 namespace TaskTreckerUI.Views
 {
@@ -22,6 +24,18 @@ namespace TaskTreckerUI.Views
         public AuthWindow()
         {
             InitializeComponent();
+            TryAuthorization();
+        }
+
+        private async void TryAuthorization()
+        {
+        }
+
+        public bool IsAuthorized { get; private set; } = false;
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
