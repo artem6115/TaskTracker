@@ -29,8 +29,8 @@ namespace TaskTrackerAPI.Controllers
             return Ok(user);    
         }
 
-        [HttpGet("Login")]
-        public async Task<IActionResult> Login([FromQuery] UserDto user)
+        [HttpPut("Login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginDto user)
         {
             var result = await _userManager.LoginAsync(user);
             if (result.Success) return Ok(result);
@@ -42,8 +42,8 @@ namespace TaskTrackerAPI.Controllers
         public async Task Logout()
             => await _userManager.LogoutAsync();
 
-        [HttpGet("Regist")]
-        public async Task<IActionResult> Regist([FromQuery] UserDto user)
+        [HttpPost("Regist")]
+        public async Task<IActionResult> Regist([FromBody] UserRegistDto user)
         {
             if (!ModelState.IsValid) return BadRequest(user);
             var result = await _userManager.RegistAsync(user);
@@ -51,8 +51,8 @@ namespace TaskTrackerAPI.Controllers
             else return BadRequest(result.ErrorMessage);
         }
 
-        [HttpGet("RefreshToken")]
-        public async Task<IActionResult> Refresh(string token)
+        [HttpPut("RefreshToken")]
+        public async Task<IActionResult> Refresh([FromBody] string token)
         {
             var result = await _userManager.RefreshAsync(token);
             if (result.Success) return Ok(result);
@@ -64,7 +64,7 @@ namespace TaskTrackerAPI.Controllers
         [HttpGet("RemovePassword")]
         public async Task<IActionResult> RemovePassword([MinLength(5)][NotNull][Required]string password)
         {
-            bool valid = UserDtoValidator.PasswordValidator(password);
+            bool valid = UserLoginDtoValidator.PasswordValidator(password);
             if (!valid) ModelState.AddModelError("errors", "В пароле должна быть как миним 1 буква в верхнем и нижнем регистре");
             if (!ModelState.IsValid) return BadRequest(ModelState);
             await _userManager.RemovePassword(password);

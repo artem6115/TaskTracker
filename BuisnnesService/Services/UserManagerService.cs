@@ -28,7 +28,7 @@ namespace BuisnnesService.Services
             _generator = generator;
         }
 
-        public async Task<AuthResult> LoginAsync(UserDto userDto)
+        public async Task<AuthResult> LoginAsync(UserLoginDto userDto)
         {
             UserClaims userClaims;
             User User;
@@ -37,7 +37,7 @@ namespace BuisnnesService.Services
 
             try
             {
-                User = await _userRepository.GetUserByLoginAsync(userDto.Email.ToLower());
+                User = await _userRepository.GetUserByLoginAsync(userDto.Email);
                 var password = GetPasswordHash(userDto.Password + User.Spice);
                 if ( password != User.Password)
                     throw new ArgumentException();
@@ -106,10 +106,11 @@ namespace BuisnnesService.Services
             
         }
 
-        public async Task<AuthResult> RegistAsync(UserDto user)
+        public async Task<AuthResult> RegistAsync(UserRegistDto user)
         {
             UserClaims userClaims;
             NormolizeDto(user);
+            user.FullName = NormolizeName(user.FullName);
             var User = _mapper.Map<User>(user);
             User.Spice = await _generator.NextAsync(null!);
             User.Password = GetPasswordHash(User.Password+User.Spice);
@@ -140,6 +141,7 @@ namespace BuisnnesService.Services
 
         private string NormolizeName(string Name)
         {
+            Name = Name.Trim();
             var words = Name.Split(' ');
             var full_name = "";
             foreach(var item in words)
@@ -163,9 +165,8 @@ namespace BuisnnesService.Services
                 return hash;
             }
         }
-        private void NormolizeDto(UserDto User)
+        private void NormolizeDto(UserLoginDto User)
         {
-            User.FullName = NormolizeName(User.FullName.Trim());
             User.Email = User.Email.ToLower().Trim();
             User.Password = User.Password.Trim();
         }

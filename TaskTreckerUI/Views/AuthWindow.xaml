@@ -15,10 +15,10 @@
                 <Grid>
                     <Image Width="70" Height="70" Source="/Assets/Images/Auth2.png" Margin="40,69,390,168"/>
                     <TextBlock Foreground="White" FontWeight="Bold" FontSize="15" Width="55" Text="Почта" Margin="150,57,295,221"/>
-                    <TextBox FontSize="15" Margin="218,56,74,226"/>
+                    <TextBox x:Name="Login_Email" FontSize="15" Margin="218,56,74,226"/>
                     <TextBlock Foreground="White" FontWeight="Bold" FontSize="15" Width="55" Text="Пароль" Margin="150,114,295,164"/>
-                    <PasswordBox FontSize="15" Margin="218,113,74,169"/>
-                    <Button Content="Войти" HorizontalAlignment="Left" Margin="221,169,0,109" Width="72"/>
+                    <PasswordBox x:Name="Login_Password" FontSize="15" Margin="218,113,74,169"/>
+                    <Button Content="Войти" HorizontalAlignment="Left" Margin="221,169,0,109" Width="72" Click="Login_Button"/>
 
                 </Grid>
             </TabItem>
@@ -27,12 +27,12 @@
                     <Image Width="70" Height="70" Source="/Assets/Images/Auth1.png" Margin="40,69,390,168"/>
 
                     <TextBlock Foreground="White" FontWeight="Bold" FontSize="15" Width="55" Text="Почта" Margin="150,90,295,188"/>
-                    <TextBox FontSize="15" Margin="218,89,57,193"/>
+                    <TextBox x:Name="Auth_Email" FontSize="15" Margin="218,89,57,193"/>
                     <TextBlock  Foreground="White" FontWeight="Bold" FontSize="15" Width="55" Text="Пароль" Margin="150,147,295,131"/>
-                    <PasswordBox FontSize="15" Margin="218,146,57,136"/>
-                    <Button Content="Создать аккаунт" HorizontalAlignment="Left" Margin="221,202,0,76" Width="109"/>
+                    <PasswordBox x:Name="Auth_Password" FontSize="15" Margin="218,146,57,136"/>
+                    <Button Content="Создать аккаунт" HorizontalAlignment="Left" Margin="218,185,0,93" Width="109" Click="Create_Account"/>
                     <TextBlock FontSize="15" Foreground="White" FontWeight="Bold" Text="Полное ФИО" Margin="104,39,295,239"/>
-                    <TextBox FontSize="15" Margin="218,38,57,244"/>
+                    <TextBox x:Name="Auth_FullName" FontSize="15" Margin="218,38,57,244"/>
 
                 </Grid>
             </TabItem>
@@ -40,6 +40,7 @@
 
 
         </TabControl>
+        <TextBlock x:Name="Error_text" Foreground="red" HorizontalAlignment="Center" Text="ошибка входа !" Visibility="Hidden" Margin="0,246,0,-246" />
         <Button Width="70" Height="20" Content="Отмена" Margin="426,305,10,10" Click="Button_Click"/>
         <Button Width="70" Height="20" Content="Помощь" Margin="10,305,426,10"/>
 

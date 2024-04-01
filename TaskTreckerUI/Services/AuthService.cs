@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using TaskTreckerUI.Models;
 
@@ -14,43 +15,145 @@ namespace TaskTreckerUI.Services
     internal static class AuthService
     {
         public static User? User { get; private set; }
-        public async static Task<bool> TryAuthorizeWithJwtTokens()
-        {
-            
-            var path =  Path.Combine(Environment.GetFolderPath(
+        private static string path;
+        private static string tokenPath;
+        private static string refreshTokenPath;
+        private static string? token = null;
+        private static string? refreshToken = null;
+        static AuthService() {
+
+            path = Path.Combine(Environment.GetFolderPath(
                     Environment.SpecialFolder.ApplicationData), "TaskTrecker");
-            var tokenPath = Path.Combine(path, "Token.txt");
-            var refreshTokenPath = Path.Combine(path, "RefreshToken.txt");
-            string? token;
-            string? refreshToken;
+            tokenPath = Path.Combine(path, "Token.txt");
+            refreshTokenPath = Path.Combine(path, "RefreshToken.txt");
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
-            if(File.Exists(tokenPath))
+            if (File.Exists(tokenPath))
                 token = File.ReadAllText(tokenPath);
             if (File.Exists(refreshTokenPath))
-                refreshToken = File.ReadAllText(refreshTokenPath);;
-            token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGdWxsTmFtZSI6ItCc0LjQutC-0LIg0JDRgNGC0ZHQvCDQkNC90LTRgNC10LXQstC40YcgIiwiRW1haWwiOiJtaWtvdkAyMDAzLnJ1IiwiSWQiOiIxMiIsIm5iZiI6MTcxMTkxMzEyMCwiZXhwIjoxNzExOTE2NDIwLCJpc3MiOiJUYXNrVHJhY2tlclNlcnZlciIsImF1ZCI6IlRhc2tUcmFja2VyQ2xpZW50cyJ9.tzSo30Oat8ZqadYFDwzzFwHIyFkzac_c3RD5f-pImFY";
+                refreshToken = File.ReadAllText(refreshTokenPath);
+        }
+        private static async Task<bool> LoginWithToken(HttpClient httpClient)
+        {
             if (string.IsNullOrWhiteSpace(token)) return false;
-
-            HttpClientHandler clientHandler = new HttpClientHandler();
-            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-            HttpClient httpClient = new HttpClient(clientHandler);
-
-            for(int i = 0; i < 5; i++)
+            try
             {
-                try
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}:5050/api/Auth/GetUser");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var result = await httpClient.SendAsync(request);
+                if (result.IsSuccessStatusCode)
                 {
-                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}:5050/api/Auth/GetUser");
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    var result = await httpClient.SendAsync(request);
-                    User = await  result.Content.ReadFromJsonAsync<User>();
+                    User = await result.Content.ReadFromJsonAsync<User>();
                     return true;
                 }
-                catch { }
-
             }
+            catch { }
+            return false;
+        }
+        public async static Task<bool> TryAuthorizeWithJwtTokens()
+        {
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            using (HttpClient httpClient = new HttpClient(clientHandler))
+            {
+
+                if (await LoginWithToken(httpClient))
+                    return true;
+                if (await TryRefreshTokens(httpClient))
+                {
+                    if (await LoginWithToken(httpClient))
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
+        private async static Task<bool> TryRefreshTokens(HttpClient httpClient) {
+
+            if(string.IsNullOrWhiteSpace(refreshToken)) return false;
+
+            try
+            {
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}:5050/api/Auth/RefreshToken");
+                request.Content =  JsonContent.Create<string>(refreshToken);
+                var result = await httpClient.SendAsync(request);
+                if (result.IsSuccessStatusCode)
+                {
+                    var authResult = await result.Content.ReadFromJsonAsync<AuthResult>();
+                    if(authResult is null) return false;
+                    token = authResult.Token;
+                    refreshToken = authResult.RefreshToken;
+                    SaveTokens();
+                    return true;
+                }
+            }
+            catch { }
 
             return false;
+
+
+        }
+
+        private static async void SaveTokens()
+        {
+            await File.WriteAllTextAsync(tokenPath, token);
+            await File.WriteAllTextAsync(refreshTokenPath, refreshToken);
+
+        }
+
+        public static async Task<AuthResult> CreateUser(UserDto user)
+        {
+           
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            using (HttpClient httpClient = new HttpClient(clientHandler))
+            {
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://{LocalConnectionService.Adress}:5050/api/Auth/Regist");
+                request.Content = JsonContent.Create<UserDto>(user);
+                var result = await httpClient.SendAsync(request);
+                if (result.IsSuccessStatusCode)
+                {
+                    var authResult = await result.Content.ReadFromJsonAsync<AuthResult>();
+                    token = authResult.Token;
+                    refreshToken = authResult.RefreshToken;
+                    SaveTokens();
+                    if(!await TryAuthorizeWithJwtTokens())
+                        authResult.ErrorMessage="Ошибка входа. Учетная запись создана, войдите в систему";
+                    
+                    return authResult;
+                }
+
+                var errorMassage = await result.Content.ReadAsStringAsync();
+                return new AuthResult() { ErrorMessage = errorMassage };
+                
+            }
+        }
+        public static async Task<AuthResult> Login(UserDto user)
+        {
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            using (HttpClient httpClient = new HttpClient(clientHandler))
+            {
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}:5050/api/Auth/Login");
+                request.Content = JsonContent.Create<UserDto>(user);
+                var result = await httpClient.SendAsync(request);
+                if (result.IsSuccessStatusCode)
+                {
+                    var authResult = await result.Content.ReadFromJsonAsync<AuthResult>();
+                    token = authResult.Token;
+                    refreshToken = authResult.RefreshToken;
+                    SaveTokens();
+                    if (!await TryAuthorizeWithJwtTokens())
+                        authResult.ErrorMessage = "Ошибка входа";
+
+                    return authResult;
+                }
+
+                var errorMassage = await result.Content.ReadAsStringAsync();
+                return new AuthResult() { ErrorMessage = errorMassage };
+
+            }
         }
     }
 }

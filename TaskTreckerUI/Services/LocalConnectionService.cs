@@ -24,25 +24,80 @@ namespace TaskTreckerUI.Services
        }
         public static async Task<bool> FindServer(CancellationToken token)
         {
-
-            foreach (var ip in AllAdress)
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            using (HttpClient httpClient = new HttpClient(clientHandler))
             {
-                if (token.IsCancellationRequested) return false;
-                try
+                foreach (var ip in AllAdress.Reverse())
                 {
-                    HttpClientHandler clientHandler = new HttpClientHandler();
-                    clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-                    HttpClient httpClient = new HttpClient(clientHandler);
-                    string path = $"https://{ip}:5050";
-                    var result = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, path),token);
-                    Adress = ip;
-                    return true;
+                    if (token.IsCancellationRequested) return false;
+                    try
+                    {
+                        string path = $"https://{ip}:5050";
+                        var result = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, path), token);
+                        if (result.IsSuccessStatusCode)
+                        {
+                            Adress = ip;
+                            return true;
+                        }
+                    }
+                    catch { }
+
+
+
                 }
-                catch { }
-
-
-
             }
+
+            //var parallel = Parallel.ForEachAsync(AllAdress, async (ip, state) =>
+            //{
+
+            //    HttpClientHandler clientHandler = new HttpClientHandler();
+            //    clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            //    HttpClient httpClient = new HttpClient(clientHandler);
+            //    string path = $"https://{ip}:5050";
+            //    try
+            //    {
+            //        var result = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, path), token);
+            //        if (result.IsSuccessStatusCode)
+            //        {
+            //            Adress = ip;
+            //        }
+            //    }
+            //    finally { }
+            //    {
+            //        httpClient.Dispose();
+            //    }
+
+
+            //});
+            //parallel.Wait();
+
+            //var tasks = AllAdress.Select(async ip =>
+            //{
+            //    if (token.IsCancellationRequested) return;
+            //    HttpClientHandler clientHandler = new HttpClientHandler();
+            //    clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            //    HttpClient httpClient = new HttpClient(clientHandler);
+            //    try
+            //    {
+
+            //        string path = $"https://{ip}:5050";
+            //        var result = await httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, path), token);
+            //        if (result.IsSuccessStatusCode)
+            //        {
+            //            Adress = ip;
+
+            //        }
+            //    }
+            //    catch { }
+            //    finally { httpClient.Dispose(); }
+            //}).ToArray();
+            //Task.WaitAll(tasks);
+
+
+            if (Adress != null)
+                return true;
+
             return false;
         }
 

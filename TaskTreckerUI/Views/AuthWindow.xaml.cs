@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TaskTreckerUI.Models;
 using TaskTreckerUI.Services;
 
 namespace TaskTreckerUI.Views
@@ -31,11 +32,64 @@ namespace TaskTreckerUI.Views
         {
         }
 
-        public bool IsAuthorized { get; private set; } = false;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+
+
+        private async void Create_Account(object sender, RoutedEventArgs e)
+        {
+            var user = new UserDto()
+            {
+                Email = Auth_Email.Text,
+                FullName = Auth_FullName.Text,
+                Password = Auth_Password.Password
+            };
+            if(!UserValidator.PasswordValidator(user.Password,out var errorPassword) | 
+                !UserValidator.FullNameValidator(user.FullName, out var errorName) |
+                !UserValidator.EmailValidator(user.Email, out var errorEmail))
+            {
+                Error_text.Text = $"{errorName}{errorEmail}{errorPassword}";
+                Error_text.Visibility = Visibility.Visible;
+                return;
+            }
+
+            var result = await AuthService.CreateUser(user);
+            if(AuthService.User is not null)
+            { 
+                Close();
+                return;
+            }
+            Error_text.Text = result.ErrorMessage;
+            Error_text.Visibility = Visibility.Visible;
+
+        }
+
+        private async void Login_Button(object sender, RoutedEventArgs e)
+        {
+            var user = new UserDto()
+            {
+                Email = Login_Email.Text,
+                Password = Login_Password.Password
+            };
+            if (!UserValidator.PasswordValidator(user.Password, out var errorPassword) |
+              !UserValidator.EmailValidator(user.Email, out var errorEmail))
+            {
+                Error_text.Text = $"{errorEmail}{errorPassword}";
+                Error_text.Visibility = Visibility.Visible;
+                return;
+            }
+            var result = await AuthService.Login(user);
+            if (AuthService.User is not null)
+            {
+                Close();
+                return;
+            }
+            Error_text.Text = result.ErrorMessage;
+            Error_text.Visibility = Visibility.Visible;
         }
     }
 }

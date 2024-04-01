@@ -12,8 +12,10 @@ namespace BuisnnesService.MappingProfile
     public class MapConfig : Profile
     {
         public MapConfig() { 
-            CreateMap<UserDto,User>().ReverseMap();
-            CreateMap<UserClaims, UserDto>().ReverseMap();
+            CreateMap<UserRegistDto,User>().ReverseMap();
+            CreateMap<UserClaims, UserRegistDto>().ReverseMap();
+            CreateMap<UserLoginDto, User>().ReverseMap();
+            CreateMap<UserClaims, UserLoginDto>().ReverseMap();
 
         }
     }

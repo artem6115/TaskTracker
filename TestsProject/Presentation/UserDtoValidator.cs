@@ -13,8 +13,8 @@ namespace TestsProject.Presentation
         [Test]
         public void Validate1()
         {
-            var validator = new TaskTrackerAPI.Validators.UserDtoValidator();
-            var entity = new UserDto() {
+            var validator = new TaskTrackerAPI.Validators.UserRegistDtoValidator();
+            var entity = new UserRegistDto() {
                 Email = "artem2.ru",
                 Password = "fffffff",
                 FullName = "ijl"
@@ -25,8 +25,8 @@ namespace TestsProject.Presentation
         [Test]
         public void Validate2()
         {
-            var validator = new TaskTrackerAPI.Validators.UserDtoValidator();
-            var entity = new UserDto()
+            var validator = new TaskTrackerAPI.Validators.UserRegistDtoValidator();
+            var entity = new UserRegistDto()
             {
                 Email = "artem@.ru",
                 Password = "fFffffff",

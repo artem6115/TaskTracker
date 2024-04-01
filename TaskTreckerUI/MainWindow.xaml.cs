@@ -33,7 +33,7 @@ namespace TaskTreckerUI
             {
                 var auth = new AuthWindow();
                 auth.ShowDialog();
-                if (!auth.IsAuthorized) Close();
+                if (AuthService.User is null) Close();
             }
 
         }
