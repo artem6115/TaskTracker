@@ -107,10 +107,11 @@ namespace TaskTreckerUI.Services
            
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-            using (HttpClient httpClient = new HttpClient(clientHandler))
+            HttpClient httpClient = new HttpClient(clientHandler);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://{LocalConnectionService.Adress}:5050/api/Auth/Regist");
+            request.Content = JsonContent.Create<UserDto>(user);
+            try
             {
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://{LocalConnectionService.Adress}:5050/api/Auth/Regist");
-                request.Content = JsonContent.Create<UserDto>(user);
                 var result = await httpClient.SendAsync(request);
                 if (result.IsSuccessStatusCode)
                 {
@@ -118,25 +119,29 @@ namespace TaskTreckerUI.Services
                     token = authResult.Token;
                     refreshToken = authResult.RefreshToken;
                     SaveTokens();
-                    if(!await TryAuthorizeWithJwtTokens())
-                        authResult.ErrorMessage="Ошибка входа. Учетная запись создана, войдите в систему";
-                    
+                    if (!await TryAuthorizeWithJwtTokens())
+                        authResult.ErrorMessage = "Ошибка входа. Учетная запись создана, войдите в систему";
+
                     return authResult;
                 }
 
                 var errorMassage = await result.Content.ReadAsStringAsync();
                 return new AuthResult() { ErrorMessage = errorMassage };
-                
+
             }
+            catch { return new AuthResult() {
+                Success=false,ErrorMessage= "Соеденение с сервером потеряно"
+            }; }
         }
         public static async Task<AuthResult> Login(UserDto user)
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-            using (HttpClient httpClient = new HttpClient(clientHandler))
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}:5050/api/Auth/Login");
+            request.Content = JsonContent.Create<UserDto>(user);
+            HttpClient httpClient = new HttpClient(clientHandler);
+            try
             {
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}:5050/api/Auth/Login");
-                request.Content = JsonContent.Create<UserDto>(user);
                 var result = await httpClient.SendAsync(request);
                 if (result.IsSuccessStatusCode)
                 {
@@ -153,6 +158,12 @@ namespace TaskTreckerUI.Services
                 var errorMassage = await result.Content.ReadAsStringAsync();
                 return new AuthResult() { ErrorMessage = errorMassage };
 
+            }catch {
+                return new AuthResult()
+                {
+                    Success = false,
+                    ErrorMessage = "Соеденение с сервером потеряно"
+                };
             }
         }
     }
