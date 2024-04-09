@@ -42,8 +42,8 @@ namespace Infrastructure.Migrations
                 CREATE PROCEDURE Update_User
                     @Id bigint,
                     @FullName nvarchar(max),
-                    @RefreshToken nvarchar(max) = NULL,
                     @Password nvarchar(max),
+                    @RefreshToken nvarchar(max) = NULL,
                     @Spice nvarchar(max) = NULL,
                     @Phone nvarchar(max) = NULL
                 AS
@@ -53,8 +53,8 @@ namespace Infrastructure.Migrations
                     FullName = @FullName,
                     Password = @Password,
                     RefreshToken = @RefreshToken,
-                    Phone = @Phone,
-                    Spice = @Spice      
+                    Spice = @Spice,
+                    Phone = @Phone
                     Where Id = @Id
                 END
                 GO

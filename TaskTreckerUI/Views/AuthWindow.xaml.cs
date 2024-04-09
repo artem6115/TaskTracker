@@ -44,9 +44,9 @@ namespace TaskTreckerUI.Views
         {
             var user = new UserDto()
             {
-                Email = Auth_Email.Text,
-                FullName = Auth_FullName.Text,
-                Password = Auth_Password.Password
+                Email = Auth_Email.Text.Trim(),
+                FullName = Auth_FullName.Text.Trim(),
+                Password = Auth_Password.Password.Trim()
             };
             if(!UserValidator.PasswordValidator(user.Password,out var errorPassword) | 
                 !UserValidator.FullNameValidator(user.FullName, out var errorName) |

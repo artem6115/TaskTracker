@@ -12,12 +12,12 @@ namespace Infrastructure.Utilits
         #region Create
         public async static Task Create_User(this TaskTrackerDbContext context, User user)
         {
-            await context.Database.ExecuteSqlRawAsync("Create_User @FullName, @Email, @Password, @Phone, @Spice",
+            await context.Database.ExecuteSqlRawAsync("Create_User @FullName, @Email, @Password, @Spice, @Phone",
                 new SqlParameter("@FullName",user.FullName),
                 new SqlParameter("@Email", user.Email),
                 new SqlParameter("@Password", user.Password),
-                new SqlParameter("@Phone", user.Phone??""),
-                new SqlParameter("@Spice", user.Spice??"")
+                new SqlParameter("@Spice", user.Spice ?? ""),
+                new SqlParameter("@Phone", user.Phone??"")
                 );
         }
         public async static Task Create_Attachment(this TaskTrackerDbContext context, Attachment attachment)
@@ -100,12 +100,13 @@ namespace Infrastructure.Utilits
         #region Update
         public async static Task Update_User(this TaskTrackerDbContext context, User user)
         {
-            await context.Database.ExecuteSqlRawAsync("Update_User @Id, @FullName, @Password,  @Phone, @Spice",
+            await context.Database.ExecuteSqlRawAsync("Update_User @Id, @FullName, @Password, @RefreshToken, @Spice, @Phone",
                 new SqlParameter("@Id", user.Id),
                 new SqlParameter("@FullName", user.FullName),
                 new SqlParameter("@Password", user.Password),
-                new SqlParameter("@Phone", user.Phone ?? ""),
-                new SqlParameter("@Spice", user.Spice??"")
+                new SqlParameter("@RefreshToken", user.RefreshToken ?? ""),
+                new SqlParameter("@Spice", user.Spice ?? ""),
+                new SqlParameter("@Phone", user.Phone ?? "")
                 );
         }
         public async static Task Update_Account_User(this TaskTrackerDbContext context, User user)
@@ -113,6 +114,7 @@ namespace Infrastructure.Utilits
             await context.Database.ExecuteSqlRawAsync("Update_Account_User @Id, @AccessFaildCount, @Banned, @Confirmed, @Deleted",
                 new SqlParameter("@AccessFaildCount", user.AccessFaildCount),
                 new SqlParameter("@Id", user.Id),
+                new SqlParameter("@AccessFaildCount", user.AccessFaildCount),
                 new SqlParameter("@Banned", user.Banned),
                 new SqlParameter("@Confirmed", user.Confirmed),
                 new SqlParameter("@Deleted", user.Deleted));

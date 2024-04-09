@@ -39,7 +39,7 @@ namespace TaskTreckerUI.Services
         {
             bool result = true;
             errorMassage = "";
-            if (name.Split('.').Length<3)
+            if (name.Split(' ').Length<3)
             {
                 errorMassage += "ФИО указано не полностью\n";
                 result = false;

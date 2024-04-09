@@ -83,10 +83,10 @@ namespace BuisnnesService.Services
             try
             {
                 var UserClaims = _jwtService.DesirializeToken(token);
-                var tokens = _jwtService.CreateToken(UserClaims);
                 var User = await _userRepository.GetUserByIdAsync(UserClaims.Id);
                 if (User.RefreshToken != token)
                     throw new Exception();
+                var tokens = _jwtService.CreateToken(UserClaims);
                 User.RefreshToken = tokens.Item2;
                 await _userRepository.UpdateUserAcync(User);
                 return new AuthResult() {
