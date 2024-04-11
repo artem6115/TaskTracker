@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Repository.Repositories
+namespace Infrastructure.Repository
 {
     public class UserRepository : IUserRepository
     {
@@ -14,7 +14,7 @@ namespace Infrastructure.Repository.Repositories
         private readonly ILogger<UserRepository> _logger;
 
         public UserRepository(TaskTrackerDbContext context, ILogger<UserRepository> logger)
-        { 
+        {
             _context = context;
             _logger = logger;
         }
@@ -36,9 +36,9 @@ namespace Infrastructure.Repository.Repositories
 
         public async Task Delete_RefreshToken()
         {
-           var user = await _context.Users.SingleAsync(x => x.Id == UserClaims.User.Id);
-           user.RefreshToken = null;
-           await _context.SaveChangesAsync();
+            var user = await _context.Users.SingleAsync(x => x.Id == UserClaims.User.Id);
+            user.RefreshToken = null;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<User>> GetAllUsersAsync()

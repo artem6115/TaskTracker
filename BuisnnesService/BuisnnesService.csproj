@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Commands\" />
-    <Folder Include="Queries\" />
+    <Folder Include="Queries\Notes\" />
   </ItemGroup>
 
 </Project>

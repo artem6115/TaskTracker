@@ -42,5 +42,10 @@ namespace TaskTreckerUI
         {
            
         }
+
+        private void Open_Notes(object sender, RoutedEventArgs e)
+        {
+            NavWindows.Navigate(new NotesPage());
+        }
     }
 }

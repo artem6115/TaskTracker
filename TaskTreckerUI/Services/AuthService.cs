@@ -54,7 +54,7 @@ namespace TaskTreckerUI.Services
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-            using (HttpClient httpClient = new HttpClient(clientHandler))
+            using (HttpClient httpClient = new HttpClient(clientHandler,true))
             {
 
                 if (await LoginWithToken(httpClient))
@@ -107,7 +107,7 @@ namespace TaskTreckerUI.Services
            
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-            HttpClient httpClient = new HttpClient(clientHandler);
+            HttpClient httpClient = new HttpClient(clientHandler,true);
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://{LocalConnectionService.Adress}:5050/api/Auth/Regist");
             request.Content = JsonContent.Create<UserDto>(user);
             try
@@ -139,7 +139,7 @@ namespace TaskTreckerUI.Services
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}:5050/api/Auth/Login");
             request.Content = JsonContent.Create<UserDto>(user);
-            HttpClient httpClient = new HttpClient(clientHandler);
+            HttpClient httpClient = new HttpClient(clientHandler, true);
             try
             {
                 var result = await httpClient.SendAsync(request);
@@ -165,6 +165,33 @@ namespace TaskTreckerUI.Services
                     ErrorMessage = "Соеденение с сервером потеряно"
                 };
             }
+        }
+
+        public static async Task<HttpResponseMessage> SendAsync(HttpRequestMessage massage)
+        {
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            massage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var httpClient = new HttpClient(clientHandler, true);
+            try
+            {
+                var result = await httpClient.SendAsync(massage);
+                if(result.IsSuccessStatusCode)
+                    return result;
+
+                if(result.StatusCode == System.Net.HttpStatusCode.Unauthorized) {
+                    var resultRefresh = await TryRefreshTokens(httpClient);
+                    if (resultRefresh)
+                    {
+                        await LoginWithToken(httpClient);
+                        return await httpClient.SendAsync(massage);
+
+                    }
+                }
+
+            }
+            finally { clientHandler.Dispose(); }
+            return null!;
         }
     }
 }

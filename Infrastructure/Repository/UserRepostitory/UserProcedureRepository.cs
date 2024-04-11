@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Repository.Repositories
+namespace Infrastructure.Repository
 {
     public class UserProcedureRepository : IUserRepository
     {
@@ -21,7 +21,7 @@ namespace Infrastructure.Repository.Repositories
         {
             await _context.Create_User(user);
             _logger.LogTrace($"User added, full name {user.FullName}");
-            return await _context.Users.AsNoTracking().SingleAsync(x=>x.Email == user.Email);
+            return await _context.Users.AsNoTracking().SingleAsync(x => x.Email == user.Email);
 
         }
 
