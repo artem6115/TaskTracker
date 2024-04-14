@@ -8,9 +8,10 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using TaskTreckerUI.Models;
+using TaskTrackerUI.Models;
+using TaskTrackerUI.Views;
 
-namespace TaskTreckerUI.Services
+namespace TaskTrackerUI.Services
 {
     internal static class AuthService
     {
@@ -23,7 +24,7 @@ namespace TaskTreckerUI.Services
         static AuthService() {
 
             Work_Path = Path.Combine(Environment.GetFolderPath(
-                    Environment.SpecialFolder.ApplicationData), "TaskTrecker");
+                    Environment.SpecialFolder.ApplicationData), "TaskTracker");
             tokenPath = Path.Combine(Work_Path, "Token.txt");
             refreshTokenPath = Path.Combine(Work_Path, "RefreshToken.txt");
             if (!Directory.Exists(Work_Path))
@@ -129,9 +130,12 @@ namespace TaskTreckerUI.Services
                 return new AuthResult() { ErrorMessage = errorMassage };
 
             }
-            catch { return new AuthResult() {
-                Success=false,ErrorMessage= "Соеденение с сервером потеряно"
-            }; }
+            catch {
+                return new AuthResult() {
+                    ErrorMessage= "Соеденение с сервером потеряно"
+                }; 
+            }
+            finally { httpClient.Dispose(); }
         }
         public static async Task<AuthResult> Login(UserDto user)
         {
@@ -161,10 +165,10 @@ namespace TaskTreckerUI.Services
             }catch {
                 return new AuthResult()
                 {
-                    Success = false,
                     ErrorMessage = "Соеденение с сервером потеряно"
                 };
             }
+            finally { httpClient.Dispose(); }
         }
 
         public static async Task<HttpResponseMessage> SendAsync(HttpRequestMessage massage)
@@ -176,20 +180,24 @@ namespace TaskTreckerUI.Services
             try
             {
                 var result = await httpClient.SendAsync(massage);
-                if(result.IsSuccessStatusCode)
-                    return result;
 
-                if(result.StatusCode == System.Net.HttpStatusCode.Unauthorized) {
+                if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
                     var resultRefresh = await TryRefreshTokens(httpClient);
                     if (resultRefresh)
-                    {
+                    { 
+                        User = null!;
                         await LoginWithToken(httpClient);
-                        return await httpClient.SendAsync(massage);
+                        massage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                        result = await httpClient.SendAsync(massage);
 
                     }
+
                 }
+                return result;
 
             }
+            catch { }
             finally { clientHandler.Dispose(); }
             return null!;
         }

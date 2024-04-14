@@ -5,10 +5,10 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using TaskTreckerUI.Models;
+using TaskTrackerUI.Models;
 using System.Net.Http.Json;
 
-namespace TaskTreckerUI.Services
+namespace TaskTrackerUI.Services
 {
     public static class NoteService
     {

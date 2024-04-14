@@ -4,10 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskTreckerUI.Models;
-using TaskTreckerUI.Services;
+using TaskTrackerUI.Models;
+using TaskTrackerUI.Services;
 
-namespace TaskTreckerUI.ViewModels
+namespace TaskTrackerUI.ViewModels
 {
     public class NoteVm : VMBase
     {

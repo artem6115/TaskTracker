@@ -14,9 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TaskTreckerUI.Services;
+using TaskTrackerUI.Services;
 
-namespace TaskTreckerUI.Views
+namespace TaskTrackerUI.Views
 {
     /// <summary>
     /// Логика взаимодействия для ConnectionWindow.xaml
@@ -28,6 +28,8 @@ namespace TaskTreckerUI.Views
         {
             cancelationToken = new CancellationToken();
             InitializeComponent();
+            Ip.Visibility = Visibility.Hidden;
+            Ip_label.Visibility = Visibility.Hidden;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -43,15 +45,15 @@ namespace TaskTreckerUI.Views
             ErrorText.Visibility= Visibility.Hidden;
             LoadImage.Visibility = Visibility.Visible;
             RetryButton.Visibility = Visibility.Hidden;
-            Ip_label.Visibility = Visibility.Hidden;
-            Ip.Visibility = Visibility.Hidden;
+
             if (!(await LocalConnectionService.FindServer(ip,cancelationToken)))
             {
                 RetryButton.Visibility = Visibility.Visible;
                 LoadImage.Visibility = Visibility.Hidden;
                 ErrorText.Visibility = Visibility.Visible;
-                Ip_label.Visibility = Visibility.Visible;
                 Ip.Visibility = Visibility.Visible;
+                Ip_label.Visibility = Visibility.Visible;
+
 
             }
             else
@@ -68,6 +70,10 @@ namespace TaskTreckerUI.Views
         }
 
         private async void Retry_ButtonClick(object sender, RoutedEventArgs e)
-            =>FindServer(Ip.Text.Trim());
+        {
+            if (!Ip.Text.Contains(':'))
+                Ip.Text += ":5050";
+            await FindServer(Ip.Text.Trim());
+        }
     }
 }

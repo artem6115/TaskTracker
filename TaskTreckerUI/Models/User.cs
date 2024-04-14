@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskTreckerUI.Models
+namespace TaskTrackerUI.Models
 {
     public class User
     {

@@ -8,17 +8,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TaskTreckerUI.Services;
-using TaskTreckerUI.Views;
+using TaskTrackerUI.Services;
+using TaskTrackerUI.Views;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace TaskTreckerUI
+namespace TaskTrackerUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+       
         public MainWindow()
         {
             InitializeComponent();

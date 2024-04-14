@@ -1,9 +1,9 @@
-﻿<Window x:Class="TaskTreckerUI.Views.ConnectionWindow"
+﻿<Window x:Class="TaskTrackerUI.Views.ConnectionWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TaskTreckerUI.Views"
+        xmlns:local="clr-namespace:TaskTrackerUI.Views"
         mc:Ignorable="d"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
@@ -36,18 +36,18 @@
             FontSize="20"
             FontWeight="Bold"
             Height="50"
-            Text="Поиск сервера..." Margin="302,9,24,133"
+            Text="Поиск сервера..." Margin="276,9,50,133"
             />
-        <TextBlock x:Name="Ip_label" Foreground="White" Margin="280 45 0 0" Text="Ip адресс сервера"/>
-        <TextBox x:Name="Ip" Height="22" Margin="276,64,94,103" />
+        <TextBlock x:Name="Ip_label" Foreground="White" Margin="277,45,3,0" Text="Ip адресс сервера"/>
+        <TextBox TabIndex="1" x:Name="Ip" Height="22" Margin="276,64,94,103" />
         <TextBlock x:Name="ErrorText" 
             Foreground="red"
             FontSize="16"
             Height="50"
             Text="Ошибка сервер не был найден" Margin="276,104,62,38" 
             />
-        <Button HorizontalAlignment="Left" Content="Отмена" Width="80" Height="25" Margin="426,142,0,25" Click="Button_Click"/>
-        <Button HorizontalAlignment="Left" Visibility="Visible" Name="RetryButton" Content="Ок" Width="80" Height="25" Margin="276,142,0,25" Click="Retry_ButtonClick"/>
+        <Button HorizontalAlignment="Left" TabIndex="2" Content="Отмена" Width="80" Height="25" Margin="426,142,0,25" Click="Button_Click"/>
+        <Button HorizontalAlignment="Left" TabIndex="1" Visibility="Visible" Name="RetryButton" Content="Ок" Width="80" Height="25" Margin="276,142,0,25" Click="Retry_ButtonClick"/>
 
     </Grid>
 </Window>

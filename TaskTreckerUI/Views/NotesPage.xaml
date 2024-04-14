@@ -3,8 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:TaskTreckerUI.Views"
-      xmlns:ViewModels="clr-namespace:TaskTreckerUI.ViewModels" x:Class="TaskTreckerUI.Views.NotesPage"
+      xmlns:local="clr-namespace:TaskTrackerUI.Views"
+      xmlns:ViewModels="clr-namespace:TaskTrackerUI.ViewModels" x:Class="TaskTrackerUI.Views.NotesPage"
       mc:Ignorable="d"       
       Title="NotesPage" >
 

@@ -12,10 +12,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using TaskTreckerUI.Models;
-using TaskTreckerUI.Services;
+using TaskTrackerUI.Models;
+using TaskTrackerUI.Services;
 
-namespace TaskTreckerUI.Views
+namespace TaskTrackerUI.Views
 {
     /// <summary>
     /// Логика взаимодействия для AuthWindow.xaml

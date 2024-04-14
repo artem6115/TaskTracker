@@ -7,7 +7,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskTreckerUI.Services
+namespace TaskTrackerUI.Services
 {
     internal static class LocalConnectionService
     {

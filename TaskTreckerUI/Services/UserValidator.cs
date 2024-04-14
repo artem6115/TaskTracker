@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskTreckerUI.Services
+namespace TaskTrackerUI.Services
 {
     public static class UserValidator
     {

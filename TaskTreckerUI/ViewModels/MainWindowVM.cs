@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace TaskTreckerUI.ViewModels
+namespace TaskTrackerUI.ViewModels
 {
     public class MainWindowVM : VMBase
     {
