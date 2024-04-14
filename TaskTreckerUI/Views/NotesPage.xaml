@@ -5,16 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TaskTreckerUI.Views"
       xmlns:ViewModels="clr-namespace:TaskTreckerUI.ViewModels" x:Class="TaskTreckerUI.Views.NotesPage"
-      mc:Ignorable="d" 
-      Background="red"
-      
-      Title="NotesPage" Height="151" Width="243">
+      mc:Ignorable="d"       
+      Title="NotesPage" >
 
     <Page.DataContext>
         <ViewModels:NoteVm/>
     </Page.DataContext>
 
     <Grid>
-        <TextBlock Foreground="White"><Run Text="This will be my notes..."/></TextBlock>
+        <TextBlock Style="{StaticResource Building}" HorizontalAlignment="Center" VerticalAlignment="Center" >My notes will be here...</TextBlock>
     </Grid>
 </Page>

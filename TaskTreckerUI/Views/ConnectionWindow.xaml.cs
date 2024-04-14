@@ -38,16 +38,20 @@ namespace TaskTreckerUI.Views
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
             => FindServer();
-        private async Task FindServer()
+        private async Task FindServer(string? ip = null)
         {
             ErrorText.Visibility= Visibility.Hidden;
             LoadImage.Visibility = Visibility.Visible;
             RetryButton.Visibility = Visibility.Hidden;
-            if (!(await LocalConnectionService.FindServer(cancelationToken)))
+            Ip_label.Visibility = Visibility.Hidden;
+            Ip.Visibility = Visibility.Hidden;
+            if (!(await LocalConnectionService.FindServer(ip,cancelationToken)))
             {
                 RetryButton.Visibility = Visibility.Visible;
                 LoadImage.Visibility = Visibility.Hidden;
                 ErrorText.Visibility = Visibility.Visible;
+                Ip_label.Visibility = Visibility.Visible;
+                Ip.Visibility = Visibility.Visible;
 
             }
             else
@@ -57,13 +61,13 @@ namespace TaskTreckerUI.Views
         }
         private async Task Authorize()
         {
-            InfoText.Text = "Получение учетной записи";
+           InfoText.Text = "Получение учетной записи";
            await AuthService.TryAuthorizeWithJwtTokens();
            Close();
             
         }
 
         private async void Retry_ButtonClick(object sender, RoutedEventArgs e)
-            =>FindServer();
+            =>FindServer(Ip.Text.Trim());
     }
 }

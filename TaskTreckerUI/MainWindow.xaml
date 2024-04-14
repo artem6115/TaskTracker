@@ -11,7 +11,7 @@
         WindowStyle="ThreeDBorderWindow"
         WindowStartupLocation="CenterScreen"
         DataContext="/ViewModel/MainWindowVM"
-        Title="Task Trecker" Closed="Window_Closed" Icon="Assets/Images/MainIco.png"
+        Title="Task Trecker" Icon="Assets/Images/MainIco.png"
         >
 
     <Grid Background="#FF1D1D1F">
@@ -23,18 +23,23 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="1" Text="Main Page" Style="{StaticResource Title}"/>
             <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Width="30" Margin="10 0" Style="{StaticResource MenuButton}" >
+                <Button Width="30" Margin="0 0 15 0" Style="{StaticResource MenuButton}" Click="Back_Page" >
                     <Button.Background >
                         <ImageBrush ImageSource ="Assets/Images/Back.png"/>
                     </Button.Background>
                 </Button>
-                <Button Width="30" Margin="0 0 15 0" BorderThickness="0.5" Style="{StaticResource MenuButton}" >
+                <Button Width="30" Margin="0 0 15 0" BorderThickness="0.5" Style="{StaticResource MenuButton}" Click="Next_Page" >
                     <Button.Background >
                         <ImageBrush ImageSource ="Assets/Images/Next.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Width="30" Margin="0 0 15 0" BorderThickness="0.5" Style="{StaticResource MenuButton}" Click="Reload_Page" >
+                    <Button.Background >
+                        <ImageBrush ImageSource ="Assets/Images/Reload.png"/>
                     </Button.Background>
                 </Button>
             </StackPanel>
@@ -63,9 +68,7 @@
                 <Button Grid.Row="5"  Content="Настройки" Style="{StaticResource MenuButton}"/>
 
             </Grid>
-            <Frame x:Name="NavWindows" Grid.Column="1" >
-                
-            </Frame>
+            <Frame x:Name="NavWindows" Grid.Column="1" />
         </Grid>
     </Grid>
 

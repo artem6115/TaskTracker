@@ -56,7 +56,7 @@ namespace TaskTreckerUI.Views
                 Error_text.Visibility = Visibility.Visible;
                 return;
             }
-
+            Regist_btn.IsEnabled = false;
             var result = await AuthService.CreateUser(user);
             if(AuthService.User is not null)
             { 
@@ -65,6 +65,8 @@ namespace TaskTreckerUI.Views
             }
             Error_text.Text = result.ErrorMessage;
             Error_text.Visibility = Visibility.Visible;
+            Regist_btn.IsEnabled = true;
+
 
         }
 
@@ -82,6 +84,7 @@ namespace TaskTreckerUI.Views
                 Error_text.Visibility = Visibility.Visible;
                 return;
             }
+            Login_btn.IsEnabled = false;
             var result = await AuthService.Login(user);
             if (AuthService.User is not null)
             {
@@ -90,6 +93,7 @@ namespace TaskTreckerUI.Views
             }
             Error_text.Text = result.ErrorMessage;
             Error_text.Visibility = Visibility.Visible;
+            Login_btn.IsEnabled = true;
         }
     }
 }

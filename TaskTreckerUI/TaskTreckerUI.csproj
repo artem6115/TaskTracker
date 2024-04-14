@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\Images\MainIco.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,9 +19,14 @@
     <None Remove="Assets\Images\MainIco.ico" />
     <None Remove="Assets\Images\MainIco.png" />
     <None Remove="Assets\Images\Next.png" />
+    <None Remove="Assets\Images\Reload.png" />
 
 
 
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Images\MainIco.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,6 +72,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\Next.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Reload.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

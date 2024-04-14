@@ -14,7 +14,7 @@ namespace TaskTreckerUI.Services
     {
         public async static Task<List<Note>> GetNotesAsync()
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}:5050/api/Notes/Get");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Notes/Get");
             var result = await AuthService.SendAsync(request) ;
             if(result == null)
                 return null!;
@@ -23,7 +23,7 @@ namespace TaskTreckerUI.Services
         }
         public async static Task<Note> GetNoteAsync(long id)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}:5050/api/Notes/Get?{id}");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Notes/Get?{id}");
             var result = await AuthService.SendAsync(request);
             if (result == null)
                 return null!;
@@ -32,7 +32,7 @@ namespace TaskTreckerUI.Services
         }
         public async static Task<Note> UpdateNoteAsync(Note note)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}:5050/api/Notes/Put");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Notes/Put");
             var result = await AuthService.SendAsync(request);
             if (result == null)
                 return null!;
@@ -41,7 +41,7 @@ namespace TaskTreckerUI.Services
         }
         public async static Task DeleteNoteAsync(Note note)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}:5050/api/Notes/Delete");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Notes/Delete");
             var result = await AuthService.SendAsync(request);
 
         }

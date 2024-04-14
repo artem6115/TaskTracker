@@ -15,19 +15,19 @@ namespace TaskTreckerUI.Services
     internal static class AuthService
     {
         public static User? User { get; private set; }
-        private static string path;
+        public static string Work_Path { get; private set; }
         private static string tokenPath;
         private static string refreshTokenPath;
         private static string? token = null;
         private static string? refreshToken = null;
         static AuthService() {
 
-            path = Path.Combine(Environment.GetFolderPath(
+            Work_Path = Path.Combine(Environment.GetFolderPath(
                     Environment.SpecialFolder.ApplicationData), "TaskTrecker");
-            tokenPath = Path.Combine(path, "Token.txt");
-            refreshTokenPath = Path.Combine(path, "RefreshToken.txt");
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            tokenPath = Path.Combine(Work_Path, "Token.txt");
+            refreshTokenPath = Path.Combine(Work_Path, "RefreshToken.txt");
+            if (!Directory.Exists(Work_Path))
+                Directory.CreateDirectory(Work_Path);
             if (File.Exists(tokenPath))
                 token = File.ReadAllText(tokenPath);
             if (File.Exists(refreshTokenPath))
@@ -38,7 +38,7 @@ namespace TaskTreckerUI.Services
             if (string.IsNullOrWhiteSpace(token)) return false;
             try
             {
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}:5050/api/Auth/GetUser");
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Auth/GetUser");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 var result = await httpClient.SendAsync(request);
                 if (result.IsSuccessStatusCode)
@@ -75,7 +75,7 @@ namespace TaskTreckerUI.Services
 
             try
             {
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}:5050/api/Auth/RefreshToken");
+                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}/api/Auth/RefreshToken");
                 request.Content =  JsonContent.Create<string>(refreshToken);
                 var result = await httpClient.SendAsync(request);
                 if (result.IsSuccessStatusCode)
@@ -108,7 +108,7 @@ namespace TaskTreckerUI.Services
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             HttpClient httpClient = new HttpClient(clientHandler,true);
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://{LocalConnectionService.Adress}:5050/api/Auth/Regist");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://{LocalConnectionService.Adress}/api/Auth/Regist");
             request.Content = JsonContent.Create<UserDto>(user);
             try
             {
@@ -137,7 +137,7 @@ namespace TaskTreckerUI.Services
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}:5050/api/Auth/Login");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}/api/Auth/Login");
             request.Content = JsonContent.Create<UserDto>(user);
             HttpClient httpClient = new HttpClient(clientHandler, true);
             try

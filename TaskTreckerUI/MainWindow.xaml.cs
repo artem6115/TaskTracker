@@ -24,7 +24,7 @@ namespace TaskTreckerUI
             InitializeComponent();
             var connection = new ConnectionWindow();
             connection.ShowDialog();
-            if(LocalConnectionService.Adress is null)
+            if (LocalConnectionService.Adress is null)
             {
                 Close();
                 return;
@@ -38,14 +38,26 @@ namespace TaskTreckerUI
 
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-           
-        }
+
 
         private void Open_Notes(object sender, RoutedEventArgs e)
         {
             NavWindows.Navigate(new NotesPage());
+        }
+
+        private void Back_Page(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Next_Page(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Reload_Page(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
