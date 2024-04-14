@@ -8,7 +8,13 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-               <ResourceDictionary Source="Styles/MainMenuButtons.xaml"/>
+               <ResourceDictionary Source="Styles/MainWindow.xaml"/>
+                <ResourceDictionary Source="Styles/MainPage.xaml"/>
+                <ResourceDictionary Source="Styles/NotePage.xaml"/>
+                <ResourceDictionary Source="Styles/NotifyPage.xaml"/>
+                <ResourceDictionary Source="Styles/ProjectPage.xaml"/>
+                <ResourceDictionary Source="Styles/SettingPage.xaml"/>
+                <ResourceDictionary Source="Styles/TaskPage.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

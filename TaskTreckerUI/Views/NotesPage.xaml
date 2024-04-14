@@ -6,13 +6,43 @@
       xmlns:local="clr-namespace:TaskTrackerUI.Views"
       xmlns:ViewModels="clr-namespace:TaskTrackerUI.ViewModels" x:Class="TaskTrackerUI.Views.NotesPage"
       mc:Ignorable="d"       
-      Title="NotesPage" >
+      Title="Заметки" >
 
     <Page.DataContext>
         <ViewModels:NoteVm/>
     </Page.DataContext>
 
     <Grid>
-        <TextBlock Style="{StaticResource Building}" HorizontalAlignment="Center" VerticalAlignment="Center" >My notes will be here...</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0" x:Name="NotesList" ItemsSource="{Binding Notes}">
+            <ListView.View>
+                <GridView>
+
+                    <GridViewColumn Header="Message" Width="Auto" DisplayMemberBinding="{Binding Description}"  />
+                    <GridViewColumn Header="Date" Width="Auto" DisplayMemberBinding="{Binding DateOfCreated}"  />
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" 
+                x:Name="Note_Text"
+                MaxHeight="100"
+                BorderBrush="Blue"
+                BorderThickness="5"
+                Margin="10" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
+            <Button Width="40" Height="40" Grid.Column="1" Style="{StaticResource MenuButton}" RenderTransformOrigin="159.856,-18.218" Click="Send">
+                <Button.Background >
+                    <ImageBrush ImageSource="/Assets/Images/Send.png"/>
+                </Button.Background>
+            </Button>
+        </Grid>
     </Grid>
 </Page>

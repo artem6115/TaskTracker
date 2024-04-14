@@ -14,7 +14,7 @@ namespace TaskTrackerUI.Services
     {
         public async static Task<List<Note>> GetNotesAsync()
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Notes/Get");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Notes");
             var result = await AuthService.SendAsync(request) ;
             if(result == null)
                 return null!;
@@ -23,16 +23,28 @@ namespace TaskTrackerUI.Services
         }
         public async static Task<Note> GetNoteAsync(long id)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Notes/Get?{id}");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Notes/{id}");
             var result = await AuthService.SendAsync(request);
             if (result == null)
                 return null!;
             Note note = await result.Content.ReadFromJsonAsync<Note>();
             return note;
         }
+        public async static Task<Note> CreateNoteAsync(Note note)
+        {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://{LocalConnectionService.Adress}/api/Notes");
+            request.Content = JsonContent.Create<Note>(note);
+            var result = await AuthService.SendAsync(request);
+            if (result == null)
+                return null!;
+            Note newNote = await result.Content.ReadFromJsonAsync<Note>();
+            return newNote;
+        }
         public async static Task<Note> UpdateNoteAsync(Note note)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Notes/Put");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}/api/Notes");
+            request.Content = JsonContent.Create<Note>(note);
+
             var result = await AuthService.SendAsync(request);
             if (result == null)
                 return null!;
@@ -41,7 +53,9 @@ namespace TaskTrackerUI.Services
         }
         public async static Task DeleteNoteAsync(Note note)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Notes/Delete");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, $"https://{LocalConnectionService.Adress}/api/Notes");
+            request.Content = JsonContent.Create<Note>(note);
+
             var result = await AuthService.SendAsync(request);
 
         }

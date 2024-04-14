@@ -20,6 +20,7 @@
     <None Remove="Assets\Images\MainIco.png" />
     <None Remove="Assets\Images\Next.png" />
     <None Remove="Assets\Images\Reload.png" />
+    <None Remove="Assets\Images\Send.png" />
 
 
 
@@ -75,6 +76,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\Reload.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\Send.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

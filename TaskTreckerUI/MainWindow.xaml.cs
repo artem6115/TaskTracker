@@ -8,7 +8,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaskTrackerUI.Models;
+using TaskTrackerUI.Properties;
 using TaskTrackerUI.Services;
+using TaskTrackerUI.ViewModels;
 using TaskTrackerUI.Views;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -19,10 +22,15 @@ namespace TaskTrackerUI
     /// </summary>
     public partial class MainWindow : Window
     {
-       
-        public MainWindow()
+        Page[] Pages = new Page[Enum.GetNames(typeof(PagesEnum)).Length];
+        Stack<Page> BackPage = new Stack<Page>();
+        Stack<Page> NextPage = new Stack<Page>();
+        Page CurrentPage;
+        MainWindowVM _dataContext;
+        public MainWindow() 
         {
             InitializeComponent();
+            _dataContext = DataContext as MainWindowVM;
             var connection = new ConnectionWindow();
             connection.ShowDialog();
             if (LocalConnectionService.Adress is null)
@@ -36,29 +44,65 @@ namespace TaskTrackerUI
                 auth.ShowDialog();
                 if (AuthService.User is null) Close();
             }
+            _dataContext.User = AuthService.User;
+            StartupPages();
 
         }
 
-
-
-        private void Open_Notes(object sender, RoutedEventArgs e)
+        private void StartupPages()
         {
-            NavWindows.Navigate(new NotesPage());
+            Pages[(int)PagesEnum.Main] = new MainPage();
+            Pages[(int)PagesEnum.Notify] = new NotifiesPage();
+            Pages[(int)PagesEnum.Project] = new ProjectsPage();
+            Pages[(int)PagesEnum.Task] = new TasksPage();
+            Pages[(int)PagesEnum.Note] = new NotesPage();
+            Pages[(int)PagesEnum.Setting] = new SettingsPage();
+            OpenPage(PagesEnum.Main);
+
         }
+
 
         private void Back_Page(object sender, RoutedEventArgs e)
         {
+            if (BackPage.Count == 0) return;
+            NextPage.Push(CurrentPage);
+            CurrentPage = BackPage.Pop();
+            NavWindows.Navigate(CurrentPage);
+            Page_Title.Text = CurrentPage.Title;
 
         }
 
         private void Next_Page(object sender, RoutedEventArgs e)
         {
+            if (NextPage.Count == 0) return;
+            BackPage.Push(CurrentPage);
+            CurrentPage = NextPage.Pop();
+            NavWindows.Navigate(CurrentPage);
+            Page_Title.Text = CurrentPage.Title;
 
         }
 
         private void Reload_Page(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Main_Open(object sender, RoutedEventArgs e) => OpenPage(PagesEnum.Main);
+
+        private void Notify_Open(object sender, RoutedEventArgs e) => OpenPage(PagesEnum.Notify);
+
+        private void Note_Open(object sender, RoutedEventArgs e) => OpenPage(PagesEnum.Note);
+
+        private void Task_Open(object sender, RoutedEventArgs e) => OpenPage(PagesEnum.Task);
+        private void Project_Open(object sender, RoutedEventArgs e) => OpenPage(PagesEnum.Project);
+
+        private void Setting_Open(object sender, RoutedEventArgs e) => OpenPage(PagesEnum.Setting);
+        private void OpenPage(PagesEnum pageName)
+        {
+            if(CurrentPage is not null)BackPage.Push(CurrentPage);
+            CurrentPage = Pages[(int)pageName];
+            NavWindows.Navigate(CurrentPage);
+            Page_Title.Text = CurrentPage.Title;
         }
     }
 }

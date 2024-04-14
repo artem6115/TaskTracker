@@ -38,6 +38,8 @@ namespace TaskTrackerAPI.DIExtentions
         public static IServiceCollection AddStoredProceduresRepository(this IServiceCollection services)
         {
             services.AddTransient<IUserRepository, UserProcedureRepository>();
+            services.AddTransient<INoteRepository, NoteRepository>();
+
             return services;
         }
 
