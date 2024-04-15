@@ -25,11 +25,14 @@ namespace Infrastructure.Repository.NoteRepository
             return entity.Entity;
         }
 
-        public async Task DeleteAsync(Note note)
+        public async Task DeleteAsync(long Id)
         {
-            _context.Remove(note);
+            var note = await _context.Notes.SingleAsync(x => x.Id == Id);
+            if (note.UserId != UserClaims.User.Id)
+                throw new ArgumentException("Access denied");
+            _context.Notes.Remove(note);
             await _context.SaveChangesAsync();
-            _logger.LogDebug($"Note deleted, id = {note.Id}");
+            _logger.LogDebug($"Note deleted, id = {Id}");
         }
 
         public async Task<Note> GetNoteAsync(long id)
@@ -46,6 +49,8 @@ namespace Infrastructure.Repository.NoteRepository
 
         public async Task<Note> UpdateAsync(Note note)
         {
+            if (note.UserId != UserClaims.User.Id)
+                throw new ArgumentException("Access denied");
             _context.Update(note);
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Note changed, id = {note.Id}");

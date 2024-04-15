@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskTrackerUI.Models
+namespace BuisnnesService.Commands.Notes.Delete
 {
-    public class User
+    public class NoteDeleteCommand : IRequest
     {
         public long Id { get; set; }
-        public string Email { get; set; }
-        public string FullName { get; set; }
     }
 }

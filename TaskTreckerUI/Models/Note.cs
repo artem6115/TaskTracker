@@ -8,11 +8,9 @@ namespace TaskTrackerUI.Models
 {
     public class Note
     {
-        public Note() => DateOfCreated = DateTime.Now;
         public long Id { get; private set; }
-        public required string Description { get; set; }
-        public DateTime DateOfCreated { get; private set; }
+        public  string Description { get; set; }
+        public DateTime DateOfCreated { get; set; }
         public DateTime? DateOfChanged { get; set; }
-        public required User User { get; set; } = null!;
     }
 }

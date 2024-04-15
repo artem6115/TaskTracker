@@ -12,6 +12,6 @@ namespace Infrastructure.Repository.Interfaces
         public Task<Note> GetNoteAsync(long id);
         public Task<List<Note>> GetNotesAsync();
         public Task<Note> UpdateAsync(Note note);
-        public Task DeleteAsync(Note note);
+        public Task DeleteAsync(long id);
     }
 }

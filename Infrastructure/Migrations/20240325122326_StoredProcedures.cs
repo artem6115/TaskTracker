@@ -241,7 +241,7 @@ namespace Infrastructure.Migrations
                 AS
                 BEGIN
                 	SET NOCOUNT ON;
-                    INSERT INTO Notes VALUES
+                    INSERT INTO Notes (Description,DateOfCreated,UserId) VALUES
                     (@Description,GETDATE(),@UserId)
                 END
                 GO

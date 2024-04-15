@@ -68,16 +68,12 @@ namespace Infrastructure.Migrations
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Spice")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Attachment", b =>
@@ -111,7 +107,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("WorkTaskId");
 
-                    b.ToTable("Attachment");
+                    b.ToTable("Attachment", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Comment", b =>
@@ -141,7 +137,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comment", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Epic", b =>
@@ -167,7 +163,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Epics");
+                    b.ToTable("Epics", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Note", b =>
@@ -195,7 +191,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Notify", b =>
@@ -224,7 +220,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Notifies");
+                    b.ToTable("Notifies", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Project", b =>
@@ -249,7 +245,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.UserProject", b =>
@@ -264,7 +260,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Users_To_Projects");
+                    b.ToTable("Users_To_Projects", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.WorkTask", b =>
@@ -315,7 +311,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Attachment", b =>

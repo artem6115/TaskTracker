@@ -8,7 +8,9 @@ namespace Infrastructure.Auth
 {
     public class UserClaims
     {
+        [NonSerialized]
         private readonly static AsyncLocal<UserClaims> CurrentUser = new();
+
         public static UserClaims User
         {
             get => CurrentUser.Value;

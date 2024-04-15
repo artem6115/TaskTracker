@@ -178,7 +178,7 @@ namespace BuisnnesService.Services
             await _userRepository.UpdateUserAcync(User);
         }
 
-        public async Task<User> GetUser()
+        public async Task<UserClaims> GetUser()
         {
             User user;
             try
@@ -186,7 +186,7 @@ namespace BuisnnesService.Services
                 user = await _userRepository.GetUserByIdAsync(UserClaims.User.Id);
             }
             catch { return null!; }
-            return user;
+            return _mapper.Map<UserClaims>(user);
         }
     }
 }

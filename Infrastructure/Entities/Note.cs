@@ -16,6 +16,7 @@ namespace Infrastructure.Entities
         public DateTime? DateOfChanged { get; set; }
 
         public required User User { get; set; } = null!;
+        public long UserId { get; set; }
 
     }
 }

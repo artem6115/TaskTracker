@@ -24,7 +24,7 @@ namespace TaskTrackerAPI.Controllers
         [Authorize]
         public async Task<IActionResult> GetUser()
         {
-            User user = await _userManager.GetUser();
+            var user = await _userManager.GetUser();
             if (user is null) return NotFound();
             return Ok(user);    
         }

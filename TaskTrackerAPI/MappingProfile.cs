@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace BuisnnesService
 {
     public class MappingProfile : Profile
     {
-
+        public MappingProfile()
+        {
+        }
     }
 }

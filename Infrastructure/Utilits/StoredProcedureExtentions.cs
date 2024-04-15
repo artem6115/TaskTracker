@@ -54,7 +54,7 @@ namespace Infrastructure.Utilits
 
             await context.Database.ExecuteSqlRawAsync("Create_Note @Description, @UserId",
                 new SqlParameter("@Description", note.Description),
-                new SqlParameter("@UserId", note.User.Id));
+                new SqlParameter("@UserId", note.UserId));
         }
 
         public async static Task Create_Notify(this TaskTrackerDbContext context, Notify notify)
@@ -122,9 +122,9 @@ namespace Infrastructure.Utilits
         public async static Task Update_Note(this TaskTrackerDbContext context, Note note)
         {
 
-            await context.Database.ExecuteSqlRawAsync("Update_Note @Description, @Id",
-                new SqlParameter("@Description", note.Description),
-                new SqlParameter("@Id", note.Id));
+            await context.Database.ExecuteSqlRawAsync("Update_Note @Id, @Description",
+                new SqlParameter("@Id", note.Id),
+                new SqlParameter("@Description", note.Description));
         }
         public async static Task Update_Project(this TaskTrackerDbContext context, Project project)
         {

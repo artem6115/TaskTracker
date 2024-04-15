@@ -1,7 +1,14 @@
-﻿using Infrastructure.Entities;
+﻿using BuisnnesService.Commands.Notes.Create;
+using BuisnnesService.Commands.Notes.Delete;
+using BuisnnesService.Commands.Notes.Update;
+using BuisnnesService.Models;
+using BuisnnesService.Queries.Notes;
+using Infrastructure.Entities;
 using Infrastructure.Repository.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TaskTrackerAPI.Controllers
 {
@@ -9,36 +16,40 @@ namespace TaskTrackerAPI.Controllers
     public class NotesController : MyBaseController
     {
         private readonly INoteRepository _noteRepository;
-        public NotesController(INoteRepository repository)
+
+        private readonly IMediator _mediator;
+        public NotesController(INoteRepository repository, IMediator mediator)
         {
             _noteRepository = repository; 
+            _mediator = mediator;
         }
 
         [HttpGet] 
-        public async Task<List<Note>> Get()
+        public async Task<List<NoteDto>> Get()
         {
-            return await _noteRepository.GetNotesAsync();
+            return await _mediator.Send(new GetNotesQuery());
         }
 
-        [HttpGet("{id}")]
-        public async Task<Note> Get([FromQuery]int id)
+        [HttpGet("{Id}")]
+        public async Task<NoteDto> Get(long id)
         {
-            return await _noteRepository.GetNoteAsync(id);
+            return await _mediator.Send(new GetNoteQuery() { Id = id }) ;
         }
         [HttpPost]
-        public async Task<Note> Create([FromBody]Note note)
+        public async Task<NoteDto> Create([FromBody]NoteCreateCommand command)
         {
-            return await _noteRepository.CreateAsync(note);
+            return await _mediator.Send(command);
+
         }
         [HttpPut]
-        public async Task<Note> Update([FromBody] Note note)
+        public async Task<NoteDto> Update([FromBody] NoteUpdateCommand command)
         {
-            return await _noteRepository.UpdateAsync(note);
+            return await _mediator.Send(command);
         }
-        [HttpDelete]
-        public async Task Delete([FromBody] Note note)
+        [HttpDelete("{Id}")]
+        public async Task Delete(long id)
         {
-            await _noteRepository.DeleteAsync(note);
+           await _mediator.Send(new NoteDeleteCommand() { Id = id }) ;
         }
     }
 }

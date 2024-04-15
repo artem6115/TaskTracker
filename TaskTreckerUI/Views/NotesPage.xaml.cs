@@ -40,7 +40,7 @@ namespace TaskTrackerUI.Views
 
         private async void Send(object sender, RoutedEventArgs e)
         {
-            await NoteService.CreateNoteAsync(new Note() { Description = Note_Text.Text, User = AuthService.User }) ;
+            await NoteService.CreateNoteAsync(new Note() { Description = Note_Text.Text}) ;
             LoadData();
         }
     }
