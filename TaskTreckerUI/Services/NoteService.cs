@@ -19,7 +19,7 @@ namespace TaskTrackerUI.Services
             if(result == null)
                 return null!;
             List<Note> notes = await result.Content.ReadFromJsonAsync<List<Note>>();
-            return notes;
+            return notes.OrderByDescending(x=>x.DateOfCreated).ToList();
         }
         public async static Task<Note> GetNoteAsync(long id)
         {
@@ -53,9 +53,7 @@ namespace TaskTrackerUI.Services
         }
         public async static Task DeleteNoteAsync(Note note)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, $"https://{LocalConnectionService.Adress}/api/Notes");
-            request.Content = JsonContent.Create<Note>(note);
-
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, $"https://{LocalConnectionService.Adress}/api/Notes/{note.Id}");
             var result = await AuthService.SendAsync(request);
 
         }

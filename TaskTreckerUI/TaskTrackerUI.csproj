@@ -11,7 +11,13 @@
 
   <ItemGroup>
 
+    <None Remove="Assets\Images\add_btn.png" />
+
     <None Remove="Assets\Images\Back.png" />
+
+    <None Remove="Assets\Images\change_btn.png" />
+
+    <None Remove="Assets\Images\delete_btn.png" />
 
     <None Remove="Assets\Images\Loading128.png" />
 
@@ -56,6 +62,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\add_btn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\Auth1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -66,6 +75,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\Back.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\change_btn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\delete_btn.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\Loading64.png" />

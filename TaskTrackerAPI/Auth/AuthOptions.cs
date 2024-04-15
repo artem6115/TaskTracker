@@ -23,7 +23,7 @@ namespace TaskTrackerAPI.Auth
                 ValidateLifetime = true,
 
                 // установка ключа безопасности
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:KEY"]??"DEFOULT_KEY")),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Auth:KEY"]??"DEFOULT_KEY3456рекуце45унк6г7елгншбоьр")),
                 // валидация ключа безопасности
                 ValidateIssuerSigningKey = true,
 

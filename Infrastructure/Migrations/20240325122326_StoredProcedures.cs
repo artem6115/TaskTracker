@@ -263,7 +263,7 @@ namespace Infrastructure.Migrations
                 	SET NOCOUNT ON;
                     UPDATE Notes SET
                     Description = @Description,
-                    DateOfCreated = GETDATE()
+                    DateOfChanged = GETDATE()
                     Where Id = @Id
                 END
                 GO

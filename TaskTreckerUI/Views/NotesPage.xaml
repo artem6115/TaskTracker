@@ -7,17 +7,34 @@
       xmlns:ViewModels="clr-namespace:TaskTrackerUI.ViewModels" x:Class="TaskTrackerUI.Views.NotesPage"
       mc:Ignorable="d"       
       Title="Заметки" >
-
     <Page.DataContext>
         <ViewModels:NoteVm/>
     </Page.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
-        <ListView Grid.Row="0" x:Name="NotesList" ItemsSource="{Binding Notes}">
+        <StackPanel  Grid.Row="0" Orientation="Horizontal" Background="#FF393333">
+            <Button Margin="20 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Add_Note">
+                <Button.Background >
+                    <ImageBrush ImageSource="/Assets/Images/add_btn.png"/>
+                </Button.Background>
+            </Button>
+            <Button  Margin="0 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Delete_Note">
+                <Button.Background >
+                    <ImageBrush ImageSource="/Assets/Images/delete_btn.png"/>
+                </Button.Background>
+            </Button>
+            <Button Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Edit_Note">
+                <Button.Background >
+                    <ImageBrush ImageSource="/Assets/Images/change_btn.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
+        <ListView Grid.Row="1" x:Name="NotesList" ItemsSource="{Binding Notes}" SelectionChanged="Select_Note">
             <ListView.View>
                 <GridView>
 
@@ -27,7 +44,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="100"/>
