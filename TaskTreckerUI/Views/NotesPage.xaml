@@ -11,11 +11,11 @@
         <ViewModels:NoteVm/>
     </Page.DataContext>
 
-    <Grid>
+    <Grid  >
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition MaxHeight="70" Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel  Grid.Row="0" Orientation="Horizontal" Background="#FF393333">
             <Button Margin="20 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Add_Note">
@@ -23,26 +23,79 @@
                     <ImageBrush ImageSource="/Assets/Images/add_btn.png"/>
                 </Button.Background>
             </Button>
-            <Button  Margin="0 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Delete_Note">
+            <Button  Margin="0 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Delete_Note" ToolTip="Удалить выделеную заметку">
                 <Button.Background >
                     <ImageBrush ImageSource="/Assets/Images/delete_btn.png"/>
                 </Button.Background>
             </Button>
-            <Button Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Edit_Note">
+            <Button Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Edit_Note" ToolTip="Редактировать выделеную заметку">
                 <Button.Background >
                     <ImageBrush ImageSource="/Assets/Images/change_btn.png"/>
                 </Button.Background>
             </Button>
+            <TextBox 
+                x:Name="Find_box"
+                FontSize="17"
+                Margin="100 0 30 0"
+                Width="200"/>
+            <Button Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Filter_Note" ToolTip="Поиск по тексту">
+                <Button.Background >
+                    <ImageBrush ImageSource="/Assets/Images/find_btn.png"/>
+                </Button.Background>
+            </Button>
+            <Button Margin="10 0 0 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="DropFilter_Note" ToolTip="Отменить поиск">
+                <Button.Background >
+                    <ImageBrush ImageSource="/Assets/Images/DropFind_btn.png"/>
+                </Button.Background>
+            </Button>
         </StackPanel>
-        <ListView Grid.Row="1" x:Name="NotesList" ItemsSource="{Binding Notes}" SelectionChanged="Select_Note">
-            <ListView.View>
-                <GridView>
 
-                    <GridViewColumn Header="Message" Width="Auto" DisplayMemberBinding="{Binding Description}"  />
-                    <GridViewColumn Header="Date" Width="Auto" DisplayMemberBinding="{Binding DateOfCreated}"  />
+        <ListView  Grid.Row="1"
+                   x:Name="NotesList"
+                   ItemsSource="{Binding NotesView}" 
+                   SelectionChanged="Select_Note"
+                  >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border  CornerRadius="10" Background="#FF1256D4">
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="20"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                            Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                            FontSize="15"
+                            Foreground="white"
+                            Padding="10 5 10 0"    
+                            Text="{Binding Description}" 
+                            />
+                            <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            FontSize="13"
+                            Foreground="white"
+                            Padding="10 0 0 10"
+                            Text="{Binding DateOfCreated}"/>
 
-                </GridView>
-            </ListView.View>
+                            <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontSize="13"
+                            Padding="10 0 5 10"
+                               HorizontalAlignment="Right" 
+                            Foreground="white"
+                            Text="{Binding DateOfChanged}"/>
+                        </Grid>
+                    </Border>
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -54,8 +107,8 @@
                 MaxHeight="100"
                 BorderBrush="Blue"
                 BorderThickness="5"
-                Margin="10" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
-            <Button Width="40" Height="40" Grid.Column="1" Style="{StaticResource MenuButton}" RenderTransformOrigin="159.856,-18.218" Click="Send">
+                Margin="10" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" KeyDown="New_Line"/>
+            <Button Width="40" Height="40" Grid.Column="1" Style="{StaticResource MenuButton}" RenderTransformOrigin="159.856,-18.218" Click="Send" ToolTip="Создать/Редактировать заметку">
                 <Button.Background >
                     <ImageBrush ImageSource="/Assets/Images/Send.png"/>
                 </Button.Background>

@@ -51,11 +51,13 @@ namespace TaskTrackerUI.Services
             Note newNote = await result.Content.ReadFromJsonAsync<Note>();
             return newNote;
         }
-        public async static Task DeleteNoteAsync(Note note)
+        public async static Task<bool> DeleteNoteAsync(Note note)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, $"https://{LocalConnectionService.Adress}/api/Notes/{note.Id}");
             var result = await AuthService.SendAsync(request);
-
+            if(result == null || !result.IsSuccessStatusCode)return false;
+            return true;
         }
+       
     }
 }

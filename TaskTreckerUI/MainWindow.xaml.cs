@@ -27,9 +27,11 @@ namespace TaskTrackerUI
         Stack<Page> NextPage = new Stack<Page>();
         Page CurrentPage;
         MainWindowVM _dataContext;
+        Navigator Navigator;
         public MainWindow() 
         {
             InitializeComponent();
+            Navigator = new Navigator(NavWindows,Page_Title);
             _dataContext = DataContext as MainWindowVM;
             var connection = new ConnectionWindow();
             connection.ShowDialog();
@@ -55,37 +57,21 @@ namespace TaskTrackerUI
             Pages[(int)PagesEnum.Notify] = new NotifiesPage();
             Pages[(int)PagesEnum.Project] = new ProjectsPage();
             Pages[(int)PagesEnum.Task] = new TasksPage();
-            Pages[(int)PagesEnum.Note] = new NotesPage();
+            Pages[(int)PagesEnum.Note] = new NotesPage(Navigator);
             Pages[(int)PagesEnum.Setting] = new SettingsPage();
-            OpenPage(PagesEnum.Main);
+            Navigator.Open(Pages[(int)PagesEnum.Main]);
 
         }
 
 
         private void Back_Page(object sender, RoutedEventArgs e)
-        {
-            if (BackPage.Count == 0) return;
-            NextPage.Push(CurrentPage);
-            CurrentPage = BackPage.Pop();
-            NavWindows.Navigate(CurrentPage);
-            Page_Title.Text = CurrentPage.Title;
-
-        }
+            => Navigator.Back();
 
         private void Next_Page(object sender, RoutedEventArgs e)
-        {
-            if (NextPage.Count == 0) return;
-            BackPage.Push(CurrentPage);
-            CurrentPage = NextPage.Pop();
-            NavWindows.Navigate(CurrentPage);
-            Page_Title.Text = CurrentPage.Title;
+            => Navigator.Next();
 
-        }
-
-        private void Reload_Page(object sender, RoutedEventArgs e)
-        {
-
-        }
+        private async void Reload_Page(object sender, RoutedEventArgs e)
+            => await Navigator.LoadData();
 
         private void Main_Open(object sender, RoutedEventArgs e) => OpenPage(PagesEnum.Main);
 
@@ -98,11 +84,6 @@ namespace TaskTrackerUI
 
         private void Setting_Open(object sender, RoutedEventArgs e) => OpenPage(PagesEnum.Setting);
         private void OpenPage(PagesEnum pageName)
-        {
-            if(CurrentPage is not null)BackPage.Push(CurrentPage);
-            CurrentPage = Pages[(int)pageName];
-            NavWindows.Navigate(CurrentPage);
-            Page_Title.Text = CurrentPage.Title;
-        }
+            => Navigator.Open(Pages[(int)pageName]);
     }
 }

@@ -25,6 +25,12 @@
                             <Setter Property="Cursor" Value="Hand"/>
 
                         </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="Opacity" Value="1" />
+                            <Setter Property="Background" Value="#FF303030"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+
+                        </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Opacity" Value="1" />
                             <Setter Property="Background" Value="#FF3F3F3F"/>

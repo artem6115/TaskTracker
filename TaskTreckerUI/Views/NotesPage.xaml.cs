@@ -26,8 +26,10 @@ namespace TaskTrackerUI.Views
     {
         NoteVm _context;
         Note? CurrentNote;
-        public NotesPage()
+        Navigator Navigator;
+        public NotesPage(Navigator navigator)
         {
+            Navigator = navigator;
             InitializeComponent();
             _context = DataContext as NoteVm;
             LoadData();
@@ -46,6 +48,12 @@ namespace TaskTrackerUI.Views
             {
                 CurrentNote.Description = Note_Text.Text;
                 var note = await NoteService.UpdateNoteAsync(CurrentNote);
+                if(note is null)
+                {
+                    Navigator.AddError("Редактирование заметки не удалось");
+                    return;
+                }
+                Navigator.AddInformation("Заметка отредактирована");
                 _context.Notes.Insert(_context.Notes.IndexOf(CurrentNote),note);
                 _context.Notes.Remove(CurrentNote);
                 CurrentNote = null;
@@ -53,7 +61,15 @@ namespace TaskTrackerUI.Views
             }
             else
             {
-                var note = await NoteService.CreateNoteAsync(new Note() { Description = Note_Text.Text });
+                var createNote = new Note() { Description = Note_Text.Text };
+                createNote.WrappDescription();
+                var note = await NoteService.CreateNoteAsync(createNote);
+                if(note is null)
+                {
+                    Navigator.AddError("Добавление заметки не удалось");
+                    return;
+                }
+                Navigator.AddInformation("Заметка добавлена");
                 _context.Notes.Insert(0, note);
             }
             Note_Text.Text = "";
@@ -75,9 +91,13 @@ namespace TaskTrackerUI.Views
                 "Удалить заметку?", "Удаление", MessageBoxButton.YesNo, MessageBoxImage.Question
                 ) != MessageBoxResult.Yes) return;
 
-            await NoteService.DeleteNoteAsync(note);
-            _context.Notes.Remove(note);
-            
+            bool result = await NoteService.DeleteNoteAsync(note);
+            if(result) {
+                _context.Notes.Remove(note);
+                Navigator.AddInformation("Запись удалена");
+            }
+            else Navigator.AddError("Удаление не удалось");
+
         }
 
         private void Edit_Note(object sender, RoutedEventArgs e)
@@ -90,5 +110,25 @@ namespace TaskTrackerUI.Views
         private void Select_Note(object sender, SelectionChangedEventArgs e)
             => CurrentNote = null;
 
+        private void Filter_Note(object sender, RoutedEventArgs e)
+        {
+            _context.FindText = Find_box.Text;
+            _context.Refresh();
+        }
+
+        private void DropFilter_Note(object sender, RoutedEventArgs e)
+        {
+            Find_box.Text = "";
+            _context.FindText = null;
+            _context.Refresh();
+        }
+
+        private void New_Line(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Note_Text.Text += Environment.NewLine;
+            }
+        }
     }
 }

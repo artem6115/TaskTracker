@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Height="450" Width="800"
         MinHeight="450" MinWidth="800"
+        Background="Transparent"
         WindowState="Maximized"
         WindowStyle="ThreeDBorderWindow"
         WindowStartupLocation="CenterScreen"
@@ -16,7 +17,7 @@
     <Window.DataContext>
         <ViewModels:MainWindowVM/>
     </Window.DataContext>
-    <Grid Background="#FF1D1D1F">
+    <Grid Background="#FF4A4343">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
@@ -30,12 +31,17 @@
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="Page_Title" Grid.Column="2" Text="Main Page" Style="{StaticResource Title}" Height="22"/>
             <StackPanel Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="10,0,0,0" Width="290" >
-                <Button Width="30"  Style="{StaticResource MenuButton}" Click="Back_Page" >
+                <Button Width="30" Margin="15 0 10 0"  BorderThickness="0.5" Style="{StaticResource MenuButton}" Click="Reload_Page" ToolTip="Обновить страницу" >
+                    <Button.Background >
+                        <ImageBrush ImageSource ="Assets/Images/Reload.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Width="30"  Style="{StaticResource MenuButton}" Click="Back_Page" ToolTip="Переключится на предудущую страницу" >
                     <Button.Background >
                         <ImageBrush ImageSource ="Assets/Images/Back.png"/>
                     </Button.Background>
                 </Button>
-                <Button Width="30" Margin="15 0 0 0"  BorderThickness="0.5" Style="{StaticResource MenuButton}" Click="Next_Page" >
+                <Button Width="30" Margin="10 0 0 0"  BorderThickness="0.5" Style="{StaticResource MenuButton}" Click="Next_Page" ToolTip="Переключится на слудующею страницу" >
                     <Button.Background >
                         <ImageBrush ImageSource ="Assets/Images/Next.png"/>
                     </Button.Background>
