@@ -3,8 +3,8 @@
     public class NoteUpdateCommand : IRequest<NoteDto>
     {
         public long Id { get; set; }
-        public string Description { get; set; }
-        public DateTime DateOfCreated { get; set; }
+        public string? Description { get; set; }
+        public DateTime? DateOfCreated { get; set; }
         public DateTime? DateOfChanged { get; set; }
     }
 }

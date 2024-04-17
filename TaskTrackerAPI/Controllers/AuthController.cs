@@ -8,10 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using TaskTrackerAPI.Validators;
+using TaskTrackerAPI.Validators.User;
 
 namespace TaskTrackerAPI.Controllers
 {
+    [AllowAnonymous]
     public class AuthController : MyBaseController
     {
         private readonly UserManagerService _userManager;

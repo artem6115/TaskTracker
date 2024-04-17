@@ -7,26 +7,14 @@ using System.Text.Json;
 
 namespace TaskTrackerAPI.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : MyBaseController
     {
 
-        [HttpGet("All")]
-        public  object GetAllow()
-        {
-            return "Вы в общей области" ;
-        }
         [HttpGet("/")]
-        public object Get()
-        {
-            return Ok();
-        }
+        public object Get() => Ok();
+        
 
-        [HttpGet("Auth")]
-        [Authorize]
-        public  string GetAuth()
-        {
-            return "Вы вошли в закрытую область";
-        }
     }
 }
 

@@ -4,6 +4,7 @@ using Infrastructure.EntitiesConfigurations;
 using Infrastructure.Repository.Interfaces;
 using Infrastructure.Repository;
 using Infrastructure.Repository.NoteRepository;
+using Infrastructure.Repository.TaskRepository;
 
 namespace TaskTrackerAPI.DIExtentions
 {
@@ -31,6 +32,8 @@ namespace TaskTrackerAPI.DIExtentions
         {
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<INoteRepository, NoteRepository>();
+            services.AddTransient<ITaskRepository, TaskRepository>();
+
 
             return services;
         }
@@ -39,6 +42,8 @@ namespace TaskTrackerAPI.DIExtentions
         {
             services.AddTransient<IUserRepository, UserProcedureRepository>();
             services.AddTransient<INoteRepository, NoteProcedureRepository>();
+            services.AddTransient<ITaskRepository, TaskProcedureRepository>();
+
 
             return services;
         }

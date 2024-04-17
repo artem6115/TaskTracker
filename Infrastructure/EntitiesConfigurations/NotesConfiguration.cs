@@ -10,7 +10,7 @@ namespace Infrastructure.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Note> builder)
         {
-            builder.HasQueryFilter(x=>x.User.Id == UserClaims.User.Id);
+            
         }
     }
 }

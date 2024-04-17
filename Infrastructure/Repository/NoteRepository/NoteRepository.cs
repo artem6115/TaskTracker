@@ -27,7 +27,7 @@ namespace Infrastructure.Repository.NoteRepository
 
         public async Task DeleteAsync(long Id)
         {
-            var note = await _context.Notes.SingleAsync(x => x.Id == Id);
+            var note = await _context.Notes.AsNoTracking().SingleAsync(x => x.Id == Id );
             if (note.UserId != UserClaims.User.Id)
                 throw new ArgumentException("Access denied");
             _context.Notes.Remove(note);
@@ -37,13 +37,18 @@ namespace Infrastructure.Repository.NoteRepository
 
         public async Task<Note> GetNoteAsync(long id)
         {
-            var entity = await _context.Notes.SingleOrDefaultAsync(x => x.Id == id);
+            var entity = await _context.Notes.AsNoTracking().SingleAsync(x => x.Id == id );
+            if (entity.UserId != UserClaims.User.Id)
+                throw new ArgumentException("Access denied");
             return entity;
         }
 
         public async Task<List<Note>> GetNotesAsync()
         {
-            var entities = await _context.Notes.ToListAsync();
+            var entities = await _context.Notes
+                .AsNoTracking()
+                .Where(x=>x.UserId == UserClaims.User.Id)
+                .ToListAsync();
             return entities;
         }
 
@@ -51,10 +56,10 @@ namespace Infrastructure.Repository.NoteRepository
         {
             if (note.UserId != UserClaims.User.Id)
                 throw new ArgumentException("Access denied");
-            _context.Update(note);
+            var newNote = _context.Notes.Update(note);
             await _context.SaveChangesAsync();
-            _logger.LogDebug($"Note changed, id = {note.Id}");
-            return note;
+            _logger.LogDebug($"Note changed, id = {newNote.Entity.Id}");
+            return newNote.Entity;
         }
     }
 }

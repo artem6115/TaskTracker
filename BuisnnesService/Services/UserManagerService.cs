@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BuisnnesService.Models;
 using Infrastructure.Auth;
 using Infrastructure.EntitiesConfigurations;
 using Infrastructure.Migrations;

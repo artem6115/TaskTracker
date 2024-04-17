@@ -1,7 +1,7 @@
 ﻿using BuisnnesService.Models;
 using FluentValidation;
 
-namespace TaskTrackerAPI.Validators
+namespace TaskTrackerAPI.Validators.User
 {
     public class UserLoginDtoValidator : AbstractValidator<UserLoginDto>
     {
@@ -14,6 +14,6 @@ namespace TaskTrackerAPI.Validators
                 .WithMessage("Пароль должен иметь хотя бы одну букву в верхнем и нижнем регистре");
         }
         public static bool PasswordValidator(string password)
-            => (password != password.ToLower() && password != password.ToUpper());
+            => password != password.ToLower() && password != password.ToUpper();
     }
 }

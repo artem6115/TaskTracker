@@ -10,8 +10,8 @@ namespace Infrastructure.Repository.NoteRepository
     public class NoteProcedureRepository : INoteRepository
     {
         private readonly TaskTrackerDbContext _context;
-        private readonly ILogger<NoteRepository> _logger;
-        public NoteProcedureRepository(TaskTrackerDbContext context, ILogger<NoteRepository> logger)
+        private readonly ILogger<NoteProcedureRepository> _logger;
+        public NoteProcedureRepository(TaskTrackerDbContext context, ILogger<NoteProcedureRepository> logger)
         {
             _context = context;
             _logger = logger;
@@ -19,14 +19,18 @@ namespace Infrastructure.Repository.NoteRepository
         public async Task<Note> CreateAsync(Note note)
         {
             await _context.Create_Note(note);
-            var entity = await _context.Notes.Where(x => x.UserId == note.UserId).OrderBy(x=>x.Id).LastAsync();
+            var entity = await _context.Notes
+                .Where(x => x.UserId == note.UserId)
+                .OrderBy(x=>x.Id)
+                .AsNoTracking()
+                .LastAsync();
             _logger.LogDebug($"Note added, id = {entity.Id}");
             return entity;
         }
 
         public async Task DeleteAsync(long Id)
         {
-            var note = await _context.Notes.SingleAsync(x => x.Id == Id);
+            var note = await _context.Notes.AsNoTracking().SingleAsync(x => x.Id == Id);
             if (note.UserId != UserClaims.User.Id)
                 throw new ArgumentException("Access denied");
             await _context.Delete_Note(Id);
@@ -35,13 +39,20 @@ namespace Infrastructure.Repository.NoteRepository
 
         public async Task<Note> GetNoteAsync(long id)
         {
-            var entity = await _context.Notes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+            var entity = await _context.Notes.AsNoTracking()
+                .SingleOrDefaultAsync(x => x.Id == id);
+            if (entity.UserId != UserClaims.User.Id)
+                throw new ArgumentException("Access denied");
+
             return entity;
         }
 
         public async Task<List<Note>> GetNotesAsync()
         {
-            var entities = await _context.Notes.AsNoTracking().ToListAsync();
+            var entities = await _context.Notes
+                .AsNoTracking()
+                .Where(x => x.UserId == UserClaims.User.Id)
+                .ToListAsync();
             return entities;
         }
 
@@ -51,7 +62,7 @@ namespace Infrastructure.Repository.NoteRepository
                 throw new ArgumentException("Access denied");
             await _context.Update_Note(note);
             _logger.LogDebug($"Note changed, id = {note.Id}");
-            return await _context.Notes.SingleAsync(x => x.Id == note.Id);
+            return await _context.Notes.AsNoTracking().SingleAsync(x => x.Id == note.Id);
         }
     }
 }

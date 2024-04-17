@@ -8,19 +8,18 @@ using Infrastructure.Repository.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TaskTrackerAPI.Controllers
 {
-    [Authorize]
+
     public class NotesController : MyBaseController
     {
-        private readonly INoteRepository _noteRepository;
 
         private readonly IMediator _mediator;
-        public NotesController(INoteRepository repository, IMediator mediator)
+        public NotesController(IMediator mediator)
         {
-            _noteRepository = repository; 
             _mediator = mediator;
         }
 
@@ -31,7 +30,7 @@ namespace TaskTrackerAPI.Controllers
         }
 
         [HttpGet("{Id}")]
-        public async Task<NoteDto> Get(long id)
+        public async Task<NoteDto> Get([Required] long id)
         {
             return await _mediator.Send(new GetNoteQuery() { Id = id }) ;
         }
@@ -47,7 +46,7 @@ namespace TaskTrackerAPI.Controllers
             return await _mediator.Send(command);
         }
         [HttpDelete("{Id}")]
-        public async Task Delete(long id)
+        public async Task Delete([Required] long id)
         {
            await _mediator.Send(new NoteDeleteCommand() { Id = id }) ;
         }

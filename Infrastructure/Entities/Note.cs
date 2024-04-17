@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Entities
 {
-    public class Note
+    public class Note 
     {
-        public Note() => DateOfCreated = DateTime.Now;
         public long Id { get; private set; }
         public required string Description { get; set; }
         public DateTime DateOfCreated { get; private set; }

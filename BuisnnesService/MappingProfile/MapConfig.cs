@@ -1,9 +1,5 @@
-﻿using AutoMapper;
-using AutoMapper.Features;
-using BuisnnesService.Commands.Notes.Delete;
-using BuisnnesService.Models;
-using Infrastructure.Auth;
-using Infrastructure.Entities;
+﻿using Infrastructure.Entities;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,18 +10,18 @@ namespace BuisnnesService.MappingProfile
 {
     public class MapConfig : Profile
     {
-        public MapConfig() { 
+        public MapConfig() {
 
+            #region User
             CreateMap<UserRegistDto,User>().ReverseMap();
             CreateMap<UserClaims, UserRegistDto>().ReverseMap();
             CreateMap<UserLoginDto, User>().ReverseMap();
             CreateMap<UserClaims, UserLoginDto>().ReverseMap();
             CreateMap<UserClaims, User>().ReverseMap();
+            #endregion
 
+            #region Note
             CreateMap<NoteDto, Note>().ReverseMap();
-
-            //CreateMap<NoteDto,Note>().ForMember(dto => dto.User ,
-            //    cnf => cnf.MapFrom(x=> UserClaims.User));
             CreateMap<NoteCreateCommand, Note>().ForMember(dto => dto.DateOfCreated,
                 cnf => cnf.MapFrom(x => DateTime.Now))
                 .ForMember(dto => dto.UserId,
@@ -37,7 +33,19 @@ namespace BuisnnesService.MappingProfile
                 .ForMember(dto => dto.UserId,
                 cnf => cnf.MapFrom(x => UserClaims.User.Id));
             CreateMap<NoteDeleteCommand, Note>();
+            #endregion
 
+            #region Task
+            CreateMap<CreateTaskCommand, WorkTask>()
+                .ForMember(e => e.DateOfCreated, cnf => cnf.MapFrom(x => DateTime.Now))
+                .ForMember(e=>e.StatusTask,cnf=>cnf.MapFrom(x=>SetAutoStatus(x)))
+                .ForMember(e=>e.UserId,cnf=>cnf.MapFrom(x=> SetAutoUser(x)));;
+            CreateMap<UpdateTaskCommand, WorkTask>();
+            CreateMap<WorkTask, TaskView>();
+            CreateMap<Epic, EpicView>();
+            CreateMap<WorkTask, TaskDto>();
+
+            #endregion
 
 
 
@@ -46,5 +54,18 @@ namespace BuisnnesService.MappingProfile
 
 
         }
+        public long? SetAutoUser(CreateTaskCommand command)
+        {
+            if(command.UserId is not null)return command.UserId;
+            if (command.EpicId == null)
+                return UserClaims.User.Id;
+            return null;
+        }
+        public Infrastructure.Entities.TaskStatus SetAutoStatus(CreateTaskCommand command) {
+            if (command.UserId is not null || command.EpicId == null)
+                return Infrastructure.Entities.TaskStatus.Work;
+            return Infrastructure.Entities.TaskStatus.Free;
+        }
+
     }
 }

@@ -3,9 +3,8 @@
 namespace Infrastructure.Entities
 {
     [Table("Tasks")]
-    public class WorkTask
+    public class WorkTask 
     {
-        public WorkTask()=> DateOfCreated = DateTime.Now;
         public long Id { get; private set; }
         public byte? Importance { get; set; }
         public required string Title { get; set; }
@@ -24,7 +23,7 @@ namespace Infrastructure.Entities
         public long? EpicId { get; set; }
         public Epic? Epic { get; set; }
         public long? UserId { get; set; }
-        public User? User { get; set; }
+        public User? User { get; set; } 
 
         public List<Attachment> Attachments { get; set; } = null!;
         public List<Comment> Comments { get; set; } = null!;

@@ -2,7 +2,10 @@
 global using BuisnnesService.Commands.Notes;
 global using BuisnnesService.Commands.Notes.Create;
 global using BuisnnesService.Commands.Notes.Update;
-
+global using BuisnnesService.Commands.Notes.Delete;
+global using BuisnnesService.Commands.Tasks.Create;
+global using BuisnnesService.Commands.Tasks.Update;
+ 
 global using BuisnnesService.Queries;
 global using BuisnnesService.Queries.Notes;
 
@@ -11,4 +14,7 @@ global using BuisnnesService.Models;
 global using MediatR;
 global using AutoMapper;
 global using Infrastructure.Repository.Interfaces;
+global using Infrastructure.Auth;
+global using Infrastructure.Entities;
+
 

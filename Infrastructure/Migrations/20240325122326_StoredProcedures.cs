@@ -442,6 +442,7 @@ namespace Infrastructure.Migrations
                     @Importance tinyint = NULL,
                     @Title nvarchar(max),
                     @Description nvarchar(max),
+                    @StatusTask int = 0,
                     @UserId bigint = NULL,
                     @PreviousTaskId bigint = NULL,
                     @EpicId bigint = NULL
@@ -452,7 +453,7 @@ namespace Infrastructure.Migrations
                     INSERT INTO Tasks 
                     (Importance, Title, Description, DateOfCreated, StatusTask,UserId,PreviousTaskId,EpicId) 
                     VALUES
-                    (@Importance,@Title,@Description, GETDATE(), 0,@UserId, @PreviousTaskId, @EpicId)
+                    (@Importance,@Title,@Description, GETDATE(), @StatusTask,@UserId, @PreviousTaskId, @EpicId)
                 END
                 GO
                 
@@ -469,8 +470,8 @@ namespace Infrastructure.Migrations
                     @Id bigint,
                     @Importance tinyint = NULL,
                     @Title nvarchar(max),
-                    @StatusTask int,
                     @Description nvarchar(max),
+                    @StatusTask int,
                     @DateOfClosed datetime2(7) = NULL,
                     @ApproximateDateOfCompleted datetime2(7) = NULL,
                     @UserId bigint = NULL,

@@ -78,9 +78,11 @@ namespace Infrastructure.Utilits
         public async static Task Create_Task(this TaskTrackerDbContext context, WorkTask task)
         {
 
-            await context.Database.ExecuteSqlRawAsync("Create_Task @Importance, @Description, @UserId, @PreviousTaskId, @EpicId",
+            await context.Database.ExecuteSqlRawAsync("Create_Task @Importance,@Title, @Description, @StatusTask, @UserId, @PreviousTaskId, @EpicId",
                 new SqlParameter("@Importance", task.Importance),
+                new SqlParameter("@Title", task.Title),
                 new SqlParameter("@Description", task.Description),
+                new SqlParameter("@StatusTask", task.StatusTask),
                 new SqlParameter("@UserId", task.UserId),
                 new SqlParameter("@PreviousTaskId", task.PreviousTaskId),
                 new SqlParameter("@EpicId", task.EpicId)
@@ -139,12 +141,12 @@ namespace Infrastructure.Utilits
         public async static Task Update_Task(this TaskTrackerDbContext context, WorkTask task)
         {
 
-            await context.Database.ExecuteSqlRawAsync("Update_Task @Id, @Importance, @Description, @StatusTask, @Title, @DateOfClosed, @ApproximateDateOfCompleted, @UserId, @PreviousTaskId, @EpicId",
+            await context.Database.ExecuteSqlRawAsync("Update_Task @Id, @Importance, @Title, @Description, @StatusTask,  @DateOfClosed, @ApproximateDateOfCompleted, @UserId, @PreviousTaskId, @EpicId",
                 new SqlParameter("@Id", task.Id),
                 new SqlParameter("@Importance", task.Importance),
+                new SqlParameter("@Title", task.Title),
                 new SqlParameter("@Description", task.Description),
                 new SqlParameter("@StatusTask", task.StatusTask),
-                new SqlParameter("@Title", task.Title),
                 new SqlParameter("@DateOfClosed", task.DateOfClosed),
                 new SqlParameter("@ApproximateDateOfCompleted", task.ApproximateDateOfCompleted),
                 new SqlParameter("@UserId", task.UserId),
