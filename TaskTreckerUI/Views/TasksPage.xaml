@@ -4,15 +4,162 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TaskTrackerUI.Views"
+      xmlns:convertrs="clr-namespace:TaskTrackerUI.Conveters"
       xmlns:ViewModels="clr-namespace:TaskTrackerUI.ViewModels" x:Class="TaskTrackerUI.Views.TasksPage"
       mc:Ignorable="d" 
       Title="Мои задачи">
-
+    <Page.Resources>
+        <convertrs:TaskStatusConverter x:Key="taskConverter" />
+    </Page.Resources>
     <Page.DataContext>
         <ViewModels:TaskVm/>
     </Page.DataContext>
 
-    <Grid>
-        <TextBlock Style="{StaticResource Building}" HorizontalAlignment="Center" VerticalAlignment="Center" ><Run Text="My tasks page will be here..."/></TextBlock>
+    <Grid  >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition MaxHeight="70" Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel  Grid.Row="0" Orientation="Horizontal" Background="#FF393333">
+            <Button Margin="20 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" ToolTip="Создать задачу" >
+                <Button.Background >
+                    <ImageBrush ImageSource="/Assets/Images/add_btn.png"/>
+                </Button.Background>
+            </Button>
+            <Button  Margin="0 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30"  ToolTip="Удалить выделеную задачу" Click="Delete_Task">
+                <Button.Background >
+                    <ImageBrush ImageSource="/Assets/Images/delete_btn.png"/>
+                </Button.Background>
+            </Button>
+            <Button Style="{StaticResource MenuButton}" Width="30" Height="30"  ToolTip="Редактировать выделеную задачу">
+                <Button.Background >
+                    <ImageBrush ImageSource="/Assets/Images/change_btn.png"/>
+                </Button.Background>
+            </Button>
+            <ComboBox Name="Task_Types" Margin="40 0 20 0" Width="150" SelectionChanged="Select_type">
+                <ComboBoxItem Tag="0" Content="Free"/>
+                <ComboBoxItem Tag="1" Content="Work"/>
+                <ComboBoxItem Tag="2" Content="Pause"/>
+                <ComboBoxItem Tag="3" Content="Blocked"/>
+                <ComboBoxItem Tag="4" Content="Completed"/>
+                <ComboBoxItem Selector.IsSelected="True" Tag="5" Content="All"/>
+            </ComboBox>
+
+        </StackPanel>
+
+        <ListView  Grid.Row="1"
+               x:Name="TaskList"
+               ItemsSource="{Binding TasksView}"
+              >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border Width="1000" Margin="20 10 0 10" CornerRadius="10" Background ="{Binding Background}">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="60"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="160"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                        Grid.Row="0"
+                        Grid.ColumnSpan="3"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Foreground="white"
+                        Padding="15 10 0 10"    
+                        Text="{Binding Title}" 
+                        VerticalAlignment="Bottom"
+                        
+                        />
+                            <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        FontSize="13"
+                        Foreground="white"
+                        Padding="0 10 0 10"
+                        HorizontalAlignment="Right"   
+                        VerticalAlignment="Bottom"
+                                
+                        Text="Deadline :"/>
+                            <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="4"
+                        FontSize="13"
+                        Foreground="white"
+                        Padding="0 10 15 10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                                
+                        Text="{Binding ApproximateDateOfCompleted,TargetNullValue=' Не заданно'}"/>
+                            
+                            <Border 
+                                Background="#FFB1A9A9" 
+                                Height="1" 
+                                Grid.Row="1"
+                                VerticalAlignment="Top"
+                                Grid.ColumnSpan="5"/>
+                            <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        FontSize="13"
+                        Padding="10 0 0 10"
+                        HorizontalAlignment="Left" 
+                        Foreground="white"
+                        VerticalAlignment="Bottom"
+                            
+                        Text="Статус: "
+                        />
+                         <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        FontSize="13"
+                        Foreground="white"
+                        Padding="0 0 0 10"
+                        VerticalAlignment="Bottom"
+                             
+                        Text="{Binding StatusTask, Converter={StaticResource taskConverter}}"/>
+                            <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        FontSize="13"
+                        Padding="10 0 0 10"
+                        HorizontalAlignment="Right" 
+                        Foreground="white"
+                        VerticalAlignment="Bottom"
+                                
+                        Text="{Binding DatePropertyName}"/>
+                            <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="4"
+                        FontSize="13"
+                        Foreground="white"
+                        Padding="0 0 0 10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                                
+                        Text="{Binding Date}"/>
+
+                        </Grid>
+                    </Border>
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Page>

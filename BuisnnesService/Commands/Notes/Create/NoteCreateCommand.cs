@@ -9,6 +9,7 @@ namespace BuisnnesService.Commands.Notes.Create
     public class NoteCreateCommand : IRequest<NoteDto>
     {
         public string Description { get; set; }
+        public long? UserId { get; set; }
         public DateTime DateOfCreated { get; private set; }
         public DateTime? DateOfChanged { get; set; }
     }

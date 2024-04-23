@@ -18,7 +18,7 @@
             <RowDefinition MaxHeight="70" Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel  Grid.Row="0" Orientation="Horizontal" Background="#FF393333">
-            <Button Margin="20 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Add_Note">
+            <Button Margin="20 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Add_Note" ToolTip="Создать заметку">
                 <Button.Background >
                     <ImageBrush ImageSource="/Assets/Images/add_btn.png"/>
                 </Button.Background>

@@ -10,7 +10,8 @@ namespace BuisnnesService.Models
     {
         public long Id { get; set; }
         public string Description { get; set; }
-        public DateTime DateOfCreated { get; private set; }
+        public long UserId { get; set; }
+        public DateTime DateOfCreated { get;  set; }
         public DateTime? DateOfChanged { get; set; }
 
     }

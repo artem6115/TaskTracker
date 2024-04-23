@@ -14,11 +14,11 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 namespace TaskTrackerAPI.Controllers
 {
 
-    public class NotesController : MyBaseController
+    public class NoteController : MyBaseController
     {
 
         private readonly IMediator _mediator;
-        public NotesController(IMediator mediator)
+        public NoteController(IMediator mediator)
         {
             _mediator = mediator;
         }

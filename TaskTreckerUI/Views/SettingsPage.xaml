@@ -4,15 +4,25 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TaskTrackerUI.Views"
+      xmlns:user="clr-namespace:TaskTrackerUI.Services"
       xmlns:ViewModels="clr-namespace:TaskTrackerUI.ViewModels" x:Class="TaskTrackerUI.Views.SettingsPage"
       mc:Ignorable="d" 
       Title="Настройки">
+    <Page.Resources>
 
+    </Page.Resources>
     <Page.DataContext>
         <ViewModels:SettingVm/>
     </Page.DataContext>
 
     <Grid>
-        <TextBlock Style="{StaticResource Building}" HorizontalAlignment="Center" VerticalAlignment="Center" ><Run Text="My settings page will be here..."/></TextBlock>
+        <StackPanel>
+            <TextBlock FontSize="20" Foreground="White" Text="{Binding User.FullName}"/>
+            <TextBlock FontSize="18" Foreground="White" Text="{Binding User.Email}"/>
+            <Button Width="130" HorizontalAlignment="Left" Height="40" Background="red" Content="Выйти" Click="Exit_Account"/>
+            <TextBox x:Name="passwordBox" HorizontalAlignment="Left" Width="300"/>
+            <TextBlock TextWrapping="Wrap" x:Name="error_label" Foreground="red" FontSize="15" />
+            <Button Width="130"  HorizontalAlignment="Left" Height="40" Background="Green" Content="Сменить пароль" Click="Drop_Password"/>
+        </StackPanel>
     </Grid>
 </Page>

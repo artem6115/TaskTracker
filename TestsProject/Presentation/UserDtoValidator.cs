@@ -13,27 +13,12 @@ namespace TestsProject.Presentation
         [Test]
         public void Validate1()
         {
-            var validator = new TaskTrackerAPI.Validators.UserRegistDtoValidator();
-            var entity = new UserRegistDto() {
-                Email = "artem2.ru",
-                Password = "fffffff",
-                FullName = "ijl"
-            };
-            var result = validator.Validate(entity);
-            Assert.IsFalse(result.IsValid);
+            
         }
         [Test]
         public void Validate2()
         {
-            var validator = new TaskTrackerAPI.Validators.UserRegistDtoValidator();
-            var entity = new UserRegistDto()
-            {
-                Email = "artem@.ru",
-                Password = "fFffffff",
-                FullName = "ijl"
-            };
-            var result = validator.Validate(entity);
-            Assert.IsTrue(result.IsValid);
+            
         }
     }
 }

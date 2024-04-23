@@ -32,14 +32,8 @@ namespace TaskTrackerUI.Views
             Navigator = navigator;
             InitializeComponent();
             _context = DataContext as NoteVm;
-            LoadData();
         }
 
-        private async void LoadData()
-        {
-            var notes = await NoteService.GetNotesAsync();
-            _context.Notes = new ObservableCollection<Note>(notes);
-        }
 
         private async void Send(object sender, RoutedEventArgs e)
         {

@@ -21,6 +21,10 @@
 
     <None Remove="Assets\Images\DropFind_btn.png" />
 
+    <None Remove="Assets\Images\filter.png" />
+
+    <None Remove="Assets\Images\filter_drop.png" />
+
     <None Remove="Assets\Images\find_btn.png" />
 
     <None Remove="Assets\Images\Loading128.png" />
@@ -88,6 +92,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\DropFind_btn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\filter.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\filter_drop.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\find_btn.png">

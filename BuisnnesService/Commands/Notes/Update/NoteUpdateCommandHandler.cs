@@ -18,8 +18,10 @@ namespace BuisnnesService.Commands.Notes.Create
         }
         public async Task<NoteDto> Handle(NoteUpdateCommand request, CancellationToken cancellationToken)
         {
-            var note = await _noteRepository.UpdateAsync(_mapper.Map<Note>(request));
-            return _mapper.Map<NoteDto>(note);
+            var note = await _noteRepository.GetNoteAsync(request.Id);
+            var newNote = await _noteRepository.UpdateAsync(_mapper.Map(request,note));
+            return _mapper.Map<NoteDto>(newNote);
         }
     }
 }
+    

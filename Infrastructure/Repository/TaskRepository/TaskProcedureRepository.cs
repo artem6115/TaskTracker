@@ -19,14 +19,16 @@ namespace Infrastructure.Repository.TaskRepository
         public async Task<WorkTask> CreateTaskAsync(WorkTask task)
         {
             await _context.Create_Task(task);
-            var newTask = await _context.Tasks.SingleAsync(x => x.DateOfCreated == task.DateOfCreated);
+            var newTask = await _context.Tasks.Where(x=>x.UserId == task.UserId).OrderByDescending(x=>x.DateOfCreated).FirstAsync();
             _logger.LogDebug($"Task added, id - {newTask.Id}, description - {newTask.Description}");
             return newTask;
         }
 
         public async Task<bool> DeleteTaskAsync(long id)
         {
-            var task = await _context.Tasks.AsNoTracking().SingleAsync(x => x.Id == id);
+            var task = await _context.Tasks.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+            if (task is null)
+                throw new FileNotFoundException("Task not found");
             await CheckAccess(task);
             await _context.Delete_Task(id);
             _logger.LogDebug($"Task deleted, id - {task.Id}, description - {task.Description}");
@@ -44,11 +46,13 @@ namespace Infrastructure.Repository.TaskRepository
 
         public async Task<WorkTask> GetTaskAsync(long id)
         {
-            return await _context.Tasks
+            var task = await _context.Tasks
                 .Include(task => task.Epic)
                 .Include(task => task.PreviousTask)
-                .AsNoTracking()
-                .SingleAsync(task => task.Id == id);
+                .SingleOrDefaultAsync(task => task.Id == id);
+            if (task is null)
+                throw new FileNotFoundException("Task not found");
+            return task;
         }
 
         public async Task<List<WorkTask>> GetTasksForEpicAsync(long id)

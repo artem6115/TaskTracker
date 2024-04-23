@@ -29,9 +29,7 @@ namespace BuisnnesService.MappingProfile
 
             CreateMap<NoteUpdateCommand, Note>()
                 .ForMember(dto => dto.DateOfChanged,
-                cnf => cnf.MapFrom(x => DateTime.Now))
-                .ForMember(dto => dto.UserId,
-                cnf => cnf.MapFrom(x => UserClaims.User.Id));
+                cnf => cnf.MapFrom(x => DateTime.Now));
             CreateMap<NoteDeleteCommand, Note>();
             #endregion
 

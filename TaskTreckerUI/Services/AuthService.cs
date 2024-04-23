@@ -17,22 +17,22 @@ namespace TaskTrackerUI.Services
     {
         public static User? User { get; private set; }
         public static string Work_Path { get; private set; }
-        private static string tokenPath;
-        private static string refreshTokenPath;
+        public static string TokenPath { get; private set; }
+        public static string RefreshTokenPath { get; private set; }
         private static string? token = null;
         private static string? refreshToken = null;
         static AuthService() {
 
             Work_Path = Path.Combine(Environment.GetFolderPath(
                     Environment.SpecialFolder.ApplicationData), "TaskTracker");
-            tokenPath = Path.Combine(Work_Path, "Token.txt");
-            refreshTokenPath = Path.Combine(Work_Path, "RefreshToken.txt");
+            TokenPath = Path.Combine(Work_Path, "Token.txt");
+            RefreshTokenPath = Path.Combine(Work_Path, "RefreshToken.txt");
             if (!Directory.Exists(Work_Path))
                 Directory.CreateDirectory(Work_Path);
-            if (File.Exists(tokenPath))
-                token = File.ReadAllText(tokenPath);
-            if (File.Exists(refreshTokenPath))
-                refreshToken = File.ReadAllText(refreshTokenPath);
+            if (File.Exists(TokenPath))
+                token = File.ReadAllText(TokenPath);
+            if (File.Exists(RefreshTokenPath))
+                refreshToken = File.ReadAllText(RefreshTokenPath);
         }
         private static async Task<bool> LoginWithToken(HttpClient httpClient)
         {
@@ -98,8 +98,8 @@ namespace TaskTrackerUI.Services
 
         private static async void SaveTokens()
         {
-            await File.WriteAllTextAsync(tokenPath, token);
-            await File.WriteAllTextAsync(refreshTokenPath, refreshToken);
+            await File.WriteAllTextAsync(TokenPath, token);
+            await File.WriteAllTextAsync(RefreshTokenPath, refreshToken);
 
         }
 
@@ -171,7 +171,14 @@ namespace TaskTrackerUI.Services
             finally { httpClient.Dispose(); }
         }
 
-        public static async Task<HttpResponseMessage> SendAsync(HttpRequestMessage massage)
+        public static async Task<T> SendAsync<T>(HttpRequestMessage massage) where T : class
+        {
+            var result = await SendAsync(massage);
+            if (result is not null && result.IsSuccessStatusCode)
+                return await result.Content.ReadFromJsonAsync<T>();
+            return null!;
+        }
+        public static async Task<HttpResponseMessage> SendAsync(HttpRequestMessage massage) 
         {
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
@@ -185,7 +192,7 @@ namespace TaskTrackerUI.Services
                 {
                     var resultRefresh = await TryRefreshTokens(httpClient);
                     if (resultRefresh)
-                    { 
+                    {
                         User = null!;
                         await LoginWithToken(httpClient);
                         massage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -198,8 +205,20 @@ namespace TaskTrackerUI.Services
 
             }
             catch { }
-            finally { clientHandler.Dispose(); }
+            finally { clientHandler.Dispose();}
             return null!;
         }
+        public static async Task<(bool,string)> RemovePassword(string newPassword)
+        {
+            var message = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}/api/Auth/RemovePassword");
+            message.Content = JsonContent.Create(newPassword);
+            var result = await SendAsync(message);
+            if (result is null) return (false, null!); ;
+            if (result.IsSuccessStatusCode)
+                return (true, null!);
+            var errorMassage = await result.Content.ReadAsStringAsync();
+            return (false, errorMassage);
+        }
+
     }
 }

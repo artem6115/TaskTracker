@@ -1,7 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlTypes;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -77,15 +80,15 @@ namespace Infrastructure.Utilits
 
         public async static Task Create_Task(this TaskTrackerDbContext context, WorkTask task)
         {
-
+            
             await context.Database.ExecuteSqlRawAsync("Create_Task @Importance,@Title, @Description, @StatusTask, @UserId, @PreviousTaskId, @EpicId",
                 new SqlParameter("@Importance", task.Importance),
                 new SqlParameter("@Title", task.Title),
                 new SqlParameter("@Description", task.Description),
                 new SqlParameter("@StatusTask", task.StatusTask),
                 new SqlParameter("@UserId", task.UserId),
-                new SqlParameter("@PreviousTaskId", task.PreviousTaskId),
-                new SqlParameter("@EpicId", task.EpicId)
+                new SqlParameter("@PreviousTaskId", task.PreviousTaskId ?? (object)DBNull.Value),
+                new SqlParameter("@EpicId", task.EpicId ?? (object)DBNull.Value)
                 );
         }
         public async static Task Create_UserProject(this TaskTrackerDbContext context, UserProject userProject)
@@ -147,11 +150,11 @@ namespace Infrastructure.Utilits
                 new SqlParameter("@Title", task.Title),
                 new SqlParameter("@Description", task.Description),
                 new SqlParameter("@StatusTask", task.StatusTask),
-                new SqlParameter("@DateOfClosed", task.DateOfClosed),
-                new SqlParameter("@ApproximateDateOfCompleted", task.ApproximateDateOfCompleted),
-                new SqlParameter("@UserId", task.UserId),
-                new SqlParameter("@PreviousTaskId", task.PreviousTaskId),
-                new SqlParameter("@EpicId", task.EpicId)
+                new SqlParameter("@DateOfClosed", task.DateOfClosed ?? (object)DBNull.Value),
+                new SqlParameter("@ApproximateDateOfCompleted", task.ApproximateDateOfCompleted ?? (object)DBNull.Value),
+                new SqlParameter("@UserId", task.UserId ?? (object)DBNull.Value),
+                new SqlParameter("@PreviousTaskId", task.PreviousTaskId ?? (object)DBNull.Value),
+                new SqlParameter("@EpicId", task.EpicId ?? (object)DBNull.Value)
                 );
         }
         #endregion

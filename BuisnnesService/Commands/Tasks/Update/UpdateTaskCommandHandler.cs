@@ -18,7 +18,8 @@ namespace BuisnnesService.Commands.Tasks.Update
         }
         public async Task<TaskView> Handle(UpdateTaskCommand request, CancellationToken cancellationToken)
         {
-            var newTask = await _taskRepository.UpdateTaskAsync(_mapper.Map<WorkTask>(request));
+            var task = await _taskRepository.GetTaskAsync(request.Id);
+            var newTask = await _taskRepository.UpdateTaskAsync(_mapper.Map(request,task));
             return _mapper.Map<TaskView>(newTask);
         }
     }

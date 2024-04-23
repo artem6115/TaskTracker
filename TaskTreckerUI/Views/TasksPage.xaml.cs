@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaskTrackerUI.Filters;
+using TaskTrackerUI.Models;
+using TaskTrackerUI.Services;
+using TaskTrackerUI.ViewModels;
 
 namespace TaskTrackerUI.Views
 {
@@ -20,9 +24,48 @@ namespace TaskTrackerUI.Views
     /// </summary>
     public partial class TasksPage : Page
     {
-        public TasksPage()
+        TaskFilter Filter;
+        TaskVm _context;
+        Navigator _navigator;
+        public TasksPage(Navigator navigator)
         {
             InitializeComponent();
+            _navigator = navigator;
+            Filter = new TaskFilter() { TaskStatus=Models.TaskStatus.All};
+            _context = DataContext as TaskVm;
+            _context.Filter = Filter;
+        }
+
+        private void Select_type(object sender, SelectionChangedEventArgs e)
+        {
+            var chooseItem = Task_Types.SelectedItem as ComboBoxItem;
+            var tag = chooseItem.Tag;
+            if (tag == null) return;
+            var index = int.Parse(tag.ToString());
+            Filter.TaskStatus = (Models.TaskStatus)index;
+            _context.Refresh();
+
+        }
+
+        private async void Delete_Task(object sender, RoutedEventArgs e)
+        {
+            var task = TaskList.SelectedItem as TaskView;
+            if (task == null) return;
+            //TASK IF PROJECT SI NOT NULL THROW ERROR
+            if (MessageBox.Show(
+                $"Удалить задачу?\n({task.Title})","Удаление задачи"
+                ,MessageBoxButton.YesNo
+                ,MessageBoxImage.Question)
+                == MessageBoxResult.Yes)
+            {
+                var result = await TaskService.DeleteTaskAsync(task);
+                if (!result) _navigator.AddError("Не удалось удалить задачу");
+                else { _navigator.AddInformation("Задача удалена");
+                    var item = _context.Tasks.Single(x=>x.Id == task.Id);
+                    _context.Tasks.Remove(item);
+                }
+
+            }
         }
     }
 }

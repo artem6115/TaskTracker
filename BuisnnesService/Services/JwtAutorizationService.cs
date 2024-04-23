@@ -39,7 +39,7 @@ namespace BuisnnesService.Services
                 issuer: _options.ISSUER,
                 audience: _options.AUDIENCE_REFRASH,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(_options.REFRESH_LIFETIME),
+                expires: DateTime.UtcNow.AddMinutes(_options.REFRESH_LIFETIME),
                 notBefore: DateTime.UtcNow,
                 signingCredentials: new SigningCredentials(SecretKey, SecurityAlgorithms.HmacSha256)
                 );

@@ -14,6 +14,10 @@ namespace TaskTrackerAPI.Validators.User
                 .WithMessage("Пароль должен иметь хотя бы одну букву в верхнем и нижнем регистре");
         }
         public static bool PasswordValidator(string password)
-            => password != password.ToLower() && password != password.ToUpper();
+        {
+            if (string.IsNullOrWhiteSpace(password)) return false;
+            return password != password.ToLower() && password != password.ToUpper();
+            
+         }
     }
 }

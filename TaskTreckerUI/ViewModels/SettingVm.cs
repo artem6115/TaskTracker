@@ -11,7 +11,7 @@ namespace TaskTrackerUI.ViewModels
 {
     public class SettingVm : VMBase
     {
-
+        public User User { get; private set; } = AuthService.User;
         public override async Task<bool> LoadData() {
 
             return true;  

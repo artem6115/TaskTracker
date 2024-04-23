@@ -26,7 +26,9 @@ namespace Infrastructure.Repository.TaskRepository
 
         public async Task<bool> DeleteTaskAsync(long id)
         {
-            var task = await _context.Tasks.AsNoTracking().SingleAsync(x=>x.Id == id);
+            var task = await _context.Tasks.AsNoTracking().SingleOrDefaultAsync(x=>x.Id == id);
+            if (task is null)
+                throw new FileNotFoundException("Task not found");
             await CheckAccess(task);
             _context.Remove(task);
             await _context.SaveChangesAsync();
@@ -46,11 +48,16 @@ namespace Infrastructure.Repository.TaskRepository
 
         public async Task<WorkTask> GetTaskAsync(long id)
         {
-            return await _context.Tasks
+            var task = await _context.Tasks
                 .Include(task => task.Epic)
+                .Include(task=>task.User)
                 .Include(task => task.PreviousTask)
-                .AsNoTracking()
-                .SingleAsync(task => task.Id == id);
+                .SingleOrDefaultAsync(task => task.Id == id);
+            if (task is null)
+                throw new FileNotFoundException("Task not found");
+            if (task.EpicId == null && task.UserId != UserClaims.User.Id )
+                throw new ArgumentException("Access denied");
+            return task;
         }
 
         public async Task<List<WorkTask>> GetTasksForEpicAsync(long id)
@@ -62,10 +69,9 @@ namespace Infrastructure.Repository.TaskRepository
         public async Task<WorkTask> UpdateTaskAsync(WorkTask task)
         {
             await CheckAccess(task);
-            var newTask = _context.Tasks.Update(task);
             await _context.SaveChangesAsync();
-            _logger.LogDebug($"Task updated, id - {newTask.Entity.Id}, description - {newTask.Entity.Description}");
-            return newTask.Entity;
+            _logger.LogDebug($"Task updated, id - {task.Id}, description - {task.Description}");
+            return task;
         }
         private async Task CheckAccess(WorkTask task)
         {

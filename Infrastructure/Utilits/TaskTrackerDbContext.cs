@@ -26,7 +26,7 @@ public partial class TaskTrackerDbContext : DbContext
 
     protected async override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      //  optionsBuilder.UseSqlServer("Server=MSI;Database=TaskTrackerDB;Trusted_Connection=True;Encrypt=False;");
+     
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

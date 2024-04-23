@@ -19,18 +19,16 @@ namespace Infrastructure.Repository.NoteRepository
         public async Task<Note> CreateAsync(Note note)
         {
             await _context.Create_Note(note);
-            var entity = await _context.Notes
-                .Where(x => x.UserId == note.UserId)
-                .OrderBy(x=>x.Id)
-                .AsNoTracking()
-                .LastAsync();
-            _logger.LogDebug($"Note added, id = {entity.Id}");
-            return entity;
+            var newNote = await _context.Notes.Where(x=>x.UserId == note.UserId).OrderByDescending(x=>x.DateOfCreated).FirstAsync();
+            _logger.LogDebug($"Note added, id = {newNote.Id}");
+            return newNote;
         }
 
         public async Task DeleteAsync(long Id)
         {
-            var note = await _context.Notes.AsNoTracking().SingleAsync(x => x.Id == Id);
+            var note = await _context.Notes.AsNoTracking().SingleOrDefaultAsync(x => x.Id == Id);
+            if(note is null )
+                throw new FileNotFoundException("Note not found");
             if (note.UserId != UserClaims.User.Id)
                 throw new ArgumentException("Access denied");
             await _context.Delete_Note(Id);
@@ -39,8 +37,10 @@ namespace Infrastructure.Repository.NoteRepository
 
         public async Task<Note> GetNoteAsync(long id)
         {
-            var entity = await _context.Notes.AsNoTracking()
-                .SingleOrDefaultAsync(x => x.Id == id);
+            var entity = await _context.Notes.SingleOrDefaultAsync(x => x.Id == id);
+            if (entity is null)
+                throw new FileNotFoundException("Note not found");
+
             if (entity.UserId != UserClaims.User.Id)
                 throw new ArgumentException("Access denied");
 
