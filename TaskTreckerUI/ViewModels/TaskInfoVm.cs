@@ -15,8 +15,9 @@ namespace TaskTrackerUI.ViewModels
         public async override Task<bool> LoadData()
         {
             if(TaskId is null) return false;
-            Task = await TaskService.GetTaskAsync((long)TaskId);
-            return Task != null;
+            var resultTask = await TaskService.GetTaskAsync((long)TaskId);
+            if(resultTask is not null) Task=resultTask;
+            return resultTask != null;
         }
     }
 }

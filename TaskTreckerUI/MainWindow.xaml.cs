@@ -85,5 +85,24 @@ namespace TaskTrackerUI
         private void Setting_Open(object sender, RoutedEventArgs e) => OpenPage(PagesEnum.Setting);
         private void OpenPage(PagesEnum pageName)
             => Navigator.Open(Pages[(int)pageName]);
+
+        private async void Shortcut(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Back) Navigator.Back();
+            else if (e.Key == Key.OemPlus) Navigator.Next();
+            else if (e.Key == Key.Escape)
+            {
+                if (MessageBox.Show("Завершить работу с программой?", "Quit", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    Close();
+            }
+            else if (e.Key == Key.F1) OpenPage(PagesEnum.Main);
+            else if (e.Key == Key.F2) OpenPage(PagesEnum.Notify);
+            else if (e.Key == Key.F3) OpenPage(PagesEnum.Note);
+            else if (e.Key == Key.F4) OpenPage(PagesEnum.Task);
+            else if (e.Key == Key.F5) await Navigator.LoadData();
+            else if (e.Key == Key.F6) OpenPage(PagesEnum.Project);
+            else if (e.Key == Key.F7) OpenPage(PagesEnum.Setting);
+
+        }
     }
 }

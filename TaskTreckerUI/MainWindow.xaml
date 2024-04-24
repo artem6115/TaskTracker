@@ -12,7 +12,7 @@
         WindowState="Maximized"
         WindowStyle="ThreeDBorderWindow"
         WindowStartupLocation="CenterScreen"
-        Title="Task Tracker" Icon="Assets/Images/MainIco.png"
+        Title="Task Tracker" Icon="Assets/Images/MainIco.png" KeyDown="Shortcut"
         >
     <Window.DataContext>
         <ViewModels:MainWindowVM/>

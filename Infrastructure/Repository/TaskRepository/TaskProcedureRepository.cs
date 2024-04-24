@@ -49,6 +49,7 @@ namespace Infrastructure.Repository.TaskRepository
             var task = await _context.Tasks
                 .Include(task => task.Epic)
                 .Include(task => task.PreviousTask)
+                .Include(task=>task.User)
                 .SingleOrDefaultAsync(task => task.Id == id);
             if (task is null)
                 throw new FileNotFoundException("Task not found");
