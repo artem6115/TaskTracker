@@ -10,6 +10,8 @@
       Title="Мои задачи">
     <Page.Resources>
         <convertrs:TaskStatusConverter x:Key="taskConverter" />
+        <convertrs:TaskStatusToBrush x:Key="bgConverter" />
+
     </Page.Resources>
     <Page.DataContext>
         <ViewModels:TaskVm/>
@@ -51,10 +53,12 @@
         <ListView  Grid.Row="1"
                x:Name="TaskList"
                ItemsSource="{Binding TasksView}"
+                   KeyDown="Show_task_btn" 
+                   MouseDown="Show_task_mouse" PreviewMouseDoubleClick="Show_task_mouse"
               >
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border Width="1000" Margin="20 10 0 10" CornerRadius="10" Background ="{Binding Background}">
+                    <Border Width="1000" Margin="20 10 0 10" CornerRadius="10" Background ="{Binding StatusTask,Converter={StaticResource bgConverter}}">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Style.Triggers>
@@ -143,7 +147,7 @@
                         Foreground="white"
                         VerticalAlignment="Bottom"
                                 
-                        Text="{Binding DatePropertyName}"/>
+                        Text="Дата создания: "/>
                             <TextBlock
                         Grid.Row="1"
                         Grid.Column="4"
@@ -153,7 +157,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Bottom"
                                 
-                        Text="{Binding Date}"/>
+                        Text="{Binding DateOfCreated}"/>
 
                         </Grid>
                     </Border>

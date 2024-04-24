@@ -22,8 +22,8 @@ namespace TaskTrackerUI.ViewModels
                 Refresh();
             }
          }
-        ObservableCollection<TaskView> _tasksView;
-        public ObservableCollection<TaskView> TasksView
+        ObservableCollection<TaskDto> _tasksView;
+        public ObservableCollection<TaskDto> TasksView
         {
             get => _tasksView; set
             {
@@ -33,7 +33,7 @@ namespace TaskTrackerUI.ViewModels
         }
 
         public void Refresh()
-            => TasksView = (Filter is null) ? TaskFilter.GetViews(Tasks) : Filter.UseFilter(Tasks); 
+            => TasksView = (Filter is null) ? Tasks : Filter.UseFilter(Tasks); 
 
         public override async Task<bool> LoadData() {
             var list = await TaskService.GetMyTasksAsync();

@@ -16,13 +16,20 @@ namespace TaskTrackerUI.Services
             if (tasks is null) return null!;
             return tasks.OrderByDescending(x => x.ApproximateDateOfCompleted).ToList();
         }
+        public static async Task<TaskInfo> GetTaskAsync(long Id)
+        {
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Task/{Id}");
+            var task = await AuthService.SendAsync<TaskInfo>(request);
+            return task;
+        }
 
-        public async static Task<bool> DeleteTaskAsync(TaskView task)
+        public async static Task<bool> DeleteTaskAsync(TaskDto task)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, $"https://{LocalConnectionService.Adress}/api/Task/{task.Id}");
             var result = await AuthService.SendAsync(request);
             if (result is null || !result.IsSuccessStatusCode) return false;
             return true;
         }
+        
     }
 }

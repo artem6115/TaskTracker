@@ -49,7 +49,7 @@ namespace TaskTrackerUI.Views
 
         private async void Delete_Task(object sender, RoutedEventArgs e)
         {
-            var task = TaskList.SelectedItem as TaskView;
+            var task = TaskList.SelectedItem as TaskDto;
             if (task == null) return;
             //TASK IF PROJECT SI NOT NULL THROW ERROR
             if (MessageBox.Show(
@@ -65,6 +65,26 @@ namespace TaskTrackerUI.Views
                     _context.Tasks.Remove(item);
                 }
 
+            }
+        }
+
+        private void Show_task_btn(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var task = TaskList.SelectedItem as TaskDto;
+                if (task == null) return;
+                _navigator.Open(new TaskInfoPage(task.Id));
+            }
+        }
+
+        private void Show_task_mouse(object sender, MouseButtonEventArgs e)
+        {
+            if(e.LeftButton == MouseButtonState.Pressed)
+            {
+                var task = TaskList.SelectedItem as TaskDto;
+                if (task == null) return;
+                _navigator.Open(new TaskInfoPage(task.Id));
             }
         }
     }
