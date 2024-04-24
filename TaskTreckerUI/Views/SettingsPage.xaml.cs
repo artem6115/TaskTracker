@@ -39,7 +39,7 @@ namespace TaskTrackerUI.Views
 
         private async void Drop_Password(object sender, RoutedEventArgs e)
         {
-            var result = await AuthService.RemovePassword(passwordBox.Text.Trim());
+            var result = await AuthService.RemovePassword(passwordBox.Text.Trim(),oldPasswordBox.Text.Trim());
             if (result.Item1) { 
                 _navigator.AddInformation("Пароль успешно обновлен");
                 error_label.Text = "";

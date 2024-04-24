@@ -20,7 +20,11 @@
             <TextBlock FontSize="20" Foreground="White" Text="{Binding User.FullName}"/>
             <TextBlock FontSize="18" Foreground="White" Text="{Binding User.Email}"/>
             <Button Width="130" HorizontalAlignment="Left" Height="40" Background="red" Content="Выйти" Click="Exit_Account"/>
-            <TextBox x:Name="passwordBox" HorizontalAlignment="Left" Width="300"/>
+            <TextBlock Foreground="White" Text="Старый пароль"/>
+            <TextBox x:Name="oldPasswordBox" HorizontalAlignment="Left" Width="300"/>
+            <TextBlock Foreground="White" Text="Новый пароль"/>
+            <TextBox x:Name="passwordBox"  HorizontalAlignment="Left"  Width="300"/>
+
             <TextBlock TextWrapping="Wrap" x:Name="error_label" Foreground="red" FontSize="15" />
             <Button Width="130"  HorizontalAlignment="Left" Height="40" Background="Green" Content="Сменить пароль" Click="Drop_Password"/>
         </StackPanel>

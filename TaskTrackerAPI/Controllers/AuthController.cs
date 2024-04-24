@@ -65,12 +65,13 @@ namespace TaskTrackerAPI.Controllers
 
 
         [HttpPut("RemovePassword")]
-        public async Task<IActionResult> RemovePassword([MinLength(5)][NotNull][Required][FromBody] string password)
+        public async Task<IActionResult> RemovePassword([FromBody]RemovePasswordModel model)
         {
-            bool valid = UserLoginDtoValidator.PasswordValidator(password);
+            bool valid = UserLoginDtoValidator.PasswordValidator(model.newPassword);
             if (!valid) ModelState.AddModelError("errors", "В пароле должна быть как миним 1 буква в верхнем и нижнем регистре");
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            await _userManager.RemovePassword(password);
+            var result = await _userManager.RemovePassword(model.newPassword,model.oldPassword);
+            if (!result) return BadRequest("Исходный пароль не правильный");
             return Ok();
         }
 

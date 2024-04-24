@@ -191,12 +191,24 @@ namespace TaskTrackerUI.Services
                 if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     var resultRefresh = await TryRefreshTokens(httpClient);
+                    User = null!;
                     if (resultRefresh)
                     {
-                        User = null!;
                         await LoginWithToken(httpClient);
                         massage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                         result = await httpClient.SendAsync(massage);
+
+                    }
+                    else
+                    {
+                        var window = new AuthWindow();
+                        window.ShowDialog();
+                        if (User is not null)
+                        {
+                            var newMessage = new HttpRequestMessage(massage.Method,massage.RequestUri);
+                            newMessage.Content = massage.Content;
+                            return await SendAsync(newMessage);
+                        }
 
                     }
 
@@ -208,10 +220,10 @@ namespace TaskTrackerUI.Services
             finally { clientHandler.Dispose();}
             return null!;
         }
-        public static async Task<(bool,string)> RemovePassword(string newPassword)
+        public static async Task<(bool,string)> RemovePassword(string newPassword,string oldPassword)
         {
             var message = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}/api/Auth/RemovePassword");
-            message.Content = JsonContent.Create(newPassword);
+            message.Content = JsonContent.Create(new {newPassword,oldPassword});
             var result = await SendAsync(message);
             if (result is null) return (false, null!); ;
             if (result.IsSuccessStatusCode)

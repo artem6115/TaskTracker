@@ -170,11 +170,15 @@ namespace BuisnnesService.Services
             User.Password = User.Password.Trim();
         }
 
-        public async Task RemovePassword(string password)
+        public async Task<bool> RemovePassword(string password,string oldPassword)
         {
             var User = await _userRepository.GetUserByIdAsync(UserClaims.User.Id);
-            User.Password = GetPasswordHash(password+User.Spice);
+            var oldPasswordHash = GetPasswordHash(oldPassword+User.Spice);
+            if (oldPasswordHash != User.Password)
+                return false;
+            User.Password = GetPasswordHash(password + User.Spice);
             await _userRepository.UpdateUserAcync(User);
+            return true;
         }
 
         public async Task<UserClaims> GetUser()
