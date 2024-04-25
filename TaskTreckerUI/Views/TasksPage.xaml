@@ -136,9 +136,52 @@
                         Foreground="white"
                         Padding="0 0 0 10"
                         VerticalAlignment="Bottom"
-                             
                         Text="{Binding StatusTask, Converter={StaticResource taskConverter}}"/>
-                            <TextBlock
+
+                        <StackPanel
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Left">
+
+                                <Button  
+                                    Margin="20 0 10 10"
+                                    Style="{StaticResource MenuButton}"
+                                    Width="30" Height="30"
+                                    Tag="{Binding Id}"
+                                    ToolTip="Поставить задачу на паузу"
+                                    Click="Set_Pause">
+                                    <Button.Background >
+                                        <ImageBrush ImageSource="/Assets/Images/pause.png"/>
+                                    </Button.Background>
+                                </Button>
+                                <Button  
+                                    Margin="0 0 10 10"
+                                    Tag="{Binding Id}"
+                                    Style="{StaticResource MenuButton}"
+                                    Width="30" Height="30"
+                                    ToolTip="Продолжить выполнение задачи"
+                                    Click="Set_Continue">
+                                    <Button.Background >
+                                        <ImageBrush ImageSource="/Assets/Images/continue.png"/>
+                                    </Button.Background>
+                                </Button>
+                                <Button  
+                                    Margin="0 0 0 10"
+                                    Tag="{Binding Id}"
+                                    
+                                    Style="{StaticResource MenuButton}"
+                                    Width="30" Height="30"
+                                    ToolTip="Задача выполена"
+                                    Click="Set_Completed">
+                                    <Button.Background >
+                                        <ImageBrush ImageSource="/Assets/Images/completed.png"/>
+                                    </Button.Background>
+                                </Button>
+
+                            </StackPanel>
+                        <TextBlock
                         Grid.Row="1"
                         Grid.Column="3"
                         FontSize="13"

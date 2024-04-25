@@ -46,8 +46,8 @@
             Height="50"
             Text="Ошибка сервер не был найден" Margin="276,104,62,38" 
             />
-        <Button HorizontalAlignment="Left" TabIndex="2" Content="Отмена" Width="80" Height="25" Margin="426,142,0,25" Click="Button_Click"/>
-        <Button HorizontalAlignment="Left" TabIndex="1" Visibility="Visible" Name="RetryButton" Content="Ок" Width="80" Height="25" Margin="276,142,0,25" Click="Retry_ButtonClick"/>
+        <Button Foreground="Black"  HorizontalAlignment="Left" TabIndex="2" Content="Отмена" Width="80" Height="25" Margin="426,142,0,25" Click="Button_Click"/>
+            <Button HorizontalAlignment="Left" TabIndex="1" Visibility="Visible" Name="RetryButton" Content="Ок" Width="80" Height="25" Margin="276,142,0,25" Click="Retry_ButtonClick"/>
 
     </Grid>
 </Window>

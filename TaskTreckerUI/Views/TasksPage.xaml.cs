@@ -87,5 +87,24 @@ namespace TaskTrackerUI.Views
                 _navigator.Open(new TaskInfoPage(task.Id));
             }
         }
+
+        private void Set_Pause(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            var tag = (long)btn.Tag;
+            MessageBox.Show($"set pause on {_context.Tasks.Single(x=>x.Id==tag).Title}");
+        }
+        private void Set_Continue(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            var tag = (long)btn.Tag;
+            MessageBox.Show($"set cont on {_context.Tasks.Single(x => x.Id == tag).Title}");
+        }
+        private void Set_Completed(object sender, RoutedEventArgs e)
+        {
+            var btn = sender as Button;
+            var tag = (long)btn.Tag;
+            MessageBox.Show($"set cmpl on {_context.Tasks.Single(x => x.Id == tag).Title}");
+        }
     }
 }

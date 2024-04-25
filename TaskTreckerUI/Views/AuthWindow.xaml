@@ -18,7 +18,7 @@
                     <TextBox TabIndex="1" x:Name="Login_Email" FontSize="15" Margin="218,56,74,226"/>
                     <TextBlock Foreground="White" FontWeight="Bold" FontSize="15" Width="55" Text="Пароль" Margin="150,114,295,164"/>
                     <PasswordBox TabIndex="2" x:Name="Login_Password" FontSize="15" Margin="218,113,74,169"/>
-                    <Button TabIndex="3" x:Name="Login_btn" Content="Войти" HorizontalAlignment="Left" Margin="221,169,0,109" Width="72" Click="Login_Button"/>
+                    <Button  TabIndex="3" x:Name="Login_btn" Content="Войти" HorizontalAlignment="Left" Margin="221,169,0,109" Width="72" Click="Login_Button"/>
 
                 </Grid>
             </TabItem>
@@ -30,7 +30,7 @@
                     <TextBox TabIndex="2" x:Name="Auth_Email" FontSize="15" Margin="218,89,57,193"/>
                     <TextBlock  Foreground="White" FontWeight="Bold" FontSize="15" Width="55" Text="Пароль" Margin="150,147,295,131"/>
                     <PasswordBox TabIndex="3" x:Name="Auth_Password" FontSize="15" Margin="218,146,57,136"/>
-                    <Button TabIndex="4" x:Name="Regist_btn" Content="Зарегистрироваться" HorizontalAlignment="Left" Margin="218,185,0,93" Width="138" Click="Create_Account"/>
+                    <Button  TabIndex="4" x:Name="Regist_btn" Content="Зарегистрироваться" HorizontalAlignment="Left" Margin="218,185,0,93" Width="138" Click="Create_Account"/>
                     <TextBlock FontSize="15" Foreground="White" FontWeight="Bold" Text="Полное ФИО" Margin="104,39,295,239"/>
                     <TextBox TabIndex="1" x:Name="Auth_FullName" FontSize="15" Margin="218,38,57,244"/>
 
@@ -41,8 +41,8 @@
 
         </TabControl>
         <TextBlock x:Name="Error_text" Foreground="red" HorizontalAlignment="Center" Text="ошибка входа !" Visibility="Hidden" Margin="0,246,0,-246" />
-        <Button TabIndex="5" Width="70" Height="20" Content="Отмена" Margin="426,305,10,10" Click="Button_Click"/>
-        <Button Width="70" TabIndex="6" Height="20" Content="Помощь" Margin="10,305,426,10"/>
+        <Button  TabIndex="5" Width="70" Height="20" Content="Отмена" Margin="426,305,10,10" Click="Button_Click"/>
+        <Button  Width="70" TabIndex="6" Height="20" Content="Помощь" Margin="10,305,426,10"/>
 
     </Grid>
 </Window>
