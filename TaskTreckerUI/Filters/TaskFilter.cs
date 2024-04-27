@@ -21,7 +21,7 @@ namespace TaskTrackerUI.Filters
                 if (TaskStatus != Models.TaskStatus.All && TaskStatus != task.StatusTask) continue;
                 list.Add(task);
             }
-            return new ObservableCollection<TaskDto>(list);
+            return new ObservableCollection<TaskDto>(list.OrderByDescending(x=>x.ApproximateDateOfCompleted));
         }
        
     }

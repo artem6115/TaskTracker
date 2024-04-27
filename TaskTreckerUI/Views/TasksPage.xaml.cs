@@ -88,23 +88,114 @@ namespace TaskTrackerUI.Views
             }
         }
 
-        private void Set_Pause(object sender, RoutedEventArgs e)
+        private async void Set_Pause(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             var tag = (long)btn.Tag;
-            MessageBox.Show($"set pause on {_context.Tasks.Single(x=>x.Id==tag).Title}");
+            var task = _context.Tasks.Single(x => x.Id == tag);
+            if (task.StatusTask == Models.TaskStatus.Blocked)
+            {
+                MessageBox.Show("Вы не можете изменить статус заблокированой задачи!", "Status error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var result = await TaskService.SetStatusAsync(task.Id,Models.TaskStatus.Pause);
+            if(result is not null)
+            {
+                _context.Tasks.Single(x => x.Id == result.Id).StatusTask = result.StatusTask;
+                _navigator.AddInformation("Стутус задачи изменён");
+                _context.Refresh();
+
+            }
+            else
+                _navigator.AddError("Изменить статус не удалось");
+
+
         }
-        private void Set_Continue(object sender, RoutedEventArgs e)
+        private async void Set_Continue(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             var tag = (long)btn.Tag;
-            MessageBox.Show($"set cont on {_context.Tasks.Single(x => x.Id == tag).Title}");
+            var task = _context.Tasks.Single(x => x.Id == tag);
+            if (task.StatusTask == Models.TaskStatus.Blocked)
+            {
+                MessageBox.Show("Вы не можете изменить статус заблокированой задачи!", "Status error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var result = await TaskService.SetStatusAsync(task.Id, Models.TaskStatus.Work);
+            if (result is not null)
+            {
+                _context.Tasks.Single(x => x.Id == result.Id).StatusTask = result.StatusTask;
+                _navigator.AddInformation("Стутус задачи изменён");
+                _context.Refresh();
+
+            }
+            else
+                _navigator.AddError("Изменить статус не удалось");
+
         }
-        private void Set_Completed(object sender, RoutedEventArgs e)
+        private async void Set_Completed(object sender, RoutedEventArgs e)
         {
+            
             var btn = sender as Button;
             var tag = (long)btn.Tag;
-            MessageBox.Show($"set cmpl on {_context.Tasks.Single(x => x.Id == tag).Title}");
+            var task = _context.Tasks.Single(x => x.Id == tag);
+            if(task.StatusTask == Models.TaskStatus.Blocked)
+            {
+                MessageBox.Show("Вы не можете изменить статус заблокированой задачи!", "Status error",MessageBoxButton.OK,MessageBoxImage.Error);
+                return;
+            }
+
+            if (MessageBox.Show("Задача выполнена ?", "Is completed", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                return;
+            var result = await TaskService.SetStatusAsync(task.Id, Models.TaskStatus.Completed);
+            if (result is not null)
+            {
+                _context.Tasks.Single(x => x.Id == result.Id).StatusTask = result.StatusTask;
+                _navigator.AddInformation("Стутус задачи изменён");
+                _context.Refresh();
+            }
+            else
+                _navigator.AddError("Изменить статус не удалось");
+
+        }
+
+        private async void Create_Task(object sender, RoutedEventArgs e)
+        {
+            var taskForm = new TaskEditWindow(tasks: _context.TasksView.ToList());
+            taskForm.ShowDialog();
+            if (taskForm.Task is null) return;
+            var result =await TaskService.CreateTaskAsync(taskForm.Task);
+            if (result is not null)
+            {
+                _context.Tasks.Add(result);
+                _navigator.AddInformation("Задача добавлена");
+                _context.Refresh();
+
+            }
+            else
+                _navigator.AddError("Добавить задачу не удалось");
+        }
+        private async void Edit_Task(object sender, RoutedEventArgs e)
+        {
+            var taskSelected = TaskList.SelectedItem as TaskDto;
+            if (taskSelected == null) return;
+            var tasks = _context.TasksView.ToList();
+            tasks.Remove(taskSelected);
+            var taskForm = new TaskEditWindow(taskSelected.Id,tasks);
+            taskForm.ShowDialog();
+            if (taskForm.Task is null) return;
+
+            var result = await TaskService.UpdateTaskAsync(taskForm.Task);
+            if (result is not null)
+            {
+                await _context.LoadData();
+                //_context.Tasks.Remove(taskSelected);
+                //_context.Tasks.Add(result);
+                _navigator.AddInformation("Задача изменена");
+            }
+            else
+                _navigator.AddError("Изменить задачу не удалось");
+
         }
     }
 }

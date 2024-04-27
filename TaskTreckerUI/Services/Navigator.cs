@@ -46,6 +46,7 @@ namespace TaskTrackerUI.Services
         }
         public async Task<bool> LoadData()
         {
+            AddInformation("Загрузка...");
             var loadingPage = CurrentPage;
             VMBase context = CurrentPage.DataContext as VMBase;
             var updateResult = await context.LoadData();

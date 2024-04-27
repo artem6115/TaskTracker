@@ -50,6 +50,12 @@ namespace TaskTrackerAPI.Controllers
             return await _mediator.Send(command);
         }
 
+        [HttpPut("status")]
+        public async Task<TaskView> UpdateStatus(UpdateStatusTaskCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
         [HttpDelete("{Id}")]
         public async Task<bool> Delete([Required] long id)
         {

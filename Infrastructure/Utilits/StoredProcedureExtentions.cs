@@ -82,11 +82,11 @@ namespace Infrastructure.Utilits
         {
             
             await context.Database.ExecuteSqlRawAsync("Create_Task @Importance,@Title, @Description, @StatusTask, @UserId, @PreviousTaskId, @EpicId",
-                new SqlParameter("@Importance", task.Importance),
+                new SqlParameter("@Importance", task.Importance ?? (object)DBNull.Value),
                 new SqlParameter("@Title", task.Title),
                 new SqlParameter("@Description", task.Description),
                 new SqlParameter("@StatusTask", task.StatusTask),
-                new SqlParameter("@UserId", task.UserId),
+                new SqlParameter("@UserId", task.UserId ?? (object)DBNull.Value),
                 new SqlParameter("@PreviousTaskId", task.PreviousTaskId ?? (object)DBNull.Value),
                 new SqlParameter("@EpicId", task.EpicId ?? (object)DBNull.Value)
                 );
@@ -146,7 +146,7 @@ namespace Infrastructure.Utilits
 
             await context.Database.ExecuteSqlRawAsync("Update_Task @Id, @Importance, @Title, @Description, @StatusTask,  @DateOfClosed, @ApproximateDateOfCompleted, @UserId, @PreviousTaskId, @EpicId",
                 new SqlParameter("@Id", task.Id),
-                new SqlParameter("@Importance", task.Importance),
+                new SqlParameter("@Importance", task.Importance ?? (object)DBNull.Value),
                 new SqlParameter("@Title", task.Title),
                 new SqlParameter("@Description", task.Description),
                 new SqlParameter("@StatusTask", task.StatusTask),

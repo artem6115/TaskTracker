@@ -23,25 +23,26 @@ namespace BuisnnesService.MappingProfile
             #region Note
             CreateMap<NoteDto, Note>().ReverseMap();
             CreateMap<NoteCreateCommand, Note>().ForMember(dto => dto.DateOfCreated,
-                cnf => cnf.MapFrom(x => DateTime.Now))
+                cnf => cnf.MapFrom(x => DateTime.UtcNow))
                 .ForMember(dto => dto.UserId,
                 cnf => cnf.MapFrom(x => UserClaims.User.Id));
 
             CreateMap<NoteUpdateCommand, Note>()
                 .ForMember(dto => dto.DateOfChanged,
-                cnf => cnf.MapFrom(x => DateTime.Now));
+                cnf => cnf.MapFrom(x => DateTime.UtcNow));
             CreateMap<NoteDeleteCommand, Note>();
             #endregion
 
             #region Task
             CreateMap<CreateTaskCommand, WorkTask>()
-                .ForMember(e => e.DateOfCreated, cnf => cnf.MapFrom(x => DateTime.Now))
+                .ForMember(e => e.DateOfCreated, cnf => cnf.MapFrom(x => DateTime.UtcNow))
                 .ForMember(e=>e.StatusTask,cnf=>cnf.MapFrom(x=>SetAutoStatus(x)))
                 .ForMember(e=>e.UserId,cnf=>cnf.MapFrom(x=> SetAutoUser(x)));;
             CreateMap<UpdateTaskCommand, WorkTask>();
             CreateMap<WorkTask, TaskView>();
             CreateMap<Epic, EpicView>();
             CreateMap<WorkTask, TaskDto>();
+            CreateMap<UpdateStatusTaskCommand, WorkTask>();
 
             #endregion
 
@@ -60,7 +61,8 @@ namespace BuisnnesService.MappingProfile
             return null;
         }
         public Infrastructure.Entities.TaskStatus SetAutoStatus(CreateTaskCommand command) {
-            if (command.UserId is not null || command.EpicId == null)
+            if (command.PreviousTaskId is not null) return Infrastructure.Entities.TaskStatus.Blocked;
+            if (command.UserId is not null)
                 return Infrastructure.Entities.TaskStatus.Work;
             return Infrastructure.Entities.TaskStatus.Free;
         }

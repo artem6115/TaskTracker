@@ -19,7 +19,7 @@ namespace TaskTrackerUI.Conveters
                 case Models.TaskStatus.Free:
                     return Brushes.Orange;
                 case Models.TaskStatus.Work:
-                   return Brushes.Blue;
+                   return new SolidColorBrush(Color.FromRgb(1, 102, 204));
                 case Models.TaskStatus.Pause:
                     return Brushes.Gray;
                 case Models.TaskStatus.Blocked:

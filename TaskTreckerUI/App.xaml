@@ -7,9 +7,6 @@
              >
     <Application.Resources>
         <ResourceDictionary>
-            <Style TargetType="TextBlock" >
-                <Setter Property="Foreground" Value="White"/>
-            </Style>
             <ResourceDictionary.MergedDictionaries>
                <ResourceDictionary Source="Styles/MainWindow.xaml"/>
                 <ResourceDictionary Source="Styles/MainPage.xaml"/>
@@ -18,6 +15,7 @@
                 <ResourceDictionary Source="Styles/ProjectPage.xaml"/>
                 <ResourceDictionary Source="Styles/SettingPage.xaml"/>
                 <ResourceDictionary Source="Styles/TaskPage.xaml"/>
+                <ResourceDictionary Source="Styles/TaskEditWindow.xaml"/>
                 <ResourceDictionary Source="Styles/TaskInfoPage.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

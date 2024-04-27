@@ -14,7 +14,6 @@ namespace BuisnnesService.Commands.Tasks.Update
         public string? Title { get; set; }
         public string Description { get; set; }
 
-        public DateTime? DateOfClosed { get; set; }
         public DateTime? ApproximateDateOfCompleted { get; set; }
 
         public Infrastructure.Entities.TaskStatus? StatusTask { get; set; }

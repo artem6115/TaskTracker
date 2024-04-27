@@ -83,7 +83,7 @@
                 Orientation="Horizontal"
                 Grid.Row="3"
                 Grid.Column="0"
-                Margin="10 0 0 0"
+                Margin="20 0 0 0"
                 Grid.ColumnSpan="2"
                 >
                 <TextBlock 
@@ -115,6 +115,7 @@
 
             <!--5 row-->
             <StackPanel 
+                Margin="20 5 0 0"
                  Orientation="Horizontal" 
                  Grid.Row="4"
                  Grid.ColumnSpan="4">

@@ -24,7 +24,7 @@
             <RowDefinition MaxHeight="70" Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel  Grid.Row="0" Orientation="Horizontal" Background="#FF393333">
-            <Button Margin="20 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" ToolTip="Создать задачу" >
+            <Button Margin="20 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Create_Task" ToolTip="Создать задачу" >
                 <Button.Background >
                     <ImageBrush ImageSource="/Assets/Images/add_btn.png"/>
                 </Button.Background>
@@ -34,7 +34,7 @@
                     <ImageBrush ImageSource="/Assets/Images/delete_btn.png"/>
                 </Button.Background>
             </Button>
-            <Button Style="{StaticResource MenuButton}" Width="30" Height="30"  ToolTip="Редактировать выделеную задачу">
+            <Button Style="{StaticResource MenuButton}" Width="30" Height="30"  Click="Edit_Task" ToolTip="Редактировать выделеную задачу">
                 <Button.Background >
                     <ImageBrush ImageSource="/Assets/Images/change_btn.png"/>
                 </Button.Background>
