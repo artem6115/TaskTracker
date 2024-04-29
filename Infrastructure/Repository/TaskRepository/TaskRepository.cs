@@ -18,10 +18,18 @@ namespace Infrastructure.Repository.TaskRepository
         }
         public async Task<WorkTask> CreateTaskAsync(WorkTask task)
         {
+            if(await IsLockedTask(task))task.StatusTask = Entities.TaskStatus.Blocked;
             var resultTask = await _context.Tasks.AddAsync(task);
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Task added, id - {resultTask.Entity.Id}, description - {resultTask.Entity.Description}");
             return resultTask.Entity;
+        }
+
+        private async Task<bool> IsLockedTask(WorkTask task)
+        {
+            if (task.PreviousTaskId is null) return false;
+            var backEntity = await _context.Tasks.SingleAsync(x => x.Id == task.PreviousTaskId);
+            return backEntity.StatusTask != Entities.TaskStatus.Completed;
         }
 
         public async Task<bool> DeleteTaskAsync(long id)
@@ -30,6 +38,8 @@ namespace Infrastructure.Repository.TaskRepository
             if (task is null)
                 throw new FileNotFoundException("Task not found");
             await CheckAccess(task);
+            var nextTask = await _context.Tasks.SingleOrDefaultAsync(x => x.PreviousTaskId == id);
+            if (nextTask is not null) nextTask.PreviousTaskId = null;
             _context.Remove(task);
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Task deleted, id - {task.Id}, description - {task.Description}");
@@ -56,7 +66,7 @@ namespace Infrastructure.Repository.TaskRepository
             if (task is null)
                 throw new FileNotFoundException("Task not found");
             if (task.EpicId == null && task.UserId != UserClaims.User.Id )
-                throw new ArgumentException("Access denied");
+                throw new AccessViolationException("Do not have access to this resource");
             return task;
         }
 
@@ -66,9 +76,25 @@ namespace Infrastructure.Repository.TaskRepository
                 .Where(task => task.EpicId == id).ToListAsync();
         }
 
+        public async Task UnclockTasksAsync(long Id)
+        {
+            var entitiesToUnlock = await _context.Tasks.Where(x=>x.PreviousTaskId == Id).ToListAsync();
+            foreach (var entity in entitiesToUnlock)
+                entity.StatusTask = (entity.UserId is null) ? Entities.TaskStatus.Free : Entities.TaskStatus.Work;
+            await _context.SaveChangesAsync();
+        }
+        public async Task LockTasksAsync(long Id)
+        {
+            var entitiesToUnlock = await _context.Tasks.Where(x => x.PreviousTaskId == Id).ToListAsync();
+            foreach (var entity in entitiesToUnlock)
+                entity.StatusTask =  Entities.TaskStatus.Blocked;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<WorkTask> UpdateTaskAsync(WorkTask task)
         {
             await CheckAccess(task);
+            if (await IsLockedTask(task)) task.StatusTask = Entities.TaskStatus.Blocked;
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Task updated, id - {task.Id}, description - {task.Description}");
             return task;
@@ -78,7 +104,7 @@ namespace Infrastructure.Repository.TaskRepository
             if (task.EpicId == null)
             {
                 if (task.UserId != UserClaims.User.Id)
-                    throw new ArgumentException("Access denied");
+                    throw new AccessViolationException("Do not have access to this resource");
             }
             else
             {
@@ -86,7 +112,7 @@ namespace Infrastructure.Repository.TaskRepository
                 x.Project.AuthorId == UserClaims.User.Id &&
                 x.Id == task.EpicId);
                 if (authResult is null)
-                    throw new ArgumentException("Access denied");
+                    throw new AccessViolationException("Do not have access to this resource");
             }
 
         }

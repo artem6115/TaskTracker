@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaskTrackerUI.Services;
 using TaskTrackerUI.ViewModels;
 
 namespace TaskTrackerUI.Views
@@ -22,9 +23,11 @@ namespace TaskTrackerUI.Views
     public partial class TaskInfoPage : Page
     {
         TaskInfoVm _context;
-        public  TaskInfoPage(long TaskId)
+        Navigator _navigator;
+        public  TaskInfoPage(Navigator navigator, long TaskId)
         {
             InitializeComponent();
+            _navigator = navigator;
             _context = DataContext as TaskInfoVm;
             _context.TaskId = TaskId;
            
@@ -32,7 +35,8 @@ namespace TaskTrackerUI.Views
 
         private void Open_back_task(object sender, MouseButtonEventArgs e)
         {
-            MessageBox.Show("BackTask");
+            if (_context.Task?.PreviousTask?.Id is null) return;
+            _navigator.Open(new TaskInfoPage(_navigator,_context.Task.PreviousTask.Id));
         }
 
 

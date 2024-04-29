@@ -23,19 +23,19 @@ namespace BuisnnesService.MappingProfile
             #region Note
             CreateMap<NoteDto, Note>().ReverseMap();
             CreateMap<NoteCreateCommand, Note>().ForMember(dto => dto.DateOfCreated,
-                cnf => cnf.MapFrom(x => DateTime.UtcNow))
+                cnf => cnf.MapFrom(x => DateTime.Now))
                 .ForMember(dto => dto.UserId,
                 cnf => cnf.MapFrom(x => UserClaims.User.Id));
 
             CreateMap<NoteUpdateCommand, Note>()
                 .ForMember(dto => dto.DateOfChanged,
-                cnf => cnf.MapFrom(x => DateTime.UtcNow));
+                cnf => cnf.MapFrom(x => DateTime.Now));
             CreateMap<NoteDeleteCommand, Note>();
             #endregion
 
             #region Task
             CreateMap<CreateTaskCommand, WorkTask>()
-                .ForMember(e => e.DateOfCreated, cnf => cnf.MapFrom(x => DateTime.UtcNow))
+                .ForMember(e => e.DateOfCreated, cnf => cnf.MapFrom(x => DateTime.Now))
                 .ForMember(e=>e.StatusTask,cnf=>cnf.MapFrom(x=>SetAutoStatus(x)))
                 .ForMember(e=>e.UserId,cnf=>cnf.MapFrom(x=> SetAutoUser(x)));;
             CreateMap<UpdateTaskCommand, WorkTask>();

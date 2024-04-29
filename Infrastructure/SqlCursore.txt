@@ -1,0 +1,43 @@
+﻿begin
+declare @Id bigint
+declare @StatusTask int
+declare @UserId bigint
+
+
+declare @IdChanged bigint
+set @IdChanged = 15
+
+declare MyCursor cursor scroll for
+
+select Id, StatusTask, UserId from Tasks
+open MyCursor
+fetch MyCursor into @Id, @StatusTask, @UserId
+
+while @@FETCH_STATUS <> 0
+begin
+	print('Hellow')
+	If (@UserId is null)
+		UPDATE Tasks SET StatusTask=0 WHERE PreviousTaskId = @IdChanged AND Id = @Id
+	ELSE
+		UPDATE Tasks SET StatusTask=1 WHERE PreviousTaskId = @IdChanged AND Id = @Id
+end
+
+close MyCursor
+deallocate MyCursor
+end
+
+
+ALTER TRIGGER [dbo].[UpdateTaskTriger] ON [dbo].[Tasks] 
+After Update,Delete
+AS 
+IF IS_MEMBER ('db_owner') = 0
+BEGIN
+	print('triget work')
+	declare @Id bigint
+	set @Id = (select Id from inserted)
+   Update Tasks set StatusTask = 0
+   Where PreviousTaskId=@Id and UserId is not null
+
+	Update Tasks set StatusTask = 1
+	Where PreviousTaskId=@Id and UserId is not null;
+END

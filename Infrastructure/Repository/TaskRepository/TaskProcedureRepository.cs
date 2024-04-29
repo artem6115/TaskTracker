@@ -30,6 +30,11 @@ namespace Infrastructure.Repository.TaskRepository
             if (task is null)
                 throw new FileNotFoundException("Task not found");
             await CheckAccess(task);
+            var nextTask = await _context.Tasks.AsNoTracking().SingleOrDefaultAsync(x => x.PreviousTaskId == id);
+            if (nextTask is not null) {
+                nextTask.PreviousTaskId = null; 
+                await _context.Update_Task(nextTask);
+             }
             await _context.Delete_Task(id);
             _logger.LogDebug($"Task deleted, id - {task.Id}, description - {task.Description}");
             return true;
@@ -53,6 +58,8 @@ namespace Infrastructure.Repository.TaskRepository
                 .SingleOrDefaultAsync(task => task.Id == id);
             if (task is null)
                 throw new FileNotFoundException("Task not found");
+            if (task.EpicId == null && task.UserId != UserClaims.User.Id)
+                throw new AccessViolationException("Do not have access to this resource");
             return task;
         }
 
@@ -60,6 +67,15 @@ namespace Infrastructure.Repository.TaskRepository
         {
             return await _context.Tasks.AsNoTracking()
                 .Where(task => task.EpicId == id).ToListAsync();
+        }
+
+        public Task UnclockTasksAsync(long id)
+        {
+            return null!;
+        }
+        public Task LockTasksAsync(long id)
+        {
+            return null!;
         }
 
         public async Task<WorkTask> UpdateTaskAsync(WorkTask task)
@@ -76,7 +92,7 @@ namespace Infrastructure.Repository.TaskRepository
             if (task.EpicId == null)
             {
                 if (task.UserId != UserClaims.User.Id)
-                    throw new ArgumentException("Access denied");
+                    throw new AccessViolationException("Do not have access to this resource");
             }
             else
             {
@@ -84,7 +100,7 @@ namespace Infrastructure.Repository.TaskRepository
                 x.Project.AuthorId == UserClaims.User.Id &&
                 x.Id == task.EpicId);
                 if (authResult is null)
-                    throw new ArgumentException("Access denied");
+                    throw new AccessViolationException("Do not have access to this resource");
             }
 
         }

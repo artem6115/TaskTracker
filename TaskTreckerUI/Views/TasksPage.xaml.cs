@@ -74,7 +74,7 @@ namespace TaskTrackerUI.Views
             {
                 var task = TaskList.SelectedItem as TaskDto;
                 if (task == null) return;
-                _navigator.Open(new TaskInfoPage(task.Id));
+                _navigator.Open(new TaskInfoPage(_navigator,task.Id));
             }
         }
 
@@ -84,7 +84,7 @@ namespace TaskTrackerUI.Views
             {
                 var task = TaskList.SelectedItem as TaskDto;
                 if (task == null) return;
-                _navigator.Open(new TaskInfoPage(task.Id));
+                _navigator.Open(new TaskInfoPage(_navigator, task.Id));
             }
         }
 
@@ -103,7 +103,7 @@ namespace TaskTrackerUI.Views
             {
                 _context.Tasks.Single(x => x.Id == result.Id).StatusTask = result.StatusTask;
                 _navigator.AddInformation("Стутус задачи изменён");
-                _context.Refresh();
+                await _context.LoadData();
 
             }
             else
@@ -126,7 +126,8 @@ namespace TaskTrackerUI.Views
             {
                 _context.Tasks.Single(x => x.Id == result.Id).StatusTask = result.StatusTask;
                 _navigator.AddInformation("Стутус задачи изменён");
-                _context.Refresh();
+                await _context.LoadData();
+
 
             }
             else
@@ -152,7 +153,8 @@ namespace TaskTrackerUI.Views
             {
                 _context.Tasks.Single(x => x.Id == result.Id).StatusTask = result.StatusTask;
                 _navigator.AddInformation("Стутус задачи изменён");
-                _context.Refresh();
+                await _context.LoadData();
+
             }
             else
                 _navigator.AddError("Изменить статус не удалось");
@@ -188,9 +190,11 @@ namespace TaskTrackerUI.Views
             var result = await TaskService.UpdateTaskAsync(taskForm.Task);
             if (result is not null)
             {
-                await _context.LoadData();
-                //_context.Tasks.Remove(taskSelected);
-                //_context.Tasks.Add(result);
+                var index = _context.Tasks.IndexOf(taskSelected);
+                _context.Tasks.RemoveAt(index);
+
+                _context.Tasks.Insert(index,result);
+                _context.Refresh();
                 _navigator.AddInformation("Задача изменена");
             }
             else

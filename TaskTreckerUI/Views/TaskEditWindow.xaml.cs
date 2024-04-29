@@ -81,6 +81,8 @@ namespace TaskTrackerUI.Views
             if (Importance_check.IsChecked == true) Task.Importance = null;
             if (BackTask_check.IsChecked == true) Task.PreviousTask = null;
             Task.User = AuthService.User;
+            if (_context.Task.StatusTask == Models.TaskStatus.Blocked && Task.PreviousTask == null)
+                Task.StatusTask = Models.TaskStatus.Work;
             Close();
           
         }

@@ -18,12 +18,30 @@ namespace BuisnnesService.Commands.Tasks.Update
         public async Task<TaskView> Handle(UpdateStatusTaskCommand request, CancellationToken cancellationToken)
         {
             var task = await _taskRepository.GetTaskAsync(request.Id);
+            WorkTask updatedTask;
             if (request.StatusTask == Infrastructure.Entities.TaskStatus.Completed &&
                 task.StatusTask != Infrastructure.Entities.TaskStatus.Completed)
-                task.DateOfClosed = DateTime.UtcNow;
-            task = _mapper.Map(request, task);
-            var newTask = await _taskRepository.UpdateTaskAsync(task);
-            return _mapper.Map<TaskView>(newTask);
+            {
+                task = _mapper.Map(request, task);
+                task.DateOfClosed = DateTime.Now;
+                updatedTask = await _taskRepository.UpdateTaskAsync(task);
+                await _taskRepository.UnclockTasksAsync(updatedTask.Id);
+
+            }
+            else if (task.StatusTask == Infrastructure.Entities.TaskStatus.Completed &&
+                 request.StatusTask != Infrastructure.Entities.TaskStatus.Completed)
+            {
+                task = _mapper.Map(request, task);
+                task.DateOfClosed = null!;
+                updatedTask = await _taskRepository.UpdateTaskAsync(task);
+                await _taskRepository.LockTasksAsync(updatedTask.Id);
+            }
+            else
+            {
+                task = _mapper.Map(request, task);
+                updatedTask = await _taskRepository.UpdateTaskAsync(task);
+            }
+            return _mapper.Map<TaskView>(updatedTask);
         }
     }
 }

@@ -55,10 +55,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseGlobalExceptionMiddleware();
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseHsts();
+app.UseQueryTimeCheckerMiddleware();
 
 app.UseAuthentication();
 app.UseAuthorization();

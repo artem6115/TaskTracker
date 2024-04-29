@@ -30,7 +30,7 @@ namespace Infrastructure.Repository.NoteRepository
             if(note is null )
                 throw new FileNotFoundException("Note not found");
             if (note.UserId != UserClaims.User.Id)
-                throw new ArgumentException("Access denied");
+                throw new AccessViolationException("Do not have access to this resource");
             await _context.Delete_Note(Id);
             _logger.LogDebug($"Note deleted, id = {Id}");
         }
@@ -42,7 +42,7 @@ namespace Infrastructure.Repository.NoteRepository
                 throw new FileNotFoundException("Note not found");
 
             if (entity.UserId != UserClaims.User.Id)
-                throw new ArgumentException("Access denied");
+                throw new AccessViolationException("Do not have access to this resource");
 
             return entity;
         }
@@ -59,7 +59,7 @@ namespace Infrastructure.Repository.NoteRepository
         public async Task<Note> UpdateAsync(Note note)
         {
             if (note.UserId != UserClaims.User.Id)
-                throw new ArgumentException("Access denied");
+                throw new AccessViolationException("Do not have access to this resource");
             await _context.Update_Note(note);
             _logger.LogDebug($"Note changed, id = {note.Id}");
             return await _context.Notes.AsNoTracking().SingleAsync(x => x.Id == note.Id);
