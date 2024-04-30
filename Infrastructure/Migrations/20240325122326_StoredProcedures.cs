@@ -10,6 +10,44 @@ namespace Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            //Create User_Project
+            migrationBuilder.Sql("""
+                SET ANSI_NULLS ON
+                GO
+                SET QUOTED_IDENTIFIER ON
+                GO
+
+                CREATE PROCEDURE Add_UserProject
+                    @UserId bigint,
+                    @ProjectId bigint
+
+                AS
+                BEGIN
+                	SET NOCOUNT ON;
+                    INSERT INTO Users_To_Projects (UserId,ProjectId) VALUES (@UserId,@ProjectId)
+                END
+                GO
+                
+                """);
+            //Delete User_Project
+            migrationBuilder.Sql("""
+                SET ANSI_NULLS ON
+                GO
+                SET QUOTED_IDENTIFIER ON
+                GO
+
+                CREATE PROCEDURE Remove_UserProject
+                    @UserId bigint,
+                    @ProjectId bigint
+
+                AS
+                BEGIN
+                	SET NOCOUNT ON;
+                    Delete Users_To_Projects WHERE UserId = @UserId AND ProjectId = @ProjectId
+                END
+                GO
+                
+                """);
             //Create User
             migrationBuilder.Sql("""
                 SET ANSI_NULLS ON

@@ -32,18 +32,16 @@ namespace Infrastructure.Repository.TaskRepository
             return backEntity.StatusTask != Entities.TaskStatus.Completed;
         }
 
-        public async Task<bool> DeleteTaskAsync(long id)
+        public async Task DeleteTaskAsync(long id)
         {
             var task = await _context.Tasks.AsNoTracking().SingleOrDefaultAsync(x=>x.Id == id);
             if (task is null)
                 throw new FileNotFoundException("Task not found");
             await CheckAccess(task);
-            var nextTask = await _context.Tasks.SingleOrDefaultAsync(x => x.PreviousTaskId == id);
-            if (nextTask is not null) nextTask.PreviousTaskId = null;
+            await UnclockTasksAsync(id);
             _context.Remove(task);
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Task deleted, id - {task.Id}, description - {task.Description}");
-            return true;
 
         }
 

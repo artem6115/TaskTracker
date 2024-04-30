@@ -13,7 +13,7 @@ namespace Infrastructure.Repository.Interfaces
         public Task<List<WorkTask>> GetTasksForEpicAsync(long id);
         public Task<WorkTask> CreateTaskAsync(WorkTask task);
         public Task<WorkTask> UpdateTaskAsync(WorkTask task);
-        public Task<bool> DeleteTaskAsync(long id);
+        public Task DeleteTaskAsync(long id);
         public Task UnclockTasksAsync(long id);
         public Task LockTasksAsync(long id);
 

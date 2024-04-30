@@ -46,6 +46,14 @@ namespace BuisnnesService.MappingProfile
 
             #endregion
 
+            #region Project
+
+            CreateMap<CreateProjectCommand, Project>();
+            CreateMap<UpdateProjectCommand, Project>();
+            CreateMap<Project,ProjectDto>();
+
+
+            #endregion
 
 
 

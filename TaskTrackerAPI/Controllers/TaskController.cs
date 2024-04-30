@@ -57,9 +57,9 @@ namespace TaskTrackerAPI.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public async Task<bool> Delete([Required] long id)
+        public async Task Delete([Required] long id)
         {
-            return await _mediator.Send(new DeleteTaskCommand() { Id = id });
+             await _mediator.Send(new DeleteTaskCommand() { Id = id });
         }
     }
 }

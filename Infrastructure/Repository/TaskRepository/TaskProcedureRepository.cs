@@ -24,7 +24,7 @@ namespace Infrastructure.Repository.TaskRepository
             return newTask;
         }
 
-        public async Task<bool> DeleteTaskAsync(long id)
+        public async Task DeleteTaskAsync(long id)
         {
             var task = await _context.Tasks.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
             if (task is null)
@@ -37,7 +37,6 @@ namespace Infrastructure.Repository.TaskRepository
              }
             await _context.Delete_Task(id);
             _logger.LogDebug($"Task deleted, id - {task.Id}, description - {task.Description}");
-            return true;
         }
 
         public async Task<List<WorkTask>> GetMyTasksAsync()

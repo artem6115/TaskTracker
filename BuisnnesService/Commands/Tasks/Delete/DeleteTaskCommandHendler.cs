@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BuisnnesService.Commands.Tasks.Delete
 {
-    public class DeleteTaskCommandHendler : IRequestHandler<DeleteTaskCommand,bool>
+    public class DeleteTaskCommandHendler : IRequestHandler<DeleteTaskCommand>
     {
         private readonly IMapper _mapper;
         private readonly ITaskRepository _taskRepository;
@@ -16,7 +16,7 @@ namespace BuisnnesService.Commands.Tasks.Delete
             _mapper = mapper;
             _taskRepository = taskRepository;
         }
-        public async Task<bool> Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteTaskCommand request, CancellationToken cancellationToken)
             => await _taskRepository.DeleteTaskAsync(request.Id);
 
         

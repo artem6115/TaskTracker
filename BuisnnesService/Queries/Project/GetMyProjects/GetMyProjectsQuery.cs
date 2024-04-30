@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BuisnnesService.Commands.Tasks.Delete
+namespace BuisnnesService.Queries.Project.GetAll
 {
-    public class DeleteTaskCommand : IRequest
+    public class GetMyProjectsQuery : IRequest<List<ProjectDto>>
     {
-        public long Id { get; set; }
     }
 }

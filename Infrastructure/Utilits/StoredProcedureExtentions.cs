@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Infrastructure.Auth;
+using Infrastructure.Entities;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,6 +15,14 @@ namespace Infrastructure.Utilits
     public static class StoredProcedureExtentions
     {
         #region Create
+        public static async Task AddUserProject(this TaskTrackerDbContext context ,UserProject userProject)
+        {
+            await context.Database.ExecuteSqlRawAsync("Add_UserProject @UserId, @ProjectId",
+                new SqlParameter("@UserId", userProject.UserId),
+                new SqlParameter("@ProjectId", userProject.ProjectId)
+                );
+        }
+
         public async static Task Create_User(this TaskTrackerDbContext context, User user)
         {
             await context.Database.ExecuteSqlRawAsync("Create_User @FullName, @Email, @Password, @Spice, @Phone",
@@ -160,6 +170,13 @@ namespace Infrastructure.Utilits
         #endregion
 
         #region Delete
+        public static async Task RemoveUserProject(this TaskTrackerDbContext context, UserProject userProject)
+        {
+            await context.Database.ExecuteSqlRawAsync("Remove_UserProject @UserId, @ProjectId",
+                new SqlParameter("@UserId", userProject.UserId),
+                new SqlParameter("@ProjectId", userProject.ProjectId)
+                );
+        }
         public async static Task Delete_Comment(this TaskTrackerDbContext context, long id)
         {
             await context.Database.ExecuteSqlRawAsync("Delete_Comment @Id",
