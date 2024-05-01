@@ -37,7 +37,7 @@ namespace BuisnnesService.MappingProfile
             CreateMap<CreateTaskCommand, WorkTask>()
                 .ForMember(e => e.DateOfCreated, cnf => cnf.MapFrom(x => DateTime.Now))
                 .ForMember(e=>e.StatusTask,cnf=>cnf.MapFrom(x=>SetAutoStatus(x)))
-                .ForMember(e=>e.UserId,cnf=>cnf.MapFrom(x=> SetAutoUser(x)));;
+                .ForMember(e=>e.UserId,cnf=>cnf.MapFrom(x=> SetAutoUser(x)));
             CreateMap<UpdateTaskCommand, WorkTask>();
             CreateMap<WorkTask, TaskView>();
             CreateMap<Epic, EpicView>();
@@ -48,7 +48,8 @@ namespace BuisnnesService.MappingProfile
 
             #region Project
 
-            CreateMap<CreateProjectCommand, Project>();
+            CreateMap<CreateProjectCommand, Project>()
+                .ForMember(e => e.AuthorId, cnf => cnf.MapFrom(x => UserClaims.User.Id ));
             CreateMap<UpdateProjectCommand, Project>();
             CreateMap<Project,ProjectDto>();
 

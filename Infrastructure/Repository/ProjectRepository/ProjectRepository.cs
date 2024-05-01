@@ -18,11 +18,23 @@ namespace Infrastructure.Repository.ProjectRepository
             _logger = logger;
         }
 
-        public async Task ChangeProjectTeam(IEnumerable<UserProject> AddUsers, IEnumerable<UserProject> RemoveUsers)
+        public async Task ChangeProjectTeam(long projectId, List<long> usersId)
         {
-           await _context.UsersProjects.AddRangeAsync(AddUsers);
-           _context.UsersProjects.RemoveRange(RemoveUsers);
-           await  _context.SaveChangesAsync();
+            var entities = await _context.UsersProjects
+               .AsNoTracking()
+               .Where(x => x.ProjectId == projectId)
+               .ToListAsync();
+            var entityToDelete = entities.ExceptBy(usersId, x => x.UserId);
+            var entityToAdd = usersId.Except(entities
+                .Select(x => x.UserId))
+                .Select(x => new UserProject
+                { UserId = x, ProjectId = projectId }
+                );
+            await _context.UsersProjects.AddRangeAsync(entityToAdd);
+            _context.UsersProjects.RemoveRange(entityToAdd);
+
+            await _context.SaveChangesAsync();
+
         }
 
         public async Task<Project> CreateProjectAsync(Project project)
@@ -36,7 +48,7 @@ namespace Infrastructure.Repository.ProjectRepository
         public async Task DeleteProjectAsync(long Id)
         {
             var entity = await _context.Projects.FindAsync(Id);
-            if(entity == null)
+            if (entity == null)
                 throw new FileNotFoundException("Проект не найден");
             if (entity.AuthorId != UserClaims.User.Id)
                 throw new AccessViolationException("Вы не можете удалить чужой проект");
@@ -48,7 +60,7 @@ namespace Infrastructure.Repository.ProjectRepository
         public async Task<List<Project>> GetMyProjectsAsync()
         {
             var entities = await _context.Projects
-                .Where(x=>x.AuthorId == UserClaims.User.Id)
+                .Where(x => x.AuthorId == UserClaims.User.Id)
                 .AsNoTracking()
                 .ToListAsync();
             return entities;
@@ -59,10 +71,10 @@ namespace Infrastructure.Repository.ProjectRepository
             var ProjectsId = await _context.UsersProjects
                 .Where(x => x.UserId == UserClaims.User.Id)
                 .AsNoTracking()
-                .Select(x=>x.ProjectId)
+                .Select(x => x.ProjectId)
                 .ToListAsync();
             var entities = await _context.Projects
-                .Where(x =>ProjectsId.Contains(x.Id))
+                .Where(x => ProjectsId.Contains(x.Id))
                 .AsNoTracking()
                 .ToListAsync();
             return entities;
@@ -75,6 +87,14 @@ namespace Infrastructure.Repository.ProjectRepository
                 throw new FileNotFoundException("Проект не найден");
             return entity;
         }
+
+        public async Task<List<User>> GetUsers(long projectId)
+            => await _context.UsersProjects
+            .AsNoTracking()
+            .Where(x => x.ProjectId == projectId)
+            .Select(x => x.User)
+            .ToListAsync();
+        
 
         public async Task<Project> UpdateProjectAsync(Project project)
         {

@@ -21,17 +21,8 @@ namespace BuisnnesService.Commands.Projects.UpdateUsers
             var project = await _projectRepository.GetProjectAsync(request.ProjectId);
             if (project.AuthorId != UserClaims.User.Id)
                 throw new AccessViolationException("У вас нет доступа на изменение состава команды данного проекта");
-            var toAdd = request.UsersIdToAdd.Select(x => new UserProject()
-            {
-                ProjectId = request.ProjectId,
-                UserId = x
-            });
-            var toRemove = request.UsersIdToRemove.Select(x => new UserProject()
-            {
-                ProjectId = request.ProjectId,
-                UserId = x
-            });
-            await _projectRepository.ChangeProjectTeam(toAdd,toRemove);
+
+            await _projectRepository.ChangeProjectTeam(request.ProjectId,request.UsersId);
 
         }
     }

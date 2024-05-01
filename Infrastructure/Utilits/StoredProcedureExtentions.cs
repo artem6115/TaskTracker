@@ -15,12 +15,15 @@ namespace Infrastructure.Utilits
     public static class StoredProcedureExtentions
     {
         #region Create
-        public static async Task AddUserProject(this TaskTrackerDbContext context ,UserProject userProject)
+        public static async Task AddUserProject(this TaskTrackerDbContext context , IEnumerable<UserProject> usersProject)
         {
-            await context.Database.ExecuteSqlRawAsync("Add_UserProject @UserId, @ProjectId",
-                new SqlParameter("@UserId", userProject.UserId),
-                new SqlParameter("@ProjectId", userProject.ProjectId)
-                );
+            foreach (var user in usersProject)
+            {
+                await context.Database.ExecuteSqlRawAsync("Add_UserProject @UserId, @ProjectId",
+                     new SqlParameter("@UserId", user.UserId),
+                     new SqlParameter("@ProjectId", user.ProjectId));
+            }
+ 
         }
 
         public async static Task Create_User(this TaskTrackerDbContext context, User user)
@@ -170,12 +173,14 @@ namespace Infrastructure.Utilits
         #endregion
 
         #region Delete
-        public static async Task RemoveUserProject(this TaskTrackerDbContext context, UserProject userProject)
+        public static async Task RemoveUserProject(this TaskTrackerDbContext context, IEnumerable<UserProject> usersProject)
         {
-            await context.Database.ExecuteSqlRawAsync("Remove_UserProject @UserId, @ProjectId",
-                new SqlParameter("@UserId", userProject.UserId),
-                new SqlParameter("@ProjectId", userProject.ProjectId)
-                );
+            foreach (var user in usersProject)
+            {
+                await context.Database.ExecuteSqlRawAsync("Remove_UserProject @UserId, @ProjectId",
+                     new SqlParameter("@UserId", user.UserId),
+                     new SqlParameter("@ProjectId", user.ProjectId));
+            }
         }
         public async static Task Delete_Comment(this TaskTrackerDbContext context, long id)
         {

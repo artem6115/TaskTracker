@@ -1,10 +1,13 @@
 ﻿using BuisnnesService.Commands.Projects.Create;
 using BuisnnesService.Commands.Projects.Delete;
 using BuisnnesService.Commands.Projects.Update;
+using BuisnnesService.Commands.Projects.UpdateUsers;
 using BuisnnesService.Models;
 using BuisnnesService.Queries.Project.GetAll;
 using BuisnnesService.Queries.Project.GetParticipateProjects;
 using BuisnnesService.Queries.Project.GetProject;
+using BuisnnesService.Queries.Project.GetUsers;
+using Infrastructure.Auth;
 using Infrastructure.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +28,7 @@ namespace TaskTrackerAPI.Controllers
         public async Task<List<ProjectDto>> GetParticipateProjects(GetParticipateProjectsQuery query)
             =>await _mediator.Send(query);
 
-        [HttpGet("/My")]
+        [HttpGet("My")]
         public async Task<List<ProjectDto>> GetMyProjects(GetMyProjectsQuery query)
             => await _mediator.Send(query);
 
@@ -40,6 +43,13 @@ namespace TaskTrackerAPI.Controllers
         [HttpPut]
         public async Task<ProjectDto> UpdateProject(UpdateProjectCommand command)
             => await _mediator.Send(command);
+
+        [HttpPut("Users")]
+        public async Task UpdateProjectUsers(UpdateUsersProjectsCommand command)
+            => await _mediator.Send(command);
+        [HttpGet("{Id}/Users")]
+        public async Task<List<UserClaims>> GetProjectUsers([Required]long Id)
+                => await _mediator.Send(new GetProjectUsersQuery() { ProjectId=Id});
 
         [HttpDelete("{Id}")]
         public async Task DeleteProject([Required] long Id)

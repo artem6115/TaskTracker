@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Infrastructure.Utilits;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,29 @@ namespace Infrastructure.Repository.ProjectRepository
             _context = context;
             _logger = logger;
         }
+        public async Task<List<User>> GetUsers(long projectId)
+            => await _context.UsersProjects
+            .AsNoTracking()
+            .Where(x => x.ProjectId == projectId)
+            .Select(x => x.User)
+            .ToListAsync();
 
-        public async Task ChangeProjectTeam(IEnumerable<UserProject> AddUsers, IEnumerable<UserProject> RemoveUsers)
+        public async Task ChangeProjectTeam(long projectId, List<long> usersId)
         {
-            Parallel.ForEach(AddUsers,async x => await _context.AddUserProject(x));
-            Parallel.ForEach(AddUsers,async x => await _context.RemoveUserProject(x));
+            var entities = await _context.UsersProjects
+                .AsNoTracking()
+                .Where(x => x.ProjectId == projectId)
+                .ToListAsync();
+            var entityToDelete = entities.ExceptBy(usersId, x => x.UserId);
+            var entityToAdd = usersId.Except(entities
+                .Select(x=>x.UserId))
+                .Select(x=> new UserProject
+                    { UserId=x,ProjectId=projectId}
+                );
+            await _context.AddUserProject(entityToAdd);
+            await _context.RemoveUserProject(entityToDelete);
+
+
         }
 
         public async Task<Project> CreateProjectAsync(Project project)

@@ -12,7 +12,9 @@ namespace Infrastructure.Repository.Interfaces
         public Task<List<Project>> GetParticipateProjectsAsync();
         public Task<List<Project>> GetMyProjectsAsync();
         public Task<Project> GetProjectAsync(long Id);
-        public Task ChangeProjectTeam(IEnumerable<UserProject> AddUsers, IEnumerable<UserProject> RemoveUsers);
+        public Task ChangeProjectTeam(long projectId,List<long> UsersId);
+        public Task<List<User>> GetUsers(long projectId);
+
 
         public Task<Project> CreateProjectAsync(Project project);
         public Task<Project> UpdateProjectAsync(Project project);

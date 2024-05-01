@@ -20,7 +20,7 @@ namespace BuisnnesService.Commands.Projects.Update
             var entity = await _projectRepository.GetProjectAsync(request.Id);
             if (entity.AuthorId != UserClaims.User.Id)
                 throw new AccessViolationException("Вы не имеете доступа, для редактирования данного проекта");
-            var newEntity = await _projectRepository.UpdateProjectAsync(_mapper.Map<Project>(entity));
+            var newEntity = await _projectRepository.UpdateProjectAsync(_mapper.Map(request,entity));
             return _mapper.Map<ProjectDto>(newEntity);
         }
     }

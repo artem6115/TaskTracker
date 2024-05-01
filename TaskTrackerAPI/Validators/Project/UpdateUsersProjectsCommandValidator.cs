@@ -9,6 +9,7 @@ namespace TaskTrackerAPI.Validators.Project
         public UpdateUsersProjectsCommandValidator()
         {
             RuleFor(x=>x.ProjectId).NotNull();
+            RuleFor(x=>x.UsersId).NotNull();
         }
     }
 }

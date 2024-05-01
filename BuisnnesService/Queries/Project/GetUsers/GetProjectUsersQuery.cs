@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BuisnnesService.Commands.Projects.UpdateUsers
+namespace BuisnnesService.Queries.Project.GetUsers
 {
-    public class UpdateUsersProjectsCommand : IRequest
+    public class GetProjectUsersQuery : IRequest<List<UserClaims>>
     {
         public long ProjectId { get; set; }
-        public List<long> UsersId { get; set; }
-
     }
 }

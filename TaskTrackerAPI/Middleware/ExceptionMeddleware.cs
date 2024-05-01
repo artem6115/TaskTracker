@@ -19,7 +19,7 @@ namespace TaskTrackerAPI.Middleware
                 await _next(context);
             }
             catch (AccessViolationException ex) {
-                context.Response.StatusCode = 401;
+                context.Response.StatusCode = 403;
                 context.Response.Body = new MemoryStream(Encoding.UTF8.GetBytes(ex.Message ?? "Access denied"));
             }
             catch(FileNotFoundException ex)
