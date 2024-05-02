@@ -42,6 +42,7 @@ namespace Infrastructure.Repository.ProjectRepository
             var entity = await _context.Projects.AddAsync(project);
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Создан проект, наименоание {entity.Entity.Name}, id - {entity.Entity.Id}");
+            await entity.Navigation("Author").LoadAsync();
             return entity.Entity;
         }
 
@@ -62,6 +63,7 @@ namespace Infrastructure.Repository.ProjectRepository
             var entities = await _context.Projects
                 .Where(x => x.AuthorId == UserClaims.User.Id)
                 .AsNoTracking()
+                .Include(x => x.Author)
                 .ToListAsync();
             return entities;
         }
@@ -76,13 +78,18 @@ namespace Infrastructure.Repository.ProjectRepository
             var entities = await _context.Projects
                 .Where(x => ProjectsId.Contains(x.Id))
                 .AsNoTracking()
+                .Include(x => x.Author)
                 .ToListAsync();
             return entities;
         }
 
         public async Task<Project> GetProjectAsync(long Id)
         {
-            var entity = await _context.Projects.FindAsync(Id);
+            
+            var entity = await _context.Projects
+                .Include(x => x.Author)
+                .Include(x => x.Epics)
+                .SingleOrDefaultAsync(x => x.Id == Id);
             if (entity == null)
                 throw new FileNotFoundException("Проект не найден");
             return entity;
@@ -100,7 +107,8 @@ namespace Infrastructure.Repository.ProjectRepository
         {
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Project updated, id - {project.Id}, description - {project.Name}");
-            return project;
+            var projectNew = await GetProjectAsync(project.Id);
+            return projectNew;
 
         }
     }

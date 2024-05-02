@@ -25,15 +25,15 @@ namespace TaskTrackerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<List<ProjectDto>> GetParticipateProjects(GetParticipateProjectsQuery query)
-            =>await _mediator.Send(query);
+        public async Task<List<ProjectDto>> GetParticipateProjects()
+            =>await _mediator.Send(new GetParticipateProjectsQuery());
 
         [HttpGet("My")]
-        public async Task<List<ProjectDto>> GetMyProjects(GetMyProjectsQuery query)
-            => await _mediator.Send(query);
+        public async Task<List<ProjectDto>> GetMyProjects()
+            => await _mediator.Send(new GetMyProjectsQuery());
 
         [HttpGet("{Id}")]
-        public async Task<Project> GetProject([Required] long Id)
+        public async Task<ProjectDetails> GetProject([Required] long Id)
             => await _mediator.Send(new GetProjectQuery() { Id = Id});
 
         [HttpPost]

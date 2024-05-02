@@ -55,7 +55,7 @@ namespace TaskTrackerUI
         {
             Pages[(int)PagesEnum.Main] = new MainPage();
             Pages[(int)PagesEnum.Notify] = new NotifiesPage();
-            Pages[(int)PagesEnum.Project] = new ProjectsPage();
+            Pages[(int)PagesEnum.Project] = new ProjectsPage(Navigator);
             Pages[(int)PagesEnum.Task] = new TasksPage(Navigator);
             Pages[(int)PagesEnum.Note] = new NotesPage(Navigator);
             Pages[(int)PagesEnum.Setting] = new SettingsPage(Navigator);

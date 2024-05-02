@@ -12,11 +12,17 @@ namespace Infrastructure.Repository
         private readonly TaskTrackerDbContext _context;
         private readonly ILogger<UserRepository> _logger;
 
+
         public UserProcedureRepository(TaskTrackerDbContext context, ILogger<UserRepository> logger)
         {
             _context = context;
             _logger = logger;
         }
+        public async Task<List<User>> FindUsers(string emailPattern)
+            => (await _context.Users
+            .Where(x => x.Email.Contains(emailPattern))
+            .Take(100)
+            .ToListAsync());
         public async Task<User> AddUserAcync(User user)
         {
             await _context.Create_User(user);

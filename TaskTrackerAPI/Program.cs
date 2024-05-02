@@ -42,7 +42,7 @@ builder.Services.AddMediatR(cfg =>
      cfg.RegisterServicesFromAssembly(typeof(JwtAutorizationService).Assembly));
 
 builder.Services.AddRepository();
-builder.Services.AddStoredProceduresRepository();
+//builder.Services.AddStoredProceduresRepository();
 builder.Services.AddServices();
 builder.Services.AddFluentValidation(x=>x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 

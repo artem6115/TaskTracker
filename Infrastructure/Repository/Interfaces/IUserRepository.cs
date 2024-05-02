@@ -18,5 +18,6 @@ namespace Infrastructure.Repository.Interfaces
         public Task UpdateUserAccountAcync(User user);
         public Task DeleteUserAcync(User user);
         Task Delete_RefreshToken();
+        Task<List<User>> FindUsers(string emailPattern);
     }
 }

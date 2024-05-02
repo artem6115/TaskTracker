@@ -54,7 +54,8 @@
                x:Name="TaskList"
                ItemsSource="{Binding TasksView}"
                    KeyDown="Show_task_btn" 
-                   MouseDown="Show_task_mouse" PreviewMouseDoubleClick="Show_task_mouse"
+                   MouseDown="Show_task_mouse"
+                   PreviewMouseDoubleClick="Show_task_mouse"
               >
             <ListView.ItemTemplate>
                 <DataTemplate>

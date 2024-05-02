@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BuisnnesService.Queries.Project.GetProject
 {
-    public class GetProjectQueryHandler : IRequestHandler<GetProjectQuery,Infrastructure.Entities.Project>
+    public class GetProjectQueryHandler : IRequestHandler<GetProjectQuery,ProjectDetails>
     {
         private readonly IMapper _mapper;
         private readonly IProjectRepository _projectRepository;
@@ -16,7 +16,13 @@ namespace BuisnnesService.Queries.Project.GetProject
             _projectRepository = projectRepository;
         }
 
-        public async Task<Infrastructure.Entities.Project> Handle(GetProjectQuery request, CancellationToken cancellationToken)
-            => await _projectRepository.GetProjectAsync(request.Id);
+        public async Task<ProjectDetails> Handle(GetProjectQuery request, CancellationToken cancellationToken)
+        { 
+            var entity = await _projectRepository.GetProjectAsync(request.Id);
+            var dto = _mapper.Map<ProjectDetails>(entity);
+            dto.Users = _mapper.Map<List<UserClaims>>(await _projectRepository.GetUsers(request.Id));
+            return dto;
+        }
+
     }
 }

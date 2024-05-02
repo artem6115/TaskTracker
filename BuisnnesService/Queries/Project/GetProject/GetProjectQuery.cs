@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BuisnnesService.Queries.Project.GetProject
 {
-    public class GetProjectQuery : IRequest<Infrastructure.Entities.Project>
+    public class GetProjectQuery : IRequest<ProjectDetails>
     {
         public long Id { get; set; }
     }

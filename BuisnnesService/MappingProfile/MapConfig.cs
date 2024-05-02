@@ -51,7 +51,16 @@ namespace BuisnnesService.MappingProfile
             CreateMap<CreateProjectCommand, Project>()
                 .ForMember(e => e.AuthorId, cnf => cnf.MapFrom(x => UserClaims.User.Id ));
             CreateMap<UpdateProjectCommand, Project>();
-            CreateMap<Project,ProjectDto>();
+            CreateMap<Project, ProjectDto>();
+            CreateMap<Project, ProjectDetails>();
+
+            //.ForMember(e => e.Author, cnf => cnf.MapFrom(x => x.Author))
+            //.ForMember(e => e.Epics, cnf => cnf.MapFrom(x => x.Author));
+
+
+
+            //CreateMap<Project,ProjectDto>().ForMember(x=>x.Author,cnf=>cnf.MapFrom(x=>x.Author));
+
 
 
             #endregion

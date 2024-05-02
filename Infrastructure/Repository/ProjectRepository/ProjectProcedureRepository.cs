@@ -47,6 +47,7 @@ namespace Infrastructure.Repository.ProjectRepository
             await _context.Create_Project(project);
             var entity = await _context.Projects
                 .Where(x=>x.AuthorId==UserClaims.User.Id)
+                .Include(x=>x.Author)
                 .OrderByDescending(x=>x.Id)
                 .FirstAsync();
             _logger.LogDebug($"Создан проект, наименоание {entity.Name}, id - {entity.Id}");
@@ -69,6 +70,7 @@ namespace Infrastructure.Repository.ProjectRepository
         {
             var entities = await _context.Projects
                 .AsNoTracking()
+                .Include(x=>x.Author)
                 .Where(x => x.AuthorId == UserClaims.User.Id)
                 .ToListAsync();
             return entities;
@@ -84,13 +86,17 @@ namespace Infrastructure.Repository.ProjectRepository
             var entities = await _context.Projects
                 .Where(x => ProjectsId.Contains(x.Id))
                 .AsNoTracking()
+                .Include(x => x.Author)
                 .ToListAsync();
             return entities;
         }
 
         public async Task<Project> GetProjectAsync(long Id)
         {
-            var entity = await _context.Projects.FindAsync(Id);
+            var entity = await _context.Projects
+                            .Include(x => x.Author)
+                            .Include(x => x.Epics)
+                            .SingleOrDefaultAsync(x => x.Id == Id);
             if (entity == null)
                 throw new FileNotFoundException("Проект не найден");
             return entity;
@@ -99,7 +105,10 @@ namespace Infrastructure.Repository.ProjectRepository
         public async Task<Project> UpdateProjectAsync(Project project)
         {
             await _context.Update_Project(project);
-            var updateProj =await  _context.Projects.AsNoTracking().SingleAsync(x => x.Id == project.Id);
+            var updateProj =await  _context.Projects
+                .Include(x=>x.Author)
+                .AsNoTracking()
+                .SingleAsync(x => x.Id == project.Id);
             _logger.LogDebug($"Project updated, id - {updateProj.Id}, description - {updateProj.Name}");
             return updateProj;
 

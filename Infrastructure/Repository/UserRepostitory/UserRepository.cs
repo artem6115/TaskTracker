@@ -41,6 +41,13 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<User>> FindUsers(string emailPattern)
+            => await _context.Users
+            .Where(x=>x.Email.Contains(emailPattern))
+            .Take(100)
+            .ToListAsync();
+        
+
         public async Task<List<User>> GetAllUsersAsync()
         {
             return await _context.Users.AsNoTracking().ToListAsync();

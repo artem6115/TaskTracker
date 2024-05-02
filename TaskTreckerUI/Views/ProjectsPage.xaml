@@ -13,6 +13,88 @@
     </Page.DataContext>
 
     <Grid>
-        <TextBlock Style="{StaticResource Building}" HorizontalAlignment="Center" VerticalAlignment="Center" ><Run Text="My projects page will be here..."/></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition  Height="30"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock  Margin="20 0 20 0" HorizontalAlignment="Left" Grid.Row="0" Text="Мои проекты" Style="{StaticResource Title}"/>
+            <Button Content="Создать новый проект" Margin="0 5 0 0" Background="#FF0BB10F" Width="100" Height="25"/>
+        </StackPanel>
+        <ListView 
+            Grid.Row="1"
+            Margin="10"
+            x:Name="List_MyProj"
+            Background="Transparent"
+            ItemsSource="{Binding MyProjects}"
+            KeyDown="Open_MyProj_btn" 
+            MouseDown="Open_MyProj_mouse"
+            PreviewMouseDoubleClick="Open_MyProj_mouse"
+            >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" CanHorizontallyScroll="True"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                
+                    <DataTemplate>
+                    <Border CornerRadius="20"  Background="#FF0BB10F">
+                        <Grid  Height="100" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock TextWrapping="Wrap" Grid.Row="0" FontSize="20" FontStyle="Italic" Style="{StaticResource ProjectInfo}"  HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Name}"/>
+                            <Separator Grid.Row="1"/>
+                            <TextBlock TextWrapping="Wrap" Grid.Row="2" Style="{StaticResource ProjectInfo}"  HorizontalAlignment="Center" VerticalAlignment="Center"  Text="{Binding Author.FullName}"/>
+
+                        </Grid>
+                    </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+        </ListView>
+        <TextBlock Margin="20 0 0 0" HorizontalAlignment="Left" Grid.Row="2" Text="Проекты в которых я учавствую" Style="{StaticResource Title}"/>
+
+        <ListView 
+            Grid.Row="3"
+            x:Name="List_MyPartProj"
+            ItemsSource="{Binding MyParticipateProjects}"
+            Margin="10 30 10 0"
+            Background="Transparent"
+            KeyDown="Open_MyPartProj_btn" 
+            MouseDown="Open_MyPartProj_mouse"
+            PreviewMouseDoubleClick="Open_MyPartProj_mouse"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            HorizontalContentAlignment="Center"
+            >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+
+                <DataTemplate>
+                    <Border Background="#FF4F49CC" CornerRadius="20">
+                        <Grid  Height="200" Width="200" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" FontSize="20" FontStyle="Italic" Style="{StaticResource ProjectInfo}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Name}"/>
+                            <Separator Grid.Row="1"/>
+                            <TextBlock Grid.Row="2" Style="{StaticResource ProjectInfo}" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"  Text="{Binding Author.FullName}"/>
+
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
     </Grid>
 </Page>
