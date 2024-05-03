@@ -18,13 +18,14 @@ namespace TaskTrackerUI.Services
             var result = UsersCash.Where(x=>x.Email.Contains(EmailPattern)).Take(15).ToList();
             if (result.Count >= 5) return result;
             result = await FindUsers(EmailPattern);
-            return result.Take(10).ToList();
+            return result?.Take(10).ToList();
         }
         public async Task<List<User>> FindUsers(string EmailPattern)
         {
             var result = await UserService.FindUsers(EmailPattern);
             if (result is null || result.Count == 0) return null!;
-            UsersCash.AddRange(result);
+            foreach(var user in result)
+                if(UsersCash.Find(x=>x.Email==user.Email) == null)UsersCash.Add(user);
             return result;
         }
 

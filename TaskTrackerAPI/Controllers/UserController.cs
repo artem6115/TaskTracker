@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BuisnnesService.Models;
 using BuisnnesService.Services;
 using Infrastructure.Auth;
 using Infrastructure.Repository.Interfaces;
@@ -31,18 +32,18 @@ namespace TaskTrackerAPI.Controllers
         }
 
         [HttpGet("GenerateUser/{Code}")]
-        public async Task GenerateUser(int code)
+        public async Task GenerateUser([FromServices] UserManagerService userManager , int code)
         {
             if (code != 2122) throw new AccessViolationException();
             for(int i = 0; i<= 500; i++)
             {
-                var user = new User()
+                var user = new UserRegistDto()
                 {
                     Email = Guid.NewGuid().ToString(),
                     FullName = "Generated Name",
                     Password = "Password",
                 };
-                await _userRepository.AddUserAcync(user);
+                await userManager.RegistAsync(user);
             }
 
         }

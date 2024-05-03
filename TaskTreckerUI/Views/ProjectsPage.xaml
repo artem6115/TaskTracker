@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <TextBlock  Margin="20 0 20 0" HorizontalAlignment="Left" Grid.Row="0" Text="Мои проекты" Style="{StaticResource Title}"/>
-            <Button Content="Создать новый проект" Margin="0 5 0 0" Background="#FF0BB10F" Width="100" Height="25"/>
+            <Button Click="Create_Project" Content="Создать новый проект" Margin="0 5 0 0" Background="#FF0BB10F"  Height="25"/>
         </StackPanel>
         <ListView 
             Grid.Row="1"

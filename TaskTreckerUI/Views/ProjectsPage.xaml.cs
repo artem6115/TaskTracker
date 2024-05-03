@@ -53,24 +53,78 @@ namespace TaskTrackerUI.Views
                 MessageBox.Show($"{proj.Name}");
             }
         }
-        private void Open_MyProj_btn(object sender, KeyEventArgs e)
+        private async void Open_MyProj_btn(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 var proj = List_MyProj.SelectedItem as ProjectDto;
                 if (proj == null) return;
-                MessageBox.Show($"{proj.Name}");
+                await CreateUpdateProject(proj);
+
             }
         }
-        private void Open_MyProj_mouse(object sender, MouseButtonEventArgs e)
+        private async void Open_MyProj_mouse(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var proj = List_MyProj.SelectedItem as ProjectDto;
                 if (proj == null) return;
-                MessageBox.Show($"{proj.Name}");
+                await CreateUpdateProject(proj);
+
             }
         }
+        private async void Create_Project(object sender, EventArgs e)
+            => await CreateUpdateProject();
+        private async Task CreateUpdateProject(ProjectDto project = null)
+        {
+            var editWindow = new PageEditWindow(project?.Id);
+            editWindow.ShowDialog();
+            if (editWindow.DoDelete && project != null)
+            {
+                var result = await ProjectService.DeleteProject(project.Id);
+                if (result)
+                {
+                    _navigator.AddInformation("Проект удален");
+                    _context.MyProjects.Remove(project);
+                }
+                else
+                    _navigator.AddError("Не удалось удалить проект");
+                return;
+            }
+            if (editWindow.Model is not null)
+            {
+                ProjectDto newProject;
+
+                if (project is null) {
+                    newProject = await ProjectService.CreateProject(editWindow.Model);
+                    if (newProject is null)
+                    {
+                        _navigator.AddError("Не удалось создать проект");
+                        return;
+                    }
+                    _context.MyProjects.Add(newProject);
+                    _navigator.AddInformation("Проект успешно создан");
+
+                }
+                else {
+                    newProject = await ProjectService.UpdateProject(editWindow.Model);
+                    if (project is null)
+                    {
+                        _navigator.AddError("Не удалось обновить проект");
+                        return;
+                    }
+                    var indexProj = _context.MyProjects.IndexOf(project);
+                    _context.MyProjects.Insert(indexProj, newProject);
+                    _context.MyProjects.Remove(project);
+                    _navigator.AddInformation("Проект успешно обновлен");
+                }
+
+                
+                
+            }
+
+        }
+
 
     }
 }

@@ -39,39 +39,44 @@ namespace TaskTrackerUI.Services
         }
         #endregion
 
-        public static async Task<ProjectDto> CreateProject(ProjectDto model)
+        public static async Task<ProjectDto> CreateProject(Project model)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://{LocalConnectionService.Adress}/api/Project");
-            request.Content =JsonContent.Create<ProjectDto>(model);
+            request.Content =JsonContent.Create<Project>(model);
             var project = await AuthService.SendAsync<ProjectDto>(request);
+            if(project is not null)
+                await ChangeProjectTeam(project.Id,model.Users);
             return project;
         }
-        public static async Task<ProjectDto> UpdateProject(ProjectDto model)
+        public static async Task<ProjectDto> UpdateProject(Project model)
         {
+            model.AuthorId = model.Author.Id;
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}/api/Project");
-            request.Content = JsonContent.Create<ProjectDto>(model);
+            request.Content = JsonContent.Create<Project>(model);
             var project = await AuthService.SendAsync<ProjectDto>(request);
+            if (project is not null)
+                await ChangeProjectTeam(model.Id, model.Users);
             return project;
         }
         public static async Task<bool> DeleteProject(long Id)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, $"https://{LocalConnectionService.Adress}/api/Project/{Id}");
             var result = await AuthService.SendAsync(request);
-            return result.IsSuccessStatusCode;
+            return result is not null && result.IsSuccessStatusCode;
         }
         public static async Task<bool> ChangeProjectTeam(ChangeProjectTeamQuery query)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"https://{LocalConnectionService.Adress}/api/Project/Users");
             request.Content = JsonContent.Create<ChangeProjectTeamQuery>(query);
             var result = await AuthService.SendAsync(request);
-            return result.IsSuccessStatusCode;
+            return result is not null && result.IsSuccessStatusCode;
         }
-        public static async Task<bool> ChangeProjectTeam(long projectId, List<User> UsersId)
+        public static async Task<bool> ChangeProjectTeam(long projectId, IEnumerable<User> UsersId)
             => await ChangeProjectTeam(
                 new ChangeProjectTeamQuery()
                 {
                     ProjectId = projectId,
-                    UsersId = UsersId.Select(x=>x.Id).ToList()
+                    UsersId = UsersId.Select(x=>x.Id)
                 }
             );
 

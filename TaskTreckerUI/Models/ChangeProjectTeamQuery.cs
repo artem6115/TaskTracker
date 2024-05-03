@@ -9,7 +9,7 @@ namespace TaskTrackerUI.Models
     public class ChangeProjectTeamQuery
     {
         public long ProjectId { get; set; }
-        public List<long> UsersId { get; set; }
+        public IEnumerable<long> UsersId { get; set; }
 
     }
 }

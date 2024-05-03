@@ -32,8 +32,8 @@ namespace Infrastructure.Utilits
                 new SqlParameter("@FullName",user.FullName),
                 new SqlParameter("@Email", user.Email),
                 new SqlParameter("@Password", user.Password),
-                new SqlParameter("@Spice", user.Spice ?? ""),
-                new SqlParameter("@Phone", user.Phone??"")
+                new SqlParameter("@Spice", user.Spice ?? (object)DBNull.Value),
+                new SqlParameter("@Phone", user.Phone?? (object)DBNull.Value)
                 );
         }
         public async static Task Create_Attachment(this TaskTrackerDbContext context, Attachment attachment)
@@ -122,9 +122,9 @@ namespace Infrastructure.Utilits
                 new SqlParameter("@Id", user.Id),
                 new SqlParameter("@FullName", user.FullName),
                 new SqlParameter("@Password", user.Password),
-                new SqlParameter("@RefreshToken", user.RefreshToken ?? ""),
-                new SqlParameter("@Spice", user.Spice ?? ""),
-                new SqlParameter("@Phone", user.Phone ?? "")
+                new SqlParameter("@RefreshToken", user.RefreshToken ?? (object)DBNull.Value),
+                new SqlParameter("@Spice", user.Spice ?? (object)DBNull.Value),
+                new SqlParameter("@Phone", user.Phone ?? (object)DBNull.Value)
                 );
         }
         public async static Task Update_Account_User(this TaskTrackerDbContext context, User user)

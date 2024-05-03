@@ -19,19 +19,20 @@ namespace Infrastructure.Repository.ProjectRepository
         }
 
         public async Task ChangeProjectTeam(long projectId, List<long> usersId)
-        {
+            {
+            if(usersId is null) return;
             var entities = await _context.UsersProjects
                .AsNoTracking()
                .Where(x => x.ProjectId == projectId)
                .ToListAsync();
-            var entityToDelete = entities.ExceptBy(usersId, x => x.UserId);
+            var entityToDelete = entities.ExceptBy(usersId, x => x.UserId).ToList();
             var entityToAdd = usersId.Except(entities
                 .Select(x => x.UserId))
                 .Select(x => new UserProject
                 { UserId = x, ProjectId = projectId }
-                );
-            await _context.UsersProjects.AddRangeAsync(entityToAdd);
-            _context.UsersProjects.RemoveRange(entityToAdd);
+                ).ToList();
+            if(entityToAdd.Count > 0)await _context.UsersProjects.AddRangeAsync(entityToAdd);
+            if (entityToDelete.Count > 0) _context.UsersProjects.RemoveRange(entityToDelete);
 
             await _context.SaveChangesAsync();
 
