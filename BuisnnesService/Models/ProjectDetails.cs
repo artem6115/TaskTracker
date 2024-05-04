@@ -14,6 +14,5 @@ namespace BuisnnesService.Models
         public long AuthorId { get; set; }
         public UserClaims Author { get; set; } = null!;
         public List<UserClaims> Users { get; set; }
-        public List<Epic> Epics { get; set; }
     }
 }

@@ -59,9 +59,9 @@ namespace Infrastructure.Utilits
         public async static Task Create_Epic(this TaskTrackerDbContext context, Epic epic)
         {
 
-            await context.Database.ExecuteSqlRawAsync("Create_Epic @Description, @Title, @ProjectId",
-                new SqlParameter("@Description", epic.Description),
+            await context.Database.ExecuteSqlRawAsync("Create_Epic @Title, @Description, @ProjectId",
                 new SqlParameter("@Title", epic.Title),
+                new SqlParameter("@Description", epic.Description),
                 new SqlParameter("@ProjectId", epic.ProjectId));
         }
    
@@ -116,6 +116,15 @@ namespace Infrastructure.Utilits
         #endregion
 
         #region Update
+
+        public async static Task Update_Epic(this TaskTrackerDbContext context, Epic epic)
+        {
+
+            await context.Database.ExecuteSqlRawAsync("Create_Epic @Id, @Title, @Description",
+                new SqlParameter("@Id", epic.Id),
+                new SqlParameter("@Title", epic.Title),
+                new SqlParameter("@Description", epic.Description));
+        }
         public async static Task Update_User(this TaskTrackerDbContext context, User user)
         {
             await context.Database.ExecuteSqlRawAsync("Update_User @Id, @FullName, @Password, @RefreshToken, @Spice, @Phone",

@@ -248,6 +248,29 @@ namespace Infrastructure.Migrations
                 
                 """);
 
+            //Update Epic
+            migrationBuilder.Sql("""
+                SET ANSI_NULLS ON
+                GO
+                SET QUOTED_IDENTIFIER ON
+                GO
+
+                CREATE PROCEDURE Update_Epic
+                    @Id bigint,
+                    @Title nvarchar(max),
+                    @Description nvarchar(max)
+                AS
+                BEGIN
+                	SET NOCOUNT ON;
+                    Update Epics Set
+                    Title = @Title,
+                    Description = @Description
+                    Where Id = @Id
+                END
+                GO
+                
+                """);
+
             //Delete Epic
             migrationBuilder.Sql("""
                 SET ANSI_NULLS ON
@@ -571,6 +594,7 @@ namespace Infrastructure.Migrations
             migrationBuilder.Sql("DROP PROCEDURE Create_Comment");
             migrationBuilder.Sql("DROP PROCEDURE Delete_Comment");
             migrationBuilder.Sql("DROP PROCEDURE Create_Epic");
+            migrationBuilder.Sql("DROP PROCEDURE Update_Epic");
             migrationBuilder.Sql("DROP PROCEDURE Delete_Epic");
 
             migrationBuilder.Sql("DROP PROCEDURE Create_Note");

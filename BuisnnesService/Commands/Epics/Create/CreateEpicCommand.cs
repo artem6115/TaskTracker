@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BuisnnesService.Commands.Epics.Create
+{
+    public class CreateEpicCommand : IRequest<EpicDto>
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public long ProjectId { get; set; }
+
+    }
+}

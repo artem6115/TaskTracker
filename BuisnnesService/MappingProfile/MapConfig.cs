@@ -1,4 +1,6 @@
-﻿using Infrastructure.Entities;
+﻿using BuisnnesService.Commands.Epics.Create;
+using BuisnnesService.Commands.Epics.Update;
+using Infrastructure.Entities;
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
@@ -54,13 +56,13 @@ namespace BuisnnesService.MappingProfile
             CreateMap<Project, ProjectDto>();
             CreateMap<Project, ProjectDetails>();
 
-            //.ForMember(e => e.Author, cnf => cnf.MapFrom(x => x.Author))
-            //.ForMember(e => e.Epics, cnf => cnf.MapFrom(x => x.Author));
+            #endregion
 
+            #region Epic
 
-
-            //CreateMap<Project,ProjectDto>().ForMember(x=>x.Author,cnf=>cnf.MapFrom(x=>x.Author));
-
+            CreateMap<CreateEpicCommand, Epic>();
+            CreateMap<UpdateEpicCommand, Epic>();
+            CreateMap<Epic,EpicDto>();
 
 
             #endregion
