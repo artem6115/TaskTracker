@@ -190,7 +190,8 @@ namespace TaskTrackerUI.Views
             var result = await TaskService.UpdateTaskAsync(taskForm.Task);
             if (result is not null)
             {
-                var index = _context.Tasks.IndexOf(taskSelected);
+                var entityToUpdate = _context.Tasks.Single(x=>x.Id == result.Id);
+                var index = _context.Tasks.IndexOf(entityToUpdate);
                 _context.Tasks.RemoveAt(index);
 
                 _context.Tasks.Insert(index,result);

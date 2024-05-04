@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using TaskTrackerUI.Models;
 using TaskTrackerUI.ViewModels;
 
@@ -16,36 +17,71 @@ namespace TaskTrackerUI.Services
         TextBlock _title;
         Stack<Page> BackPage = new Stack<Page>();
         Stack<Page> NextPage = new Stack<Page>();
+        bool _willUpdate = true;
+        DispatcherTimer _timer;
         public Page CurrentPage { get; private set; }
-        public Navigator(Frame frame, TextBlock title)
+        public Navigator(Frame frame, TextBlock title, DispatcherTimer timer)
         {
             _frame = frame;
             _title = title;
+            _timer = timer;
+            _timer.Tick += (s,e)=>LoadData();
+            _timer.Interval = new TimeSpan(0, 0, SettingService.Setting.DelaySecond);
+            if(SettingService.Setting.UpdateAuto)
+                _timer.Start();
+        }
+        public async void AutoUpdate()
+        {
+            while (SettingService.Setting.UpdateAuto)
+            {
+                if (CurrentPage is null || CurrentPage.DataContext is null) break;
+                var loadingPage = CurrentPage;
+                VMBase context = CurrentPage.DataContext as VMBase;
+                var updateResult = await context.LoadData();
+                await Task.Delay(1000 * SettingService.Setting.DelaySecond);
+            }
+        }
+        public async void AutoUpdate2(object sender, EventArgs e)
+        {
+            var updateResult = await LoadData();
         }
         public async void Open(Page page)
         {
             if(CurrentPage is not null) BackPage.Push(CurrentPage);
             CurrentPage = page;
             Navigate();
-            await LoadData();
+            if(SettingService.Setting.UpdateForOpen)
+                await LoadData();
 
         }
-        public void Back()
+        public async void Back()
         {
             if (BackPage.Count == 0) return;
             NextPage.Push(CurrentPage);
             CurrentPage = BackPage.Pop();
+            if(SettingService.Setting.UpdateForNavigate)
+                await LoadData();
             Navigate();
         }
-        public void Next()
+        public async void Next()
         {
             if (NextPage.Count == 0) return;
             BackPage.Push(CurrentPage);
             CurrentPage = NextPage.Pop();
+            if (SettingService.Setting.UpdateForNavigate)
+                await LoadData();
             Navigate();
         }
         public async Task<bool> LoadData()
         {
+            if (CurrentPage is null || CurrentPage.DataContext is null) return true ;
+
+            if (!_willUpdate)
+            {
+                SetTitle(true);
+                AddInformation("Страница не была загружена (отключена загрузка в настройках)");
+                return true;
+            }
             AddInformation("Загрузка...");
             var loadingPage = CurrentPage;
             VMBase context = CurrentPage.DataContext as VMBase;
@@ -77,6 +113,7 @@ namespace TaskTrackerUI.Services
         }
         public void AddInformation (string message)
         {
+            if (CurrentPage is null) return;
             _title.Text = $"{CurrentPage.Title} ({message})";
             _title.Foreground = Brushes.White;
         }
@@ -85,6 +122,22 @@ namespace TaskTrackerUI.Services
             _title.Text = $"{CurrentPage.Title} ({message})";
             _title.Foreground = Brushes.Red;
         }
+
+        public void UpdateContinue()
+        { 
+            _willUpdate = true; 
+            if(SettingService.Setting.UpdateAuto)_timer.Start();
+         }
+
+        public void UpdateStop()
+        { _willUpdate = false; _timer.Stop(); }
+        public void StartAutoUpdate()
+            =>_timer.Start();
+        public void StopAutoUpdate()
+            => _timer.Stop();
+        public void UpdateDelayTimer()
+            => _timer.Interval = new TimeSpan(0, 0, SettingService.Setting.DelaySecond);
+
 
     }
 }

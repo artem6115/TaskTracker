@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using TaskTrackerUI.Models;
 using TaskTrackerUI.Properties;
 using TaskTrackerUI.Services;
@@ -28,10 +30,13 @@ namespace TaskTrackerUI
         Page CurrentPage;
         MainWindowVM _dataContext;
         Navigator Navigator;
+
         public MainWindow() 
         {
+            Services.SettingService.Setting = Models.Setting.LoadSettings();
             InitializeComponent();
-            Navigator = new Navigator(NavWindows,Page_Title);
+            Navigator = new Navigator(NavWindows,Page_Title,new DispatcherTimer());
+
             _dataContext = DataContext as MainWindowVM;
             var connection = new ConnectionWindow();
             connection.ShowDialog();
@@ -60,6 +65,7 @@ namespace TaskTrackerUI
             Pages[(int)PagesEnum.Note] = new NotesPage(Navigator);
             Pages[(int)PagesEnum.Setting] = new SettingsPage(Navigator);
             Navigator.Open(Pages[(int)PagesEnum.Main]);
+            Navigator.AutoUpdate();
 
         }
 
@@ -96,11 +102,11 @@ namespace TaskTrackerUI
                     Close();
             }
             else if (e.Key == Key.F1) OpenPage(PagesEnum.Main);
-            else if (e.Key == Key.F2) OpenPage(PagesEnum.Notify);
-            else if (e.Key == Key.F3) OpenPage(PagesEnum.Note);
-            else if (e.Key == Key.F4) OpenPage(PagesEnum.Task);
+            else if (e.Key == Key.F6) OpenPage(PagesEnum.Notify);
+            else if (e.Key == Key.F4) OpenPage(PagesEnum.Note);
+            else if (e.Key == Key.F3) OpenPage(PagesEnum.Task);
             else if (e.Key == Key.F5) await Navigator.LoadData();
-            else if (e.Key == Key.F6) OpenPage(PagesEnum.Project);
+            else if (e.Key == Key.F2) OpenPage(PagesEnum.Project);
             else if (e.Key == Key.F7) OpenPage(PagesEnum.Setting);
 
         }

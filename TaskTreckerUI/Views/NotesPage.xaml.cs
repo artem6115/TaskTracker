@@ -48,8 +48,9 @@ namespace TaskTrackerUI.Views
                     return;
                 }
                 Navigator.AddInformation("Заметка отредактирована");
-                _context.Notes.Insert(_context.Notes.IndexOf(CurrentNote),note);
-                _context.Notes.Remove(CurrentNote);
+                var currentUpdateEntity = _context.Notes.Single(x=>x.Id == note.Id);
+                _context.Notes.Insert(_context.Notes.IndexOf(currentUpdateEntity),note);
+                _context.Notes.Remove(currentUpdateEntity);
                 CurrentNote = null;
 
             }
@@ -87,7 +88,7 @@ namespace TaskTrackerUI.Views
 
             bool result = await NoteService.DeleteNoteAsync(note);
             if(result) {
-                _context.Notes.Remove(note);
+                _context.Notes.Remove(_context.Notes.Single(x=>x.Id == note.Id));
                 Navigator.AddInformation("Запись удалена");
             }
             else Navigator.AddError("Удаление не удалось");

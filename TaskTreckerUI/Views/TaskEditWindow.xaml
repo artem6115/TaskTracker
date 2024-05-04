@@ -8,7 +8,7 @@
          xmlns:ViewModels="clr-namespace:TaskTrackerUI.ViewModels"
          x:Class="TaskTrackerUI.Views.TaskEditWindow"
         mc:Ignorable="d"
-        Title="TaskEditWindow" Height="468" Width="800">
+        Title="Создание/Редактирование задач" Height="468" Width="800">
 
     <Window.DataContext>
         <ViewModels:TaskInfoVm/>

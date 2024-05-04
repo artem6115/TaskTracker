@@ -16,10 +16,9 @@ namespace TaskTrackerUI.Services
         public static async Task<bool> FindServer(string? ip,CancellationToken token)
         {
             
-            var path = Path.Combine(AuthService.Work_Path,"ipconfig.txt");
             if (ip is null)
             {
-                if (File.Exists(path)) ip = File.ReadAllText(path);
+                ip = SettingService.Setting.Adrees;
                 ip ??= "127.0.0.1:5050";
             }
             else
@@ -38,7 +37,7 @@ namespace TaskTrackerUI.Services
                     if (result.IsSuccessStatusCode)
                     {
                         Adress = ip;
-                        File.WriteAllText(path, Adress);
+                        SettingService.Setting.Adrees = Adress; 
                         return true;
                     }
                 }

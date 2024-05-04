@@ -8,11 +8,66 @@
       mc:Ignorable="d" 
       Title="Главная">
 
-    <Page.DataContext>
-        <ViewModels:MainVm/>
-    </Page.DataContext>
-
     <Grid>
-        <TextBlock Style="{StaticResource Building}" HorizontalAlignment="Center" VerticalAlignment="Center" ><Run Text="My maim page will be here..."/></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+        <TextBlock 
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            Text="TaskTracker"
+            Foreground="White"
+            FontSize="60"
+            Margin="0 10"
+            FontWeight="DemiBold"
+            FontStyle="Italic"
+            />
+        <Separator Grid.Row="1" VerticalAlignment="Top"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <TextBlock
+            
+            Margin="10"
+            Grid.Row="1"
+            Style="{StaticResource ProjectInfo}"
+            TextWrapping="Wrap"
+            Name="Text_Info"/>
+        </ScrollViewer>
+        <Separator Grid.Row="2" VerticalAlignment="Top"/>
+        <StackPanel
+            Orientation="Horizontal"
+            Grid.Row="2"
+            Margin="10">
+            <TextBlock Style="{StaticResource ProjectInfo}" VerticalAlignment="Center" Text="Ссылки на соц. сети"/>
+            <Button 
+                Margin="20 0"
+                Width="50"
+                Height="50"
+                Click="Open_vk"
+                Style="{StaticResource MenuButton}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/Assets/Images/vk.png"/>
+                </Button.Background>
+            </Button>
+            <Button
+                Style="{StaticResource MenuButton}"
+                Margin="0 0 20 0" Width="50" Height="50"
+                Click="Open_tg"
+                >
+                <Button.Background>
+                    <ImageBrush ImageSource="/Assets/Images/tg.png"/>
+                </Button.Background>
+            </Button>
+            <Button 
+                Style="{StaticResource MenuButton}"
+                Width="50" Height="50"
+                Click="Open_git"
+                >
+                <Button.Background>
+                    <ImageBrush ImageSource="/Assets/Images/git.png"/>
+                </Button.Background>
+            </Button>
+        </StackPanel>
     </Grid>
 </Page>

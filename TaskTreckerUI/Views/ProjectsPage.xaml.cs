@@ -85,7 +85,7 @@ namespace TaskTrackerUI.Views
                 if (result)
                 {
                     _navigator.AddInformation("Проект удален");
-                    _context.MyProjects.Remove(project);
+                    _context.MyProjects.Remove(_context.MyProjects.Single(x=>x.Id==project.Id));
                 }
                 else
                     _navigator.AddError("Не удалось удалить проект");
@@ -108,14 +108,14 @@ namespace TaskTrackerUI.Views
                 }
                 else {
                     newProject = await ProjectService.UpdateProject(editWindow.Model);
-                    if (project is null)
+                    if (newProject is null)
                     {
                         _navigator.AddError("Не удалось обновить проект");
                         return;
                     }
-                    var indexProj = _context.MyProjects.IndexOf(project);
-                    _context.MyProjects.Insert(indexProj, newProject);
-                    _context.MyProjects.Remove(project);
+                    var entityToUpdate = _context.MyProjects.Single(x=>project.Id==newProject.Id);
+                    _context.MyProjects.Insert(_context.MyProjects.IndexOf(entityToUpdate), newProject);
+                    _context.MyProjects.Remove(entityToUpdate);
                     _navigator.AddInformation("Проект успешно обновлен");
                 }
 

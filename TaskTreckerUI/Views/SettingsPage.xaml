@@ -16,17 +16,57 @@
     </Page.DataContext>
 
     <Grid>
-        <StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="20">
+            <TextBlock Text="Настройки акаунта" Style="{StaticResource Title}"/>
             <TextBlock FontSize="20" Foreground="White" Text="{Binding User.FullName}"/>
             <TextBlock FontSize="18" Foreground="White" Text="{Binding User.Email}"/>
             <Button Width="130" HorizontalAlignment="Left" Height="40" Background="red" Content="Выйти" Click="Exit_Account"/>
-            <TextBlock Foreground="White" Text="Старый пароль"/>
-            <TextBox x:Name="oldPasswordBox" HorizontalAlignment="Left" Width="300"/>
+            <TextBlock Margin="0 10" Foreground="White" Text="Старый пароль"/>
+            <PasswordBox x:Name="oldPasswordBox" HorizontalAlignment="Left" Width="300"/>
             <TextBlock Foreground="White" Text="Новый пароль"/>
-            <TextBox x:Name="passwordBox"  HorizontalAlignment="Left"  Width="300"/>
+            <PasswordBox x:Name="passwordBox"  HorizontalAlignment="Left"  Width="300"/>
 
             <TextBlock TextWrapping="Wrap" x:Name="error_label" Foreground="red" FontSize="15" />
             <Button Width="130"  HorizontalAlignment="Left" Height="40" Background="Green" Content="Сменить пароль" Click="Drop_Password"/>
+        </StackPanel>
+        <StackPanel Margin="0 20" Grid.Column="1" >
+            <TextBlock Margin="0 0 0 20" Text="Настройки запросов" Style="{StaticResource Title}"/>
+            <CheckBox 
+                Content="Обновлять/Загружать данные при открытии страниц" 
+                IsChecked="{Binding Setting.UpdateForOpen}"
+                FontSize="15" Foreground="White"
+                />
+            <CheckBox 
+                Content="Обновлять/Загружать данные при перемещениее" 
+                IsChecked="{Binding Setting.UpdateForNavigate}"
+                FontSize="15" Foreground="White"
+                />  
+            <CheckBox 
+                x:Name="auto_update_check"
+                Content="Обновлять/Загружать данные с переодичностью" 
+                IsChecked="{Binding Setting.UpdateAuto}"
+                FontSize="15" Foreground="White" Checked="Auto_Update"
+                
+                />
+            <TextBlock FontSize="15" Foreground="White" Text="Период обновлениея"/>
+            <ComboBox Name="period_update"
+                ItemsSource="{Binding Periods}"
+                DisplayMemberPath="title"
+                SelectedValuePath="value"
+                Width="100"
+                HorizontalAlignment="Left" SelectionChanged="Change_period"
+                
+                      >
+
+            </ComboBox>
+            <Button Click="Start_Update" HorizontalAlignment="Left" Width="150" Content="Продолжить обновления" Background="Green"/>
+            <Button Click="Stop_Update" HorizontalAlignment="Left" Width="150" Content="Остоновить обновления" Background="Red"/>
+
         </StackPanel>
     </Grid>
 </Page>

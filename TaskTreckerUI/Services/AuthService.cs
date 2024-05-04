@@ -16,23 +16,13 @@ namespace TaskTrackerUI.Services
     internal static class AuthService
     {
         public static User? User { get; private set; }
-        public static string Work_Path { get; private set; }
-        public static string TokenPath { get; private set; }
-        public static string RefreshTokenPath { get; private set; }
+       
         private static string? token = null;
         private static string? refreshToken = null;
         static AuthService() {
 
-            Work_Path = Path.Combine(Environment.GetFolderPath(
-                    Environment.SpecialFolder.ApplicationData), "TaskTracker");
-            TokenPath = Path.Combine(Work_Path, "Token.txt");
-            RefreshTokenPath = Path.Combine(Work_Path, "RefreshToken.txt");
-            if (!Directory.Exists(Work_Path))
-                Directory.CreateDirectory(Work_Path);
-            if (File.Exists(TokenPath))
-                token = File.ReadAllText(TokenPath);
-            if (File.Exists(RefreshTokenPath))
-                refreshToken = File.ReadAllText(RefreshTokenPath);
+            token = SettingService.Setting.Token;
+            refreshToken = SettingService.Setting.RefreshToken;
         }
         private static async Task<bool> LoginWithToken(HttpClient httpClient)
         {
@@ -98,8 +88,9 @@ namespace TaskTrackerUI.Services
 
         private static async void SaveTokens()
         {
-            await File.WriteAllTextAsync(TokenPath, token);
-            await File.WriteAllTextAsync(RefreshTokenPath, refreshToken);
+            SettingService.Setting.Token = token;
+            SettingService.Setting.RefreshToken = refreshToken;
+
 
         }
 
