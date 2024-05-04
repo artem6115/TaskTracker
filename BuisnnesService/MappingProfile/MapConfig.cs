@@ -42,7 +42,6 @@ namespace BuisnnesService.MappingProfile
                 .ForMember(e=>e.UserId,cnf=>cnf.MapFrom(x=> SetAutoUser(x)));
             CreateMap<UpdateTaskCommand, WorkTask>();
             CreateMap<WorkTask, TaskView>();
-            CreateMap<Epic, EpicView>();
             CreateMap<WorkTask, TaskDto>();
             CreateMap<UpdateStatusTaskCommand, WorkTask>();
 
@@ -60,6 +59,7 @@ namespace BuisnnesService.MappingProfile
 
             #region Epic
 
+            CreateMap<Epic, EpicView>();
             CreateMap<CreateEpicCommand, Epic>();
             CreateMap<UpdateEpicCommand, Epic>();
             CreateMap<Epic,EpicDto>();

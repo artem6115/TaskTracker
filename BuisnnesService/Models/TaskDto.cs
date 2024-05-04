@@ -23,7 +23,7 @@ namespace BuisnnesService.Models
 
         public TaskView? PreviousTask { get; set; }
 
-        public EpicView? Epic { get; set; }
+        public EpicDto? Epic { get; set; }
         public UserClaims? User { get; set; }
     }
 }

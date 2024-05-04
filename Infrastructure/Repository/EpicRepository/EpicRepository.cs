@@ -19,6 +19,13 @@ namespace Infrastructure.Repository.EpicRepository
         }
         public async Task<Epic> CreateEpicAsync(Epic epic)
         {
+            var proj = await _context.Projects
+                .AsNoTracking()
+                .SingleOrDefaultAsync(p=>p.Id==epic.ProjectId);
+            if (proj == null)
+                throw new FileNotFoundException("Проект с указаным id не найдет");
+            if (proj.AuthorId != UserClaims.User.Id)
+                throw new AccessViolationException("У вас нет прав на редактирование этого проекта");
             var newEpic = await _context.Epics.AddAsync(epic);
             await _context.SaveChangesAsync();
             _logger.LogInformation($"New Epic {newEpic.Entity.Id}, {newEpic.Entity.Title}");

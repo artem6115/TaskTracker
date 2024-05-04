@@ -33,7 +33,7 @@ namespace TaskTrackerAPI.Controllers
         public async Task<EpicDto> Update(UpdateEpicCommand command)
             => await _mediator.Send(command);
 
-        [HttpDelete]
+        [HttpDelete("{Id}")]
         public async Task Delete([Required]long Id)
             => await _mediator.Send(new DeleteEpicCommand() { Id=Id});
     }

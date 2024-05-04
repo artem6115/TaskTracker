@@ -50,7 +50,8 @@
                 x:Name="auto_update_check"
                 Content="Обновлять/Загружать данные с переодичностью" 
                 IsChecked="{Binding Setting.UpdateAuto}"
-                FontSize="15" Foreground="White" Checked="Auto_Update"
+                FontSize="15" Foreground="White"
+                Click="Auto_Update"
                 
                 />
             <TextBlock FontSize="15" Foreground="White" Text="Период обновлениея"/>

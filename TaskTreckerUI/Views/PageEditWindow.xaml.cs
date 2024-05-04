@@ -95,7 +95,7 @@ namespace TaskTrackerUI.Views
                 valid = false;
                 error += "Название проекта не должно быть пустым\n";
             }
-            if (_context.Project.Name.Length >20)
+            if (_context.Project.Name?.Length >20)
             {
                 valid = false;
                 error += "Название проекта не должно быть больше 20 символов\n";

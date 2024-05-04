@@ -120,7 +120,7 @@ namespace Infrastructure.Utilits
         public async static Task Update_Epic(this TaskTrackerDbContext context, Epic epic)
         {
 
-            await context.Database.ExecuteSqlRawAsync("Create_Epic @Id, @Title, @Description",
+            await context.Database.ExecuteSqlRawAsync("Update_Epic @Id, @Title, @Description",
                 new SqlParameter("@Id", epic.Id),
                 new SqlParameter("@Title", epic.Title),
                 new SqlParameter("@Description", epic.Description));

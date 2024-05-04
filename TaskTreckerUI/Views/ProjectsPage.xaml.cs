@@ -40,8 +40,8 @@ namespace TaskTrackerUI.Views
             {
                 var proj = List_MyPartProj.SelectedItem as ProjectDto;
                 if (proj == null) return;
-                MessageBox.Show($"{proj.Name}");
-                //_navigator.Open();
+                _navigator.Open(new EpicPage(proj, _navigator,true));
+
             }
         }
         private void Open_MyPartProj_mouse(object sender, MouseButtonEventArgs e)
@@ -50,7 +50,8 @@ namespace TaskTrackerUI.Views
             {
                 var proj = List_MyPartProj.SelectedItem as ProjectDto;
                 if (proj == null) return;
-                MessageBox.Show($"{proj.Name}");
+                _navigator.Open(new EpicPage(proj, _navigator,true));
+
             }
         }
         private async void Open_MyProj_btn(object sender, KeyEventArgs e)
@@ -59,8 +60,7 @@ namespace TaskTrackerUI.Views
             {
                 var proj = List_MyProj.SelectedItem as ProjectDto;
                 if (proj == null) return;
-                await CreateUpdateProject(proj);
-
+                _navigator.Open(new EpicPage(proj,_navigator));
             }
         }
         private async void Open_MyProj_mouse(object sender, MouseButtonEventArgs e)
@@ -69,57 +69,30 @@ namespace TaskTrackerUI.Views
             {
                 var proj = List_MyProj.SelectedItem as ProjectDto;
                 if (proj == null) return;
-                await CreateUpdateProject(proj);
+                _navigator.Open(new EpicPage(proj, _navigator));
+
 
             }
         }
         private async void Create_Project(object sender, EventArgs e)
-            => await CreateUpdateProject();
-        private async Task CreateUpdateProject(ProjectDto project = null)
+            => await CreateProject();
+        private async Task CreateProject(ProjectDto project = null)
         {
             var editWindow = new PageEditWindow(project?.Id);
             editWindow.ShowDialog();
-            if (editWindow.DoDelete && project != null)
-            {
-                var result = await ProjectService.DeleteProject(project.Id);
-                if (result)
-                {
-                    _navigator.AddInformation("Проект удален");
-                    _context.MyProjects.Remove(_context.MyProjects.Single(x=>x.Id==project.Id));
-                }
-                else
-                    _navigator.AddError("Не удалось удалить проект");
-                return;
-            }
             if (editWindow.Model is not null)
             {
                 ProjectDto newProject;
 
-                if (project is null) {
-                    newProject = await ProjectService.CreateProject(editWindow.Model);
-                    if (newProject is null)
-                    {
-                        _navigator.AddError("Не удалось создать проект");
-                        return;
-                    }
-                    _context.MyProjects.Add(newProject);
-                    _navigator.AddInformation("Проект успешно создан");
-
+                newProject = await ProjectService.CreateProject(editWindow.Model);
+                if (newProject is null)
+                {
+                    _navigator.AddError("Не удалось создать проект");
+                    return;
                 }
-                else {
-                    newProject = await ProjectService.UpdateProject(editWindow.Model);
-                    if (newProject is null)
-                    {
-                        _navigator.AddError("Не удалось обновить проект");
-                        return;
-                    }
-                    var entityToUpdate = _context.MyProjects.Single(x=>project.Id==newProject.Id);
-                    _context.MyProjects.Insert(_context.MyProjects.IndexOf(entityToUpdate), newProject);
-                    _context.MyProjects.Remove(entityToUpdate);
-                    _navigator.AddInformation("Проект успешно обновлен");
-                }
-
-                
+                _context.MyProjects.Add(newProject);
+                _navigator.AddInformation("Проект успешно создан");
+                           
                 
             }
 

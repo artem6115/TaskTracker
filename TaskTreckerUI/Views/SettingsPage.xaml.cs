@@ -68,7 +68,7 @@ namespace TaskTrackerUI.Views
         private void Stop_Update(object sender, EventArgs e)
             => _navigator.UpdateStop();
 
-        private void Auto_Update(object sender, RoutedEventArgs e)
+        private void Auto_Update(object sender, EventArgs e)
         {
             if (auto_update_check.IsChecked==true) _navigator.StartAutoUpdate();
             else _navigator.StopAutoUpdate();
