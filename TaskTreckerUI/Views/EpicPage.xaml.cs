@@ -34,7 +34,13 @@ namespace TaskTrackerUI.Views
             _navigator = navigator;
             _context = DataContext as EpicVm;
             _context.Project = Project;
-            Task.Run(() => _context.LoadData());
+            Description_text.Text = Project.Description;
+            LoadData();
+        }
+        private async void LoadData()
+        {
+            await _context.LoadData();
+            Users_List_To_Change.ItemsSource = _context.Users;
         }
         private void Open_Epic_btn(object sender, KeyEventArgs e)
         {
@@ -131,6 +137,8 @@ namespace TaskTrackerUI.Views
                 return;
             }
             _context.Project = newProject;
+            Title = $"Проекты / {newProject.Name}";
+            _navigator.SetTitle(true);
             _navigator.AddInformation("Проект успешно обновлен");
         }
     }

@@ -35,8 +35,12 @@
             </Button>
             <Button  Margin="20 0 0 0" Height="30" VerticalAlignment="Center" Padding="5 0" Background="Green" Content="Редактировать проект" Click="UpdateProj_btn"/>
         </StackPanel>
-        <ListView 
-            Grid.Row="1"
+        <TabControl
+            Grid.Row="1" 
+            Background="Transparent"
+            >
+            <TabItem Background="Transparent" Header="Эпики">
+               <ListView 
             x:Name="List_Epics"
             ItemsSource="{Binding Epics}"
             Margin="0"
@@ -47,27 +51,27 @@
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             HorizontalContentAlignment="Center"
             >
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
 
-                <DataTemplate>
-                    <Border
+                    <DataTemplate>
+                        <Border
                         Margin="10"
                         CornerRadius="25"
                         Height="200"
                         Width="200">
-                        <Border.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FFEBCD05" Offset="1"/>
-                                <GradientStop Color="#FFF35001" Offset="0.529"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
+                            <Border.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FFEBCD05" Offset="1"/>
+                                    <GradientStop Color="#FFF35001" Offset="0.529"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
 
-                        <TextBlock
+                            <TextBlock
                             Grid.Row="0"
                             FontSize="20"
                             FontStyle="Italic"
@@ -77,9 +81,39 @@
                             VerticalAlignment="Center"
                             Text="{Binding Title}"/>
 
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView> 
+            </TabItem>
+            <TabItem Header="Описание проета">
+                
+                <TextBlock 
+                    x:Name="Description_text"
+                    Margin="10"
+                     Style="{StaticResource ProjectInfo}"
+                     TextWrapping="Wrap"
+                    HorizontalAlignment="Left"/>
+            </TabItem>
+            <TabItem Header="Команда">
+                <ListBox 
+                    Background="Transparent"
+                    Grid.RowSpan="3" 
+                    Grid.Column="1"
+                    ItemsSource="{Binding Users}"
+                    x:Name="Users_List_To_Change"
+                    >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource title-task}" Text="{Binding FullName}"/>
+                                <TextBlock  Margin="10 0 0 0" Style="{StaticResource title-task}" Text="{Binding Email}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </TabItem>
+            
+        </TabControl>
     </Grid>
 </Page>
