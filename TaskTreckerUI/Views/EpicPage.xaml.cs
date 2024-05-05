@@ -28,6 +28,7 @@ namespace TaskTrackerUI.Views
         public EpicPage(ProjectDto Project, Navigator navigator, bool AccessDeined = false)
         {
             InitializeComponent();
+            Title = $"Проекты / {Project.Name}";
             if(AccessDeined)
                 menu_panel.Visibility = Visibility.Hidden;
             _navigator = navigator;

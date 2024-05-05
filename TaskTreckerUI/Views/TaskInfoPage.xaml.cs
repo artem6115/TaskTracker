@@ -30,9 +30,14 @@ namespace TaskTrackerUI.Views
             _navigator = navigator;
             _context = DataContext as TaskInfoVm;
             _context.TaskId = TaskId;
+            LoadData();
            
         }
-
+        private async void LoadData() {
+            await _context.LoadData();
+            Title = $"Мои Задачи / {_context.Task.Title}";
+            _navigator.SetTitle(true);
+        }
         private void Open_back_task(object sender, MouseButtonEventArgs e)
         {
             if (_context.Task?.PreviousTask?.Id is null) return;

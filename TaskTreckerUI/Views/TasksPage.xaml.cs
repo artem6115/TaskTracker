@@ -74,7 +74,7 @@ namespace TaskTrackerUI.Views
             {
                 var task = TaskList.SelectedItem as TaskDto;
                 if (task == null) return;
-                _navigator.Open(new TaskInfoPage(_navigator,task.Id));
+                _navigator.Open(new TaskInfoPage(_navigator,task.Id),false);
             }
         }
 
@@ -84,7 +84,7 @@ namespace TaskTrackerUI.Views
             {
                 var task = TaskList.SelectedItem as TaskDto;
                 if (task == null) return;
-                _navigator.Open(new TaskInfoPage(_navigator, task.Id));
+                _navigator.Open(new TaskInfoPage(_navigator, task.Id),false);
             }
         }
 

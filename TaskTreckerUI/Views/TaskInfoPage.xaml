@@ -7,7 +7,6 @@
       xmlns:converters="clr-namespace:TaskTrackerUI.Conveters"
       xmlns:ViewModels="clr-namespace:TaskTrackerUI.ViewModels" x:Class="TaskTrackerUI.Views.TaskInfoPage"
       mc:Ignorable="d" 
-
       Title="Просмотр задачи" Loaded="Loaded_Form">
     <Page.Resources>
         <converters:TaskStatusToBrush x:Key="bgConverter"/>

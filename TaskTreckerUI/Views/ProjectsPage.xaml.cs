@@ -60,7 +60,7 @@ namespace TaskTrackerUI.Views
             {
                 var proj = List_MyProj.SelectedItem as ProjectDto;
                 if (proj == null) return;
-                _navigator.Open(new EpicPage(proj,_navigator));
+                _navigator.Open(new EpicPage(proj,_navigator),false);
             }
         }
         private async void Open_MyProj_mouse(object sender, MouseButtonEventArgs e)

@@ -65,7 +65,6 @@ namespace TaskTrackerUI
             Pages[(int)PagesEnum.Note] = new NotesPage(Navigator);
             Pages[(int)PagesEnum.Setting] = new SettingsPage(Navigator);
             Navigator.Open(Pages[(int)PagesEnum.Main]);
-            Navigator.AutoUpdate();
 
         }
 

@@ -30,27 +30,12 @@ namespace TaskTrackerUI.Services
             if(SettingService.Setting.UpdateAuto)
                 _timer.Start();
         }
-        public async void AutoUpdate()
-        {
-            while (SettingService.Setting.UpdateAuto)
-            {
-                if (CurrentPage is null || CurrentPage.DataContext is null) break;
-                var loadingPage = CurrentPage;
-                VMBase context = CurrentPage.DataContext as VMBase;
-                var updateResult = await context.LoadData();
-                await Task.Delay(1000 * SettingService.Setting.DelaySecond);
-            }
-        }
-        public async void AutoUpdate2(object sender, EventArgs e)
-        {
-            var updateResult = await LoadData();
-        }
-        public async void Open(Page page)
+        public async void Open(Page page, bool AutoLoadData = true)
         {
             if(CurrentPage is not null) BackPage.Push(CurrentPage);
             CurrentPage = page;
             Navigate();
-            if(SettingService.Setting.UpdateForOpen)
+            if(SettingService.Setting.UpdateForOpen && AutoLoadData)
                 await LoadData();
 
         }
@@ -98,7 +83,7 @@ namespace TaskTrackerUI.Services
             _frame.Navigate(CurrentPage);
             SetTitle(true);
         }
-        private void SetTitle(bool valid)
+        public void SetTitle(bool valid)
         {
             if (valid)
             {
@@ -137,7 +122,5 @@ namespace TaskTrackerUI.Services
             => _timer.Stop();
         public void UpdateDelayTimer()
             => _timer.Interval = new TimeSpan(0, 0, SettingService.Setting.DelaySecond);
-
-
     }
 }
