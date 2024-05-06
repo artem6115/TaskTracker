@@ -5,26 +5,26 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TaskTrackerUI.Views"
       xmlns:convertrs="clr-namespace:TaskTrackerUI.Conveters"
-      xmlns:ViewModels="clr-namespace:TaskTrackerUI.ViewModels" x:Class="TaskTrackerUI.Views.TasksPage"
+      xmlns:ViewModels="clr-namespace:TaskTrackerUI.ViewModels" x:Class="TaskTrackerUI.Views.EpicTasksPage"
       mc:Ignorable="d" 
-      Title="Мои задачи">
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Задачи">
+
+    <Page.DataContext>
+        <ViewModels:TaskVm/>
+    </Page.DataContext>
     <Page.Resources>
         <convertrs:TaskStatusConverter x:Key="taskConverter" />
         <convertrs:TaskStatusToBrush x:Key="bgConverter" />
 
     </Page.Resources>
-    <Page.DataContext>
-        <ViewModels:TaskVm/>
-    </Page.DataContext>
-
     <Grid  >
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="5*"/>
             <RowDefinition MaxHeight="70" Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel  Grid.Row="0" Orientation="Horizontal" Background="#FF393333">
-            <StackPanel x:Name="EditTask_menu" Visibility="Collapsed" Orientation="Horizontal">
+        <StackPanel Name="Menu_bar" Grid.Row="0" Orientation="Horizontal" Background="#FF393333">
             <Button Margin="20 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Create_Task" ToolTip="Создать задачу" >
                 <Button.Background >
                     <ImageBrush ImageSource="/Assets/Images/add_btn.png"/>
@@ -40,44 +40,6 @@
                     <ImageBrush ImageSource="/Assets/Images/change_btn.png"/>
                 </Button.Background>
             </Button>
-            </StackPanel>
-            <Button
-                Margin="10 0 0 0"
-                VerticalAlignment="Center"
-                Click="ProjectOnly_btn"
-                Width="30"
-                Height="30"
-                Style="{StaticResource MenuButton}"
-              >
-                <Button.Background>
-                    <ImageBrush ImageSource="/Assets/Images/filter_drop.png"/>
-                </Button.Background>
-            </Button>
-            <ComboBox Name="Task_Types" Margin="40 0 20 0" Width="150" SelectionChanged="Select_type">
-                <ComboBoxItem Tag="0" Content="Free"/>
-                <ComboBoxItem Tag="1" Content="Work"/>
-                <ComboBoxItem Tag="2" Content="Pause"/>
-                <ComboBoxItem Tag="3" Content="Blocked"/>
-                <ComboBoxItem Tag="4" Content="Completed"/>
-                <ComboBoxItem Selector.IsSelected="True" Tag="5" Content="All"/>
-            </ComboBox>
-
-            <ComboBox 
-                Name="Projects_task"
-                Margin="20 0"
-                Width="150"
-                SelectionChanged="Select_project"
-                ItemsSource="{Binding Projects}"
-                DisplayMemberPath="Name"/>
-            <CheckBox 
-                VerticalAlignment="Center"
-                Name="LocalOnly_checkbox"
-                Foreground="white"
-                Click="LocalOnly_btn"
-                >
-                Только мои задачи
-            </CheckBox>
-
         </StackPanel>
 
         <ListView  Grid.Row="1"
@@ -142,7 +104,7 @@
                         VerticalAlignment="Bottom"
                                 
                         Text="{Binding ApproximateDateOfCompleted,TargetNullValue=' Не заданно'}"/>
-                            
+
                             <Border 
                                 Background="#FFB1A9A9" 
                                 Height="1" 
@@ -160,7 +122,7 @@
                             
                         Text="Статус: "
                         />
-                         <TextBlock
+                            <TextBlock
                         Grid.Row="1"
                         Grid.Column="1"
                         FontSize="13"
@@ -169,50 +131,7 @@
                         VerticalAlignment="Bottom"
                         Text="{Binding StatusTask, Converter={StaticResource taskConverter}}"/>
 
-                        <StackPanel
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Bottom"
-                            HorizontalAlignment="Left">
-
-                                <Button  
-                                    Margin="20 0 10 10"
-                                    Style="{StaticResource MenuButton}"
-                                    Width="30" Height="30"
-                                    Tag="{Binding Id}"
-                                    ToolTip="Поставить задачу на паузу"
-                                    Click="Set_Pause">
-                                    <Button.Background >
-                                        <ImageBrush ImageSource="/Assets/Images/pause.png"/>
-                                    </Button.Background>
-                                </Button>
-                                <Button  
-                                    Margin="0 0 10 10"
-                                    Tag="{Binding Id}"
-                                    Style="{StaticResource MenuButton}"
-                                    Width="30" Height="30"
-                                    ToolTip="Продолжить выполнение задачи"
-                                    Click="Set_Continue">
-                                    <Button.Background >
-                                        <ImageBrush ImageSource="/Assets/Images/continue.png"/>
-                                    </Button.Background>
-                                </Button>
-                                <Button  
-                                    Margin="0 0 0 10"
-                                    Tag="{Binding Id}"
-                                    
-                                    Style="{StaticResource MenuButton}"
-                                    Width="30" Height="30"
-                                    ToolTip="Задача выполена"
-                                    Click="Set_Completed">
-                                    <Button.Background >
-                                        <ImageBrush ImageSource="/Assets/Images/completed.png"/>
-                                    </Button.Background>
-                                </Button>
-
-                            </StackPanel>
-                        <TextBlock
+                            <TextBlock
                         Grid.Row="1"
                         Grid.Column="3"
                         FontSize="13"
@@ -240,4 +159,5 @@
             </ListView.ItemTemplate>
         </ListView>
     </Grid>
+
 </Page>

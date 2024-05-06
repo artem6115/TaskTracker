@@ -62,6 +62,8 @@ namespace Infrastructure.Repository.TaskRepository
         {
             return await _context.Tasks
                 .AsNoTracking()
+                .Include(x=>x.Epic)
+                .ThenInclude(x=>x.Project)
                 .Where(task => task.UserId == UserClaims.User.Id)
                 .ToListAsync();
 

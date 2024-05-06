@@ -46,7 +46,14 @@ namespace TaskTrackerUI.Views
             _context.Refresh();
 
         }
+        private void Select_project(object sender, SelectionChangedEventArgs e)
+        {
+            if (Projects_task.SelectedItem is null) return;
+            var chooseItem = Projects_task.SelectedItem as ProjectDto;
+            Filter.Project = chooseItem;
+            _context.Refresh();
 
+        }
         private async void Delete_Task(object sender, RoutedEventArgs e)
         {
             var task = TaskList.SelectedItem as TaskDto;
@@ -202,5 +209,21 @@ namespace TaskTrackerUI.Views
                 _navigator.AddError("Изменить задачу не удалось");
 
         }
+        private async void LocalOnly_btn(object sender, EventArgs e)
+        {
+            Filter.LocalOnly = LocalOnly_checkbox.IsChecked==true;
+            EditTask_menu.Visibility = LocalOnly_checkbox.IsChecked == true? Visibility.Visible : Visibility.Collapsed;
+            _context.Refresh();
+
+        }
+        private async void ProjectOnly_btn(object sender, EventArgs e)
+        {
+            Filter.Project = null;
+            Projects_task.SelectedItem=null;
+            Task_Types.SelectedIndex = Task_Types.Items.Count - 1;
+            _context.Refresh();
+
+        }
+
     }
 }

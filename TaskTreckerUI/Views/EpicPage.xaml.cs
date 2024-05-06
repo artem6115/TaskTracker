@@ -25,9 +25,11 @@ namespace TaskTrackerUI.Views
     {
         Navigator _navigator;
         EpicVm _context;
+        bool accessDeinedtoChange;
         public EpicPage(ProjectDto Project, Navigator navigator, bool AccessDeined = false)
         {
             InitializeComponent();
+            accessDeinedtoChange = AccessDeined;
             Title = $"Проекты / {Project.Name}";
             if(AccessDeined)
                 menu_panel.Visibility = Visibility.Hidden;
@@ -44,11 +46,17 @@ namespace TaskTrackerUI.Views
         }
         private void Open_Epic_btn(object sender, KeyEventArgs e)
         {
-            
+            if (List_Epics.SelectedItem is null) return;
+            var epic = List_Epics.SelectedItem as Epic;
+            epic.Project = _context.Project;
+            _navigator.Open(new EpicTasksPage(epic,_navigator, accessDeinedtoChange), false);
         }
         private void Open_Epic_mouse(object sender, MouseButtonEventArgs e)
         {
-           
+            if (List_Epics.SelectedItem is null) return;
+            var epic = List_Epics.SelectedItem as Epic;
+            epic.Project = _context.Project;
+            _navigator.Open(new EpicTasksPage(epic,_navigator, accessDeinedtoChange), false);
         }
         private async void Create_Epic(object sender, EventArgs e) {
             

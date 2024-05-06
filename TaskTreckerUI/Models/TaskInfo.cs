@@ -21,8 +21,7 @@ namespace TaskTrackerUI.Models
 
         public TaskDto? PreviousTask { get; set; }
 
-        public string? ProjectName { get; set; }
-        public string? EpicName { get; set; }
+        public long? EpicId { get; set; }
 
         public User? User { get; set; }
     }

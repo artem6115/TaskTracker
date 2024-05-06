@@ -46,6 +46,7 @@ namespace TaskTrackerUI.Services
                 task.Description,
                 task.ApproximateDateOfCompleted,
                 task.Importance,
+                task.EpicId,
                 PreviousTaskId = task.PreviousTask?.Id,
                 UserId = task.User?.Id
                 });

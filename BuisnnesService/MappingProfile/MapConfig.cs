@@ -42,6 +42,7 @@ namespace BuisnnesService.MappingProfile
                 .ForMember(e=>e.UserId,cnf=>cnf.MapFrom(x=> SetAutoUser(x)));
             CreateMap<UpdateTaskCommand, WorkTask>();
             CreateMap<WorkTask, TaskView>();
+            //.ForMember(e => e.Epic, cnf => cnf.MapFrom(x => x.Epic));
             CreateMap<WorkTask, TaskDto>();
             CreateMap<UpdateStatusTaskCommand, WorkTask>();
 

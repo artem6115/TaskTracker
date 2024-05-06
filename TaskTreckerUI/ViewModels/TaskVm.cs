@@ -14,6 +14,9 @@ namespace TaskTrackerUI.ViewModels
     public class TaskVm : VMBase
     {
         public TaskFilter? Filter { get; set; }
+        public long? EpicId { get; set; }
+        ObservableCollection<ProjectDto> _projects;
+        public ObservableCollection<ProjectDto> Projects { get=>_projects; set { _projects = value;OnPropertyChanged(); } }
         ObservableCollection<TaskDto> _tasks;
         public ObservableCollection<TaskDto> Tasks { get=>_tasks; set 
                 {
@@ -36,9 +39,14 @@ namespace TaskTrackerUI.ViewModels
             => TasksView = (Filter is null) ? Tasks : Filter.UseFilter(Tasks); 
 
         public override async Task<bool> LoadData() {
-            var list = await TaskService.GetMyTasksAsync();
+            List<TaskDto> list;
+            if(EpicId is null)
+                list = await TaskService.GetMyTasksAsync();
+            else
+                list = await TaskService.GetTasksInEpic((long)EpicId);
             if (list is null) return false;
             Tasks = new ObservableCollection<TaskDto>(list);
+            Projects =new ObservableCollection<ProjectDto>(await ProjectService.GetMyParticipateProjects());
             return true;
         }
     }

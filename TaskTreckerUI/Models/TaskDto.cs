@@ -10,6 +10,7 @@ namespace TaskTrackerUI.Models
     {
         public long Id { get; set; }
         public string Title { get; set; }
+        public Epic? Epic { get; set; }
         public Models.TaskStatus StatusTask { get; set; }
         public DateTime? ApproximateDateOfCompleted { get; set; }
         public DateTime? DateOfClosed { get; set; }

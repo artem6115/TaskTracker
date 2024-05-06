@@ -10,6 +10,7 @@ namespace BuisnnesService.Models
     {
         public long Id { get; set; }
         public string Title { get; set; }
+        public EpicDto? Epic {  get; set; }
         public Infrastructure.Entities.TaskStatus StatusTask { get; set; }
         public DateTime? ApproximateDateOfCompleted { get; set; }
         public DateTime? DateOfClosed { get; set; }
