@@ -24,7 +24,7 @@ namespace BuisnnesService.Commands.Tasks.Update
             {
                 task = _mapper.Map(request, task);
                 task.DateOfClosed = DateTime.Now;
-                updatedTask = await _taskRepository.UpdateTaskAsync(task);
+                updatedTask = await _taskRepository.UpdateStatusTaskAsync(task);
                 await _taskRepository.UnclockTasksAsync(updatedTask.Id);
 
             }
@@ -33,13 +33,13 @@ namespace BuisnnesService.Commands.Tasks.Update
             {
                 task = _mapper.Map(request, task);
                 task.DateOfClosed = null!;
-                updatedTask = await _taskRepository.UpdateTaskAsync(task);
+                updatedTask = await _taskRepository.UpdateStatusTaskAsync(task);
                 await _taskRepository.LockTasksAsync(updatedTask.Id);
             }
             else
             {
                 task = _mapper.Map(request, task);
-                updatedTask = await _taskRepository.UpdateTaskAsync(task);
+                updatedTask = await _taskRepository.UpdateStatusTaskAsync(task);
             }
             return _mapper.Map<TaskView>(updatedTask);
         }

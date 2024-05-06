@@ -18,6 +18,15 @@ namespace Infrastructure.Repository.TaskRepository
         }
         public async Task<WorkTask> CreateTaskAsync(WorkTask task)
         {
+            if (task.EpicId is not null) {
+                var result= await _context.Epics
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(
+                    x=>x.Id == task.EpicId &&
+                    x.Project.AuthorId == UserClaims.User.Id);
+                if (result is null)
+                    throw new FileNotFoundException("Эпик не найден");
+            }
             if(await IsLockedTask(task))task.StatusTask = Entities.TaskStatus.Blocked;
             var resultTask = await _context.Tasks.AddAsync(task);
             await _context.SaveChangesAsync();
@@ -34,9 +43,13 @@ namespace Infrastructure.Repository.TaskRepository
 
         public async Task DeleteTaskAsync(long id)
         {
-            var task = await _context.Tasks.AsNoTracking().SingleOrDefaultAsync(x=>x.Id == id);
+            var task = await _context.Tasks
+                           .AsNoTracking()
+                           .Include(x => x.Epic).ThenInclude(x => x.Project)
+                           .SingleOrDefaultAsync(x => x.Id == id);
             if (task is null)
                 throw new FileNotFoundException("Task not found");
+
             await CheckAccess(task);
             await UnclockTasksAsync(id);
             _context.Remove(task);
@@ -58,6 +71,7 @@ namespace Infrastructure.Repository.TaskRepository
         {
             var task = await _context.Tasks
                 .Include(task => task.Epic)
+                .ThenInclude(x => x.Project)
                 .Include(task=>task.User)
                 .Include(task => task.PreviousTask)
                 .SingleOrDefaultAsync(task => task.Id == id);
@@ -97,6 +111,14 @@ namespace Infrastructure.Repository.TaskRepository
             _logger.LogDebug($"Task updated, id - {task.Id}, description - {task.Description}");
             return task;
         }
+        public async Task<WorkTask> UpdateStatusTaskAsync(WorkTask task)
+        {
+            if (task.UserId != UserClaims.User.Id)
+                throw new AccessViolationException("У вас нет прав на изменеие статуса задачи");
+            await _context.SaveChangesAsync();
+            _logger.LogDebug($"Task updated status, id - {task.Id}, description - {task.Description}");
+            return task;
+        }
         private async Task CheckAccess(WorkTask task)
         {
             if (task.EpicId == null)
@@ -106,11 +128,20 @@ namespace Infrastructure.Repository.TaskRepository
             }
             else
             {
-                var authResult = await _context.Epics.AsNoTracking().SingleOrDefaultAsync(x =>
-                x.Project.AuthorId == UserClaims.User.Id &&
-                x.Id == task.EpicId);
-                if (authResult is null)
-                    throw new AccessViolationException("Do not have access to this resource");
+                if (task.Epic?.Project is not null)
+                {
+                    if (task.Epic.Project.AuthorId != UserClaims.User.Id)
+                        throw new AccessViolationException("Do not have access to this resource");
+                }
+                //else
+                //{
+
+                //    var authResult = await _context.Epics.SingleOrDefaultAsync(x =>
+                //    x.Project.AuthorId == UserClaims.User.Id &&
+                //    x.Id == task.EpicId);
+                //    if (authResult is null)
+                //        throw new AccessViolationException("Do not have access to this resource");
+                //}
             }
 
         }
