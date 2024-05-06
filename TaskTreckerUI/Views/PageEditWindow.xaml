@@ -58,8 +58,9 @@
                 
                 />
             <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
-                <Button HorizontalAlignment="Left" Width="200"  Content="Добавить пользователя" Click="Add_User"/>
-                <Button HorizontalAlignment="Left" Width="200"  Content="Сделать руководителем" Click="Change_Author"/>
+                <Button HorizontalAlignment="Left"  Content="Добавить пользователя" Click="Add_User"/>
+                <Button HorizontalAlignment="Left"   Content="Сделать руководителем" Click="Change_Author"/>
+                <Button HorizontalAlignment="Left"   Content="Удалить пользователя" Click="Delete_User"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
                 <TextBlock x:Name="Author_textblock" Text="{Binding Project.Author.Email,StringFormat=Руководитель: {0}}" Style="{StaticResource task-edit-title}"/>

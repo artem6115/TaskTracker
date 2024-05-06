@@ -43,7 +43,22 @@ namespace TaskTrackerUI.Views
         {
             await _context.LoadData();
             Users_List_To_Change.ItemsSource = _context.Users;
+
         }
+        private async void Find_User(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Escape || string.IsNullOrWhiteSpace(Find_Box.Text)) {
+                Users_List_To_Change.ItemsSource =_context.Users;
+                return;
+            }
+            Users_List_To_Change.ItemsSource = _context.Users.Where(
+                x=>x.Email.Contains(Find_Box.Text) ||
+                x.FullName.Contains(Find_Box.Text)
+                );
+            
+
+        }
+
         private void Open_Epic_btn(object sender, KeyEventArgs e)
         {
             if (List_Epics.SelectedItem is null) return;

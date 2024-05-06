@@ -137,6 +137,13 @@ namespace TaskTrackerUI.Views
             _context.OnPropertyChanged("Project.Author.Email");
             Author_textblock.Text = $"Руководитель: {_context.Project.Author.Email}";
         }
+        private async void Delete_User(object sender, EventArgs e)
+        {
+            if (Users_list.SelectedItem == null) return;
+            var user = Users_list.SelectedItem as User;
+            _context.Project.Users.Remove(_context.Project.Users.Single(x=>x.Id==user.Id));
+
+        }
 
     }
 }

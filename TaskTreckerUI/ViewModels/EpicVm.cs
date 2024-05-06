@@ -16,14 +16,15 @@ namespace TaskTrackerUI.ViewModels
         public ObservableCollection<Epic>? Epics
             { get=>_epics; set { _epics = value;OnPropertyChanged(); } }
         public ProjectDto? Project { get; set; }
-        public List<User> Users { get; set; }
+        ObservableCollection<User> _users;
+        public ObservableCollection<User> Users { get=>_users; set { _users = value;OnPropertyChanged(); } }
         public async override Task<bool> LoadData()
         {
             if (Project is null) return false;
             Epics = new ObservableCollection<Epic>(
                 await EpicService.GetProjectEpics(Project.Id)
                 );
-            Users = await ProjectService.GetUsers(Project.Id);
+            Users = new ObservableCollection<User>( await ProjectService.GetUsers(Project.Id));
             return Epics is not null;
         }
     }

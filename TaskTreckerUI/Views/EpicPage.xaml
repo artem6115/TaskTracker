@@ -96,22 +96,26 @@
                     HorizontalAlignment="Left"/>
             </TabItem>
             <TabItem Header="Команда">
-                <ListBox 
-                    Background="Transparent"
-                    Grid.RowSpan="3" 
-                    Grid.Column="1"
-                    ItemsSource="{Binding Users}"
-                    x:Name="Users_List_To_Change"
-                    >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Style="{StaticResource title-task}" Text="{Binding FullName}"/>
-                                <TextBlock  Margin="10 0 0 0" Style="{StaticResource title-task}" Text="{Binding Email}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <StackPanel>
+                    <TextBox x:Name="Find_Box" KeyDown="Find_User"/>
+                    <Separator/>
+                    <ListBox 
+                        Background="Transparent"
+                        Grid.RowSpan="3" 
+                        Grid.Column="1"
+                        ItemsSource="{Binding Users}"
+                        x:Name="Users_List_To_Change"
+                        >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock  Margin="10 0 0 0" Style="{StaticResource title-task}" Text="{Binding Email}"/>
+                                    <TextBlock Style="{StaticResource title-task}" Text="{Binding FullName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
             </TabItem>
             
         </TabControl>
