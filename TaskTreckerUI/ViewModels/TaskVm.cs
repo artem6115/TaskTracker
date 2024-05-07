@@ -15,6 +15,8 @@ namespace TaskTrackerUI.ViewModels
     {
         public TaskFilter? Filter { get; set; }
         public long? EpicId { get; set; }
+        public Epic? Epic { get; set; }
+
         ObservableCollection<ProjectDto> _projects;
         public ObservableCollection<ProjectDto> Projects { get=>_projects; set { _projects = value;OnPropertyChanged(); } }
         ObservableCollection<TaskDto> _tasks;
@@ -22,6 +24,8 @@ namespace TaskTrackerUI.ViewModels
                 {
                 _tasks = value;
                 _tasks.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) => Refresh();
+                OnPropertyChanged();
+
                 Refresh();
             }
          }

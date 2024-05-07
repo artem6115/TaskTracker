@@ -73,7 +73,14 @@
 
                 </Grid.RowDefinitions>
                 <Button ToolTip="Главная (F1)" Grid.Row="0" TabIndex="0" Content="Главная" Style="{StaticResource MenuButton}" Click="Main_Open"  />
-                <Button ToolTip="Уведомления (F6)" Grid.Row="4" TabIndex="1"  Content="Уведомления" Style="{StaticResource  MenuButton}" Click="Notify_Open"/>
+                <Button ToolTip="Уведомления (F6)" Grid.Row="4" TabIndex="1"  Style="{StaticResource  MenuButton}" Click="Notify_Open">
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Margin="0 0 10 0" Width="30" Height="30" Source="/Assets/Images/new_message.png" />
+                            <TextBlock Text="Уведомления"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
                 <Button ToolTip="Заметки (F4)" Grid.Row="3" TabIndex="2" Content="Заметки" Style="{StaticResource MenuButton}" Click="Note_Open"/>
                 <Button ToolTip="Задачи (F3)" Grid.Row="2" TabIndex="3"  Content="Задачи" Style="{StaticResource MenuButton}" Click="Task_Open"/>
                 <Button ToolTip="Проекты (F2)" Grid.Row="1" TabIndex="4"  Content="Проекты" Style="{StaticResource MenuButton}" Click="Project_Open"/>

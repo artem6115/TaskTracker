@@ -38,6 +38,8 @@
     <None Remove="Assets\Images\Loading64.png" />
     <None Remove="Assets\Images\MainIco.ico" />
     <None Remove="Assets\Images\MainIco.png" />
+    <None Remove="Assets\Images\messanger.png" />
+    <None Remove="Assets\Images\new_message.png" />
     <None Remove="Assets\Images\Next.png" />
     <None Remove="Assets\Images\pause.png" />
     <None Remove="Assets\Images\Reload.png" />
@@ -123,6 +125,12 @@
     </Resource>
     <Resource Include="Assets\Images\Loading64.png" />
     <Resource Include="Assets\Images\MainIco.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\messanger.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\new_message.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Images\Next.png">

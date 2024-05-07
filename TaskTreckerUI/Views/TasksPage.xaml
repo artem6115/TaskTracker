@@ -47,6 +47,7 @@
                 Click="ProjectOnly_btn"
                 Width="30"
                 Height="30"
+                ToolTip="Отменить фильтр"
                 Style="{StaticResource MenuButton}"
               >
                 <Button.Background>

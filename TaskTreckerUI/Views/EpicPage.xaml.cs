@@ -37,14 +37,10 @@ namespace TaskTrackerUI.Views
             _context = DataContext as EpicVm;
             _context.Project = Project;
             Description_text.Text = Project.Description;
-            LoadData();
+            Task.Run(()=>_context.LoadData());
         }
-        private async void LoadData()
-        {
-            await _context.LoadData();
-            Users_List_To_Change.ItemsSource = _context.Users;
 
-        }
+        
         private async void Find_User(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Escape || string.IsNullOrWhiteSpace(Find_Box.Text)) {

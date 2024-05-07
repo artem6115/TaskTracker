@@ -20,28 +20,19 @@ namespace BuisnnesService.Commands.Tasks.Update
         {
             var task = await _taskRepository.GetTaskAsync(request.Id);
             WorkTask updatedTask;
-            if (request.StatusTask == Infrastructure.Entities.TaskStatus.Completed &&
-                task.StatusTask != Infrastructure.Entities.TaskStatus.Completed)
+            if (request.UserId is null)
             {
-                task = _mapper.Map(request, task);
-                task.DateOfClosed = DateTime.Now;
-                updatedTask = await _taskRepository.UpdateTaskAsync(task);
-                await _taskRepository.UnclockTasksAsync(updatedTask.Id);
-
-            }
-            else if (task.StatusTask == Infrastructure.Entities.TaskStatus.Completed &&
-                 request.StatusTask != Infrastructure.Entities.TaskStatus.Completed)
-            {
-                task = _mapper.Map(request, task);
-                task.DateOfClosed = null!;
-                updatedTask = await _taskRepository.UpdateTaskAsync(task);
-                await _taskRepository.LockTasksAsync(updatedTask.Id);
+                if (task.StatusTask != Infrastructure.Entities.TaskStatus.Blocked ||
+                    task.StatusTask != Infrastructure.Entities.TaskStatus.Completed)
+                    request.StatusTask = Infrastructure.Entities.TaskStatus.Free;
             }
             else
             {
-                task = _mapper.Map(request, task);
-                updatedTask = await _taskRepository.UpdateTaskAsync(task);
+                if (task.StatusTask == Infrastructure.Entities.TaskStatus.Free)
+                    request.StatusTask = Infrastructure.Entities.TaskStatus.Work;
             }
+            task = _mapper.Map(request, task);
+            updatedTask = await _taskRepository.UpdateTaskAsync(task);
             return _mapper.Map<TaskView>(updatedTask);
         }
     }

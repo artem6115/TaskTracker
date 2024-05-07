@@ -21,10 +21,12 @@ namespace TaskTrackerUI.ViewModels
         public async override Task<bool> LoadData()
         {
             if (Project is null) return false;
-            Epics = new ObservableCollection<Epic>(
-                await EpicService.GetProjectEpics(Project.Id)
-                );
-            Users = new ObservableCollection<User>( await ProjectService.GetUsers(Project.Id));
+            var result = await EpicService.GetProjectEpics(Project.Id);
+            if (result == null) return false;
+            Epics = new ObservableCollection<Epic>(result);
+            var users = await ProjectService.GetUsers(Project.Id);
+            if(users is null )return false;
+            Users = new ObservableCollection<User>(users);
             return Epics is not null;
         }
     }

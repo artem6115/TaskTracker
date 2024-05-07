@@ -35,7 +35,11 @@
                 VerticalAlignment="Center" 
                 Text="Описание эпика: "
                 FontSize="20"/>
-            <TextBox MinHeight="200" Text="{Binding Epic.Description}"/>
+            <TextBox
+                MinHeight="200"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                Text="{Binding Epic.Description}"/>
         </StackPanel>
         <StackPanel 
             Grid.Row="2"

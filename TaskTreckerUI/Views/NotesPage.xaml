@@ -106,8 +106,9 @@
                 x:Name="Note_Text"
                 MaxHeight="100"
                 BorderBrush="Blue"
+                AcceptsReturn="True"
                 BorderThickness="5"
-                Margin="10" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" KeyDown="New_Line"/>
+                Margin="10" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
             <Button Width="40" Height="40" Grid.Column="1" Style="{StaticResource MenuButton}" RenderTransformOrigin="159.856,-18.218" Click="Send" ToolTip="Создать/Редактировать заметку">
                 <Button.Background >
                     <ImageBrush ImageSource="/Assets/Images/Send.png"/>

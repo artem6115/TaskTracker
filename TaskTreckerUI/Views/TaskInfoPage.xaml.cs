@@ -35,7 +35,11 @@ namespace TaskTrackerUI.Views
         }
         private async void LoadData() {
             await _context.LoadData();
-            Title = $"Мои Задачи / {_context.Task.Title}";
+            if(_context.Task.Epic is null)
+                Title = $"Мои Задачи / {_context.Task?.Title}";
+            else
+                Title = $"{_context.Task.Epic.Project?.Name} / {_context.Task.Epic.Title} / {_context.Task.Title}";
+
             _navigator.SetTitle(true);
         }
         private void Open_back_task(object sender, MouseButtonEventArgs e)
@@ -44,10 +48,5 @@ namespace TaskTrackerUI.Views
             _navigator.Open(new TaskInfoPage(_navigator,_context.Task.PreviousTask.Id));
         }
 
-
-        private void Loaded_Form(object sender, RoutedEventArgs e)
-        {
-   
-        }
     }
 }

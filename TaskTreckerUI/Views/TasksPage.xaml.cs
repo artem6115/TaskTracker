@@ -190,7 +190,7 @@ namespace TaskTrackerUI.Views
             if (taskSelected == null) return;
             var tasks = _context.TasksView.ToList();
             tasks.Remove(taskSelected);
-            var taskForm = new TaskEditWindow(taskSelected.Id,tasks);
+            var taskForm = new TaskEditWindow(taskSelected.Id,null,tasks);
             taskForm.ShowDialog();
             if (taskForm.Task is null) return;
 

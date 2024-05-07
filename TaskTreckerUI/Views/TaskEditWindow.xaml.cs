@@ -23,13 +23,15 @@ namespace TaskTrackerUI.Views
     public partial class TaskEditWindow : Window
     {
         public TaskInfo Task { get; private set; }
+        long? projectId;
         TaskInfoVm _context;
-        public TaskEditWindow(long? taskId = null!, List<TaskDto> tasks = null!)
+        public TaskEditWindow(long? taskId = null!, long? projectId=null, List<TaskDto> tasks = null!)
         {
             InitializeComponent();
             _context = DataContext as TaskInfoVm;
             _context.TaskId = taskId;
             _context.TasksInScope = tasks;
+            this.projectId = projectId;
             Init();
         }
         private async void Init() {
@@ -57,6 +59,17 @@ namespace TaskTrackerUI.Views
             BackTask_check.IsChecked = _context.Task.PreviousTask is null;
             tasks_combo.SelectedValue = _context.Task.PreviousTask?.Id;
 
+            if(projectId is null)
+            {
+                _context.Task.User = AuthService.User;
+                Task_Worker_panel.Visibility = Visibility.Collapsed;
+            }
+            var user = _context.Task?.User;
+            if(user != null)
+                Text_User.Text = $"{user.FullName}, {user.Email}";
+
+            
+
 
         }
 
@@ -80,11 +93,25 @@ namespace TaskTrackerUI.Views
             if (Date_check.IsChecked == true) Task.ApproximateDateOfCompleted = null;
             if (Importance_check.IsChecked == true) Task.Importance = null;
             if (BackTask_check.IsChecked == true) Task.PreviousTask = null;
-            Task.User = AuthService.User;
+            
             if (_context.Task.StatusTask == Models.TaskStatus.Blocked && Task.PreviousTask == null)
                 Task.StatusTask = Models.TaskStatus.Work;
             Close();
           
+        }
+        private void Delete_User(object sender, EventArgs e)
+        {
+            Text_User.Text = "";
+            _context.Task.User = null;
+        }
+        private void Chouse_user (object sender, EventArgs e)
+        {
+            var findWindow = new FindUserInProjectWindow((long)projectId);
+            findWindow.ShowDialog();
+            User user = findWindow.User;
+            if (user is null) return;
+            Text_User.Text = $"{user.FullName}, {user.Email}";
+            _context.Task.User = user;
         }
     }
 }

@@ -33,6 +33,7 @@ namespace TaskTrackerUI.Views
             Title = $"Проекты / {epic.Project.Name} / {epic.Title}";
             _context = DataContext as TaskVm;
             _context.EpicId = epic.Id;
+            _context.Epic = epic;
             LoadData();
             
         }
@@ -60,7 +61,7 @@ namespace TaskTrackerUI.Views
         }
         private async void Create_Task(object sender, RoutedEventArgs e)
         {
-            var taskForm = new TaskEditWindow(tasks: _context.TasksView.ToList());
+            var taskForm = new TaskEditWindow(projectId: _context.Epic?.Project.Id,tasks: _context.TasksView.ToList());
             taskForm.ShowDialog();
             var task = taskForm.Task;
             if (task is null) return;
@@ -82,7 +83,7 @@ namespace TaskTrackerUI.Views
             if (taskSelected == null) return;
             var tasks = _context.TasksView.ToList();
             tasks.Remove(taskSelected);
-            var taskForm = new TaskEditWindow(taskSelected.Id, tasks);
+            var taskForm = new TaskEditWindow(taskSelected.Id,_context.Epic.Project.Id ,tasks);
             taskForm.ShowDialog();
             var task = taskForm.Task;
             if (task is null) return;

@@ -118,12 +118,5 @@ namespace TaskTrackerUI.Views
             _context.Refresh();
         }
 
-        private void New_Line(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                Note_Text.Text += Environment.NewLine;
-            }
-        }
     }
 }

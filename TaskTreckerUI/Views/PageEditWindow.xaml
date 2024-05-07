@@ -31,7 +31,10 @@
                 Text="Описание проекта"
                 Style="{StaticResource task-edit-title}"
                 />
-            <TextBox TextWrapping="Wrap" Text="{Binding Project.Description}" MinHeight="150"/>
+            <TextBox 
+                TextWrapping="Wrap"
+                AcceptsReturn="True"
+                Text="{Binding Project.Description}" MinHeight="150"/>
         </StackPanel>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

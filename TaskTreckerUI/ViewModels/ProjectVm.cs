@@ -28,10 +28,14 @@ namespace TaskTrackerUI.ViewModels
 
 
         public override async Task<bool> LoadData() {
-            MyProjects =new ObservableCollection<ProjectDto>
-                ( await ProjectService.GetMyProjects());
-            MyParticipateProjects = new ObservableCollection<ProjectDto>
-                (await ProjectService.GetMyParticipateProjects());
+            var resultMy = await ProjectService.GetMyProjects();
+            var resultPart = await ProjectService.GetMyParticipateProjects();
+            if(resultMy != null) 
+                MyProjects = new ObservableCollection<ProjectDto>
+                    (resultMy);
+            if(resultPart != null)
+                MyParticipateProjects = new ObservableCollection<ProjectDto>
+                (resultPart);
             return MyProjects != null && MyParticipateProjects != null;
         }
     }

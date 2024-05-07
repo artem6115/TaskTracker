@@ -87,19 +87,20 @@
             </ListView> 
             </TabItem>
             <TabItem Header="Описание проета">
-                
-                <TextBlock 
-                    x:Name="Description_text"
-                    Margin="10"
-                     Style="{StaticResource ProjectInfo}"
-                     TextWrapping="Wrap"
-                    HorizontalAlignment="Left"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock 
+                        x:Name="Description_text"
+                        Margin="10"
+                         Style="{StaticResource ProjectInfo}"
+                         TextWrapping="Wrap"
+                        HorizontalAlignment="Left"/>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="Команда">
                 <StackPanel>
                     <TextBox x:Name="Find_Box" KeyDown="Find_User"/>
-                    <Separator/>
                     <ListBox 
+                        BorderThickness="0"
                         Background="Transparent"
                         Grid.RowSpan="3" 
                         Grid.Column="1"

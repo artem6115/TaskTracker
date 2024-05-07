@@ -4,8 +4,16 @@
         <Setter Property="FontSize" Value="30"/>
         <Setter Property="Foreground" Value="White"/>
     </Style>
+    <Style TargetType="TextBlock" x:Key="title-task-black">
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Foreground" Value="Black"/>
+    </Style>
     <Style TargetType="TextBlock" x:Key="base-text-task">
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style TargetType="TextBlock" x:Key="base-text-task-black">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="Black"/>
     </Style>
 </ResourceDictionary>
