@@ -42,10 +42,14 @@ namespace TaskTrackerUI.Views
                 BackTask_check.IsEnabled = false;
 
             }
-
+            if (projectId is null)
+            {
+                Task_Worker_panel.Visibility = Visibility.Collapsed;
+            }
             if (_context.TaskId is null) 
                 {
                 _context.Task = new TaskInfo();
+                _context.Task.User = AuthService.User;
                 return;
                 }
             var result = await _context.LoadData();
@@ -59,11 +63,7 @@ namespace TaskTrackerUI.Views
             BackTask_check.IsChecked = _context.Task.PreviousTask is null;
             tasks_combo.SelectedValue = _context.Task.PreviousTask?.Id;
 
-            if(projectId is null)
-            {
-                _context.Task.User = AuthService.User;
-                Task_Worker_panel.Visibility = Visibility.Collapsed;
-            }
+
             var user = _context.Task?.User;
             if(user != null)
                 Text_User.Text = $"{user.FullName}, {user.Email}";

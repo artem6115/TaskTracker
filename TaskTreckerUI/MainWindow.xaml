@@ -87,7 +87,7 @@
                 <Button ToolTip="Настройки (F7)" Grid.Row="5" TabIndex="5"  Content="Настройки" Style="{StaticResource MenuButton}" Click="Setting_Open"/>
 
             </Grid>
-            <Frame NavigationUIVisibility="Hidden" x:Name="NavWindows" Grid.Column="1" />
+            <Frame NavigationUIVisibility="Hidden" x:Name="NavWindows" Grid.Column="1"  />
         </Grid>
     </Grid>
 

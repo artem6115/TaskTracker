@@ -10,6 +10,7 @@ namespace Infrastructure.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<WorkTask> builder)
         {
+            builder.ToTable(x => x.HasTrigger("UpdateTaskTriger"));
             builder.HasOne(x => x.User).WithMany(x => x.Tasks)
                 .HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.SetNull);
             builder.HasOne(x => x.Epic).WithMany(x => x.Tasks)

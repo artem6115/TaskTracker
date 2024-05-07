@@ -60,14 +60,14 @@ namespace TaskTrackerUI.Views
             if (List_Epics.SelectedItem is null) return;
             var epic = List_Epics.SelectedItem as Epic;
             epic.Project = _context.Project;
-            _navigator.Open(new EpicTasksPage(epic,_navigator, accessDeinedtoChange), false);
+            _navigator.Open(new EpicTasksPage(epic,_navigator, accessDeinedtoChange));
         }
         private void Open_Epic_mouse(object sender, MouseButtonEventArgs e)
         {
             if (List_Epics.SelectedItem is null) return;
             var epic = List_Epics.SelectedItem as Epic;
             epic.Project = _context.Project;
-            _navigator.Open(new EpicTasksPage(epic,_navigator, accessDeinedtoChange), false);
+            _navigator.Open(new EpicTasksPage(epic,_navigator, accessDeinedtoChange));
         }
         private async void Create_Epic(object sender, EventArgs e) {
             

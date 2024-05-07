@@ -34,11 +34,9 @@ namespace TaskTrackerUI.Views
             _context = DataContext as TaskVm;
             _context.EpicId = epic.Id;
             _context.Epic = epic;
-            LoadData();
             
         }
-        private async void LoadData()
-            => await _context.LoadData();
+
 
         private void Show_task_btn(object sender, KeyEventArgs e)
         {

@@ -84,13 +84,14 @@ namespace Infrastructure.Repository.TaskRepository
                 .Where(task => task.EpicId == id).ToListAsync();
         }
 
-        public Task UnclockTasksAsync(long id)
+        public async Task UnclockTasksAsync(long id)
         {
-            return null!;
+            await Task.Yield();
         }
-        public Task LockTasksAsync(long id)
+        public async Task LockTasksAsync(long id)
         {
-            return null!;
+            await Task.Yield();
+
         }
 
         public async Task<WorkTask> UpdateTaskAsync(WorkTask task)

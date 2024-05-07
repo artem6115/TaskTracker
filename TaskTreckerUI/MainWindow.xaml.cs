@@ -93,7 +93,7 @@ namespace TaskTrackerUI
 
         private async void Shortcut(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Back) Navigator.Back();
+            if (e.Key == Key.OemMinus) Navigator.Back();
             else if (e.Key == Key.OemPlus) Navigator.Next();
             else if (e.Key == Key.Escape)
             {
@@ -109,5 +109,6 @@ namespace TaskTrackerUI
             else if (e.Key == Key.F7) OpenPage(PagesEnum.Setting);
 
         }
+
     }
 }
