@@ -44,12 +44,10 @@ namespace Infrastructure.Repository.ProjectRepository
 
         public async Task<Project> CreateProjectAsync(Project project)
         {
-            await _context.Create_Project(project);
+            var Id = await _context.Create_Project(project);
             var entity = await _context.Projects
-                .Where(x=>x.AuthorId==UserClaims.User.Id)
-                .Include(x=>x.Author)
-                .OrderByDescending(x=>x.Id)
-                .FirstAsync();
+                .Include(x => x.Author)
+                .SingleAsync(x => x.Id == Id);
             _logger.LogDebug($"Создан проект, наименоание {entity.Name}, id - {entity.Id}");
             return entity;
         }

@@ -1,30 +1,38 @@
-﻿begin
-declare @Id bigint
-declare @StatusTask int
-declare @UserId bigint
-
-
-declare @IdChanged bigint
-set @IdChanged = 15
-
-declare MyCursor cursor scroll for
-
-select Id, StatusTask, UserId from Tasks
-open MyCursor
-fetch MyCursor into @Id, @StatusTask, @UserId
-
-while @@FETCH_STATUS <> 0
+﻿CREATE PROCEDURE [dbo].[WorkUserTime]
+	@ProjectId bigint,
+	@UserId bigint
+AS
 begin
-	print('Hellow')
-	If (@UserId is null)
-		UPDATE Tasks SET StatusTask=0 WHERE PreviousTaskId = @IdChanged AND Id = @Id
-	ELSE
-		UPDATE Tasks SET StatusTask=1 WHERE PreviousTaskId = @IdChanged AND Id = @Id
+declare @TaskId bigint
+declare @DateOfCreated date
+declare @DateOfClosed date
+declare MyCursor cursor scroll for
+select p.Id,t.DateOfCreated,t.DateOfClosed
+from Tasks AS t 
+INNER JOIN Epics as e
+ON t.EpicId = e.Id INNER JOIN
+Projects as p ON e.ProjectId = p.Id 
+print(1)
+SET @TaskId = (Select Count(*)
+from Tasks AS t 
+INNER JOIN Epics as e
+ON t.EpicId = e.Id INNER JOIN
+Projects as p ON e.ProjectId = p.Id )
+print(CAST(@TAskId as nvarchar(max)))
+open MyCursor
+fetch MyCursor into @TaskId, @DateOfCreated, @DateOfClosed
+print('cursore opend')
+while @@FETCH_STATUS <> -1
+begin
+	print(CAST(@TaskId as nvarchar(max))+' '+CAST(@DateOfCreated as nvarchar(max))+ ' ' + CAST(@DateOfClosed as nvarchar(max)))
+	fetch MyCursor into @TaskId, @DateOfCreated, @DateOfClosed
 end
 
 close MyCursor
 deallocate MyCursor
 end
+
+RETURN 0
 
 
 Create TRIGGER [dbo].[UpdateTaskTriger] ON [dbo].[Tasks] 

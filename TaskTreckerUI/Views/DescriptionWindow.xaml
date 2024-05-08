@@ -1,0 +1,20 @@
+﻿<Window x:Class="TaskTrackerUI.Views.DescriptionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TaskTrackerUI.Views"
+        mc:Ignorable="d"
+        Title="Description" Height="450" Width="800">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <TextBlock 
+                x:Name="Text_block"
+                TextWrapping="Wrap"
+                Foreground="Black"
+                FontSize="18"
+                Margin="15"
+                />
+        </ScrollViewer>
+    </Grid>
+</Window>

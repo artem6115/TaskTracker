@@ -14,7 +14,7 @@ namespace TaskTrackerUI.Filters
     {
         public Models.TaskStatus TaskStatus { get; set; }
         public bool LocalOnly = false;
-        public long ProjectId { get; set; }
+        public long? ProjectId { get; set; }
         public ProjectDto? Project { get; set; }
 
         public ObservableCollection<TaskDto> UseFilter(IList<TaskDto> tasks) {

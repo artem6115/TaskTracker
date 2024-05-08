@@ -7,7 +7,6 @@ public partial class TaskTrackerDbContext : DbContext
     public  TaskTrackerDbContext()
     {
 
-
     }
 
     public TaskTrackerDbContext(DbContextOptions<TaskTrackerDbContext> options)

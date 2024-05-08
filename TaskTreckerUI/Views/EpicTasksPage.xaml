@@ -25,7 +25,12 @@
             <RowDefinition MaxHeight="70" Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Name="Menu_bar" Grid.Row="0" Orientation="Horizontal" Background="#FF393333">
-            <Button Margin="20 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Create_Task" ToolTip="Создать задачу" >
+            <Button Margin="20 0 0 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Open_Description" ToolTip="Открыть описание эпика" >
+                <Button.Background >
+                    <ImageBrush ImageSource="/Assets/Images/description.png"/>
+                </Button.Background>
+            </Button>
+            <Button Margin="10 0 10 0" Style="{StaticResource MenuButton}" Width="30" Height="30" Click="Create_Task" ToolTip="Создать задачу" >
                 <Button.Background >
                     <ImageBrush ImageSource="/Assets/Images/add_btn.png"/>
                 </Button.Background>
@@ -40,6 +45,14 @@
                     <ImageBrush ImageSource="/Assets/Images/change_btn.png"/>
                 </Button.Background>
             </Button>
+            <ComboBox Name="Task_Types" Margin="40 0 20 0" Width="150" SelectionChanged="Select_type">
+                <ComboBoxItem Tag="0" Content="Free"/>
+                <ComboBoxItem Tag="1" Content="Work"/>
+                <ComboBoxItem Tag="2" Content="Pause"/>
+                <ComboBoxItem Tag="3" Content="Blocked"/>
+                <ComboBoxItem Tag="4" Content="Completed"/>
+                <ComboBoxItem Selector.IsSelected="True" Tag="5" Content="All"/>
+            </ComboBox>
         </StackPanel>
 
         <ListView  Grid.Row="1"

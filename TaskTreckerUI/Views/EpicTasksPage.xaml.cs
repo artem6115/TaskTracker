@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TaskTrackerUI.Filters;
 using TaskTrackerUI.Models;
 using TaskTrackerUI.Services;
 using TaskTrackerUI.ViewModels;
@@ -34,10 +35,20 @@ namespace TaskTrackerUI.Views
             _context = DataContext as TaskVm;
             _context.EpicId = epic.Id;
             _context.Epic = epic;
+            _context.Filter = new TaskFilter() { TaskStatus=Models.TaskStatus.All};
             
         }
 
+        private void Select_type(object sender, SelectionChangedEventArgs e)
+        {
+            var chooseItem = Task_Types.SelectedItem as ComboBoxItem;
+            var tag = chooseItem.Tag;
+            if (tag == null) return;
+            var index = int.Parse(tag.ToString());
+            _context.Filter.TaskStatus = (Models.TaskStatus)index;
+            _context.Refresh();
 
+        }
         private void Show_task_btn(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -121,6 +132,8 @@ namespace TaskTrackerUI.Views
 
             }
         }
+        private void Open_Description(object sender, EventArgs e) 
+            => new DescriptionWindow(_context.Epic.Description).Show();
 
     }
 }

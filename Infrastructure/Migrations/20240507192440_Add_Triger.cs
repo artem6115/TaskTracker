@@ -13,7 +13,7 @@ namespace Infrastructure.Migrations
         {
             migrationBuilder.Sql("""
                 Create TRIGGER [dbo].[UpdateTaskTriger] ON [dbo].[Tasks] 
-                After Update,Delete
+                After Update
                 AS 
                 IF IS_MEMBER ('db_owner') = 0
                 declare @Id bigint

@@ -11,7 +11,6 @@ namespace TaskTrackerAPI.Validators.Epic
                 .NotEmpty()
                 .MaximumLength(20)
                 .WithMessage("Максимальная длинна заголовка - 20 символов");
-            RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Id).NotNull();
         }
     }

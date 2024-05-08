@@ -25,9 +25,9 @@ namespace Infrastructure.Repository
             .ToListAsync());
         public async Task<User> AddUserAcync(User user)
         {
-            await _context.Create_User(user);
+            var Id = await _context.Create_User(user);
             _logger.LogTrace($"User added, full name {user.FullName}");
-            return await _context.Users.AsNoTracking().SingleAsync(x => x.Email == user.Email);
+            return await _context.Users.AsNoTracking().SingleAsync(x => x.Id == Id);
 
         }
 

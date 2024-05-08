@@ -9,7 +9,7 @@ namespace BuisnnesService.Commands.Epics.Create
     public class CreateEpicCommand : IRequest<EpicDto>
     {
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public long ProjectId { get; set; }
 
     }

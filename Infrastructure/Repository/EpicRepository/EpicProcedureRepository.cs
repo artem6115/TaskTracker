@@ -26,13 +26,11 @@ namespace Infrastructure.Repository.EpicRepository
                 throw new FileNotFoundException("Проект с указаным id не найдет");
             if (proj.AuthorId != UserClaims.User.Id)
                 throw new AccessViolationException("У вас нет прав на редактирование этого проекта");
-            await _context.Create_Epic(epic);
+            var Id = await _context.Create_Epic(epic);
             _logger.LogInformation($"Creare Epic {epic.Id}, {epic.Title}");
             var newEpic = await _context.Epics
                 .AsNoTracking()
-                .Where(x=>x.ProjectId== epic.ProjectId)
-                .OrderByDescending(x=>x.Id)
-                .FirstAsync();
+                .SingleAsync(x=>x.Id == Id);
 
             return newEpic;
 

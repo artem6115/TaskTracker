@@ -18,7 +18,7 @@ namespace Infrastructure.Repository.NoteRepository
         }
         public async Task<Note> CreateAsync(Note note)
         {
-            await _context.Create_Note(note);
+            var id = await _context.Create_Note(note);
             var newNote = await _context.Notes.Where(x=>x.UserId == note.UserId).OrderByDescending(x=>x.DateOfCreated).FirstAsync();
             _logger.LogDebug($"Note added, id = {newNote.Id}");
             return newNote;

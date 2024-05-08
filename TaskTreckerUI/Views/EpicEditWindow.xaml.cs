@@ -50,11 +50,7 @@ namespace TaskTrackerUI.Views
                 valid = false;
                 error += "Название эпика не должно быть больше 20 символов\n";
             }
-            if (string.IsNullOrWhiteSpace(_epic.Description))
-            {
-                valid = false;
-                error += "Описание эпика не должно быть пустым\n";
-            }
+           
             if (!valid)
                 MessageBox.Show(error, "Error list", MessageBoxButton.OK, MessageBoxImage.Warning);
             return valid;

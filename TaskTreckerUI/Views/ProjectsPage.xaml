@@ -73,7 +73,7 @@
             >
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal"/>
+                    <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>

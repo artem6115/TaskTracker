@@ -26,83 +26,147 @@ namespace Infrastructure.Utilits
  
         }
 
-        public async static Task Create_User(this TaskTrackerDbContext context, User user)
+        public async static Task<long> Create_User(this TaskTrackerDbContext context, User user)
         {
-            await context.Database.ExecuteSqlRawAsync("Create_User @FullName, @Email, @Password, @Spice, @Phone",
+            var Id = new Microsoft.Data.SqlClient.SqlParameter
+            {
+                ParameterName = "@Id",
+                SqlDbType = System.Data.SqlDbType.BigInt,
+                Direction = System.Data.ParameterDirection.Output
+            };
+            await context.Database.ExecuteSqlRawAsync("Create_User @FullName, @Email, @Password, @Spice, @Phone, @Id OUT",
                 new SqlParameter("@FullName",user.FullName),
                 new SqlParameter("@Email", user.Email),
                 new SqlParameter("@Password", user.Password),
                 new SqlParameter("@Spice", user.Spice ?? (object)DBNull.Value),
-                new SqlParameter("@Phone", user.Phone?? (object)DBNull.Value)
-                );
+                new SqlParameter("@Phone", user.Phone?? (object)DBNull.Value),
+                Id);
+            return long.Parse(Id.Value.ToString());
         }
-        public async static Task Create_Attachment(this TaskTrackerDbContext context, Attachment attachment)
+        public async static Task<long> Create_Attachment(this TaskTrackerDbContext context, Attachment attachment)
         {
-
-            await context.Database.ExecuteSqlRawAsync("Create_Attachment @Data, @Extention, @Type, @UserId, @WorkTaskId",
+            var Id = new Microsoft.Data.SqlClient.SqlParameter
+            {
+                ParameterName = "@Id",
+                SqlDbType = System.Data.SqlDbType.BigInt,
+                Direction = System.Data.ParameterDirection.Output
+            };
+            await context.Database.ExecuteSqlRawAsync("Create_Attachment @Data, @Extention, @Type, @UserId, @WorkTaskId, @Id OUT",
                 new SqlParameter("@Data", attachment.Data),
                 new SqlParameter("@Extention", attachment.Extention), 
                 new SqlParameter("@Type", attachment.Type),
                 new SqlParameter("@UserId", attachment.User.Id),
-                new SqlParameter("@WorkTaskId", attachment.WorkTask.Id));
-        }
-        public async static Task Create_Comment(this TaskTrackerDbContext context, Comment comment)
-        {
+                new SqlParameter("@WorkTaskId", attachment.WorkTask.Id),
+                Id);
+            return long.Parse(Id.Value.ToString());
 
-            await context.Database.ExecuteSqlRawAsync("Create_Comment @Description, @UserId, @TaskId, @Date",
+        }
+        public async static Task<long> Create_Comment(this TaskTrackerDbContext context, Comment comment)
+        {
+            var Id = new Microsoft.Data.SqlClient.SqlParameter
+            {
+                ParameterName = "@Id",
+                SqlDbType = System.Data.SqlDbType.BigInt,
+                Direction = System.Data.ParameterDirection.Output
+            };
+            await context.Database.ExecuteSqlRawAsync("Create_Comment @Description, @UserId, @TaskId, @Date, @Id OUT",
                 new SqlParameter("@Date", DateTime.Now),
                 new SqlParameter("@Description", comment.Description),
                 new SqlParameter("@TaskId", comment.Task.Id),
-                new SqlParameter("@UserId", comment.User.Id));
+                new SqlParameter("@UserId", comment.User.Id),
+                Id);
+            return long.Parse(Id.Value.ToString());
+
         }
 
-        public async static Task Create_Epic(this TaskTrackerDbContext context, Epic epic)
+        public async static Task<long> Create_Epic(this TaskTrackerDbContext context, Epic epic)
         {
-
-            await context.Database.ExecuteSqlRawAsync("Create_Epic @Title, @Description, @ProjectId",
+            var Id = new Microsoft.Data.SqlClient.SqlParameter
+            {
+                ParameterName = "@Id",
+                SqlDbType = System.Data.SqlDbType.BigInt,
+                Direction = System.Data.ParameterDirection.Output
+            };
+            await context.Database.ExecuteSqlRawAsync("Create_Epic @Title, @Description, @ProjectId, @Id OUT",
                 new SqlParameter("@Title", epic.Title),
-                new SqlParameter("@Description", epic.Description),
-                new SqlParameter("@ProjectId", epic.ProjectId));
-        }
-   
-        public async static Task Create_Note(this TaskTrackerDbContext context, Note note)
-        {
+                new SqlParameter("@Description", epic.Description ?? (object)DBNull.Value),
+                new SqlParameter("@ProjectId", epic.ProjectId),
+                Id);
+            return long.Parse(Id.Value.ToString());
 
-            await context.Database.ExecuteSqlRawAsync("Create_Note @Description, @UserId",
+        }
+
+        public async static Task<long> Create_Note(this TaskTrackerDbContext context, Note note)
+        {
+            var Id = new Microsoft.Data.SqlClient.SqlParameter
+            {
+                ParameterName = "@Id",
+                SqlDbType = System.Data.SqlDbType.BigInt,
+                Direction = System.Data.ParameterDirection.Output
+            };
+            await context.Database.ExecuteSqlRawAsync("Create_Note @Description, @UserId, @Id OUT",
                 new SqlParameter("@Description", note.Description),
-                new SqlParameter("@UserId", note.UserId));
+                new SqlParameter("@UserId", note.UserId),
+                Id);
+            return long.Parse(Id.Value.ToString());
+
         }
 
-        public async static Task Create_Notify(this TaskTrackerDbContext context, Notify notify)
+        public async static Task<long> Create_Notify(this TaskTrackerDbContext context, Notify notify)
         {
-
-            await context.Database.ExecuteSqlRawAsync("Create_Notify @Message, @Title, @UserId",
+            var Id = new Microsoft.Data.SqlClient.SqlParameter
+            {
+                ParameterName = "@Id",
+                SqlDbType = System.Data.SqlDbType.BigInt,
+                Direction = System.Data.ParameterDirection.Output
+            };
+            await context.Database.ExecuteSqlRawAsync("Create_Notify @Message, @Title, @UserId, @Id OUT",
                 new SqlParameter("@Message", notify.Message),
                 new SqlParameter("@Title", notify.Title),
-                new SqlParameter("@UserId", notify.UserId));
+                new SqlParameter("@UserId", notify.UserId),
+                Id);
+            return long.Parse(Id.Value.ToString());
+
         }
 
-        public async static Task Create_Project(this TaskTrackerDbContext context, Project project)
+        public async static Task<long> Create_Project(this TaskTrackerDbContext context, Project project)
         {
 
-            await context.Database.ExecuteSqlRawAsync("Create_Project @Name, @Description, @AuthorId",
+            var Id = new Microsoft.Data.SqlClient.SqlParameter
+            {
+                ParameterName = "@Id",
+                SqlDbType = System.Data.SqlDbType.BigInt,
+                Direction = System.Data.ParameterDirection.Output
+            };
+            await context.Database.ExecuteSqlRawAsync("Create_Project @Name, @Description, @AuthorId, @Id OUT",
                 new SqlParameter("@Name", project.Name),
                 new SqlParameter("@Description", project.Description),
-                new SqlParameter("@AuthorId", project.AuthorId));
+                new SqlParameter("@AuthorId", project.AuthorId),
+                Id);
+            return long.Parse(Id.Value.ToString());
+
         }
 
-        public async static Task Create_Task(this TaskTrackerDbContext context, WorkTask task)
+        public async static Task<long> Create_Task(this TaskTrackerDbContext context, WorkTask task)
         {
-            
-            await context.Database.ExecuteSqlRawAsync("Create_Task @Importance,@Title, @Description, @StatusTask, @UserId, @PreviousTaskId, @EpicId",
+            var Id = new Microsoft.Data.SqlClient.SqlParameter
+            {
+                ParameterName = "@Id",
+                SqlDbType = System.Data.SqlDbType.BigInt,
+                Direction = System.Data.ParameterDirection.Output
+            };
+            await context.Database.ExecuteSqlRawAsync("Create_Task @Importance,@Title, @Description, @StatusTask, @UserId, @ApproximateDateOfCompleted, @PreviousTaskId, @EpicId, @Id OUT",
                 new SqlParameter("@Importance", task.Importance ?? (object)DBNull.Value),
                 new SqlParameter("@Title", task.Title),
                 new SqlParameter("@Description", task.Description),
                 new SqlParameter("@StatusTask", task.StatusTask),
                 new SqlParameter("@UserId", task.UserId ?? (object)DBNull.Value),
+                new SqlParameter("@ApproximateDateOfCompleted", task.ApproximateDateOfCompleted ?? (object)DBNull.Value),
                 new SqlParameter("@PreviousTaskId", task.PreviousTaskId ?? (object)DBNull.Value),
-                new SqlParameter("@EpicId", task.EpicId ?? (object)DBNull.Value)
-                );
+                new SqlParameter("@EpicId", task.EpicId ?? (object)DBNull.Value),
+                Id);
+            return long.Parse(Id.Value.ToString());
+
         }
         public async static Task Create_UserProject(this TaskTrackerDbContext context, UserProject userProject)
         {
@@ -123,7 +187,7 @@ namespace Infrastructure.Utilits
             await context.Database.ExecuteSqlRawAsync("Update_Epic @Id, @Title, @Description",
                 new SqlParameter("@Id", epic.Id),
                 new SqlParameter("@Title", epic.Title),
-                new SqlParameter("@Description", epic.Description));
+                new SqlParameter("@Description", epic.Description ?? (object)DBNull.Value));
         }
         public async static Task Update_User(this TaskTrackerDbContext context, User user)
         {

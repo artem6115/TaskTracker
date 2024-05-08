@@ -28,8 +28,8 @@ namespace Infrastructure.Repository.TaskRepository
                 if (result is null)
                     throw new FileNotFoundException("Эпик не найден");
             }
-            await _context.Create_Task(task);
-            var newTask = await _context.Tasks.Where(x=>x.UserId == task.UserId).OrderByDescending(x=>x.DateOfCreated).FirstAsync();
+            var Id = await _context.Create_Task(task);
+            var newTask = await _context.Tasks.AsNoTracking().SingleAsync(x=>x.Id == Id);
             _logger.LogDebug($"Task added, id - {newTask.Id}, description - {newTask.Description}");
             return newTask;
         }
