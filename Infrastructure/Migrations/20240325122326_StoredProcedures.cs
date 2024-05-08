@@ -191,7 +191,7 @@ namespace Infrastructure.Migrations
                 
                 """);
 
-            //Create Comment
+            //Create Comments
             migrationBuilder.Sql("""
                 SET ANSI_NULLS ON
                 GO
@@ -217,7 +217,31 @@ namespace Infrastructure.Migrations
                 
                 """);
 
-            //Delete Comment
+            //Update Comments
+            migrationBuilder.Sql("""
+                SET ANSI_NULLS ON
+                GO
+                SET QUOTED_IDENTIFIER ON
+                GO
+
+                CREATE PROCEDURE Update_Comment
+                    @Id bigint,
+                    @Description nvarchar(max)
+                
+                AS
+                BEGIN
+                	SET NOCOUNT ON;
+                    UPDATE Comments Set 
+                    Description = @Description,
+                    Date = GETDATE()
+                    WHERE Id = @Id
+                
+                END
+                GO
+                
+                """);
+
+            //Delete Comments
             migrationBuilder.Sql("""
                 SET ANSI_NULLS ON
                 GO
@@ -576,6 +600,7 @@ namespace Infrastructure.Migrations
             migrationBuilder.Sql("DROP PROCEDURE Create_Attachment");
             migrationBuilder.Sql("DROP PROCEDURE Delete_Attachment");
             migrationBuilder.Sql("DROP PROCEDURE Create_Comment");
+            migrationBuilder.Sql("DROP PROCEDURE Update_Comment");
             migrationBuilder.Sql("DROP PROCEDURE Delete_Comment");
             migrationBuilder.Sql("DROP PROCEDURE Create_Epic");
             migrationBuilder.Sql("DROP PROCEDURE Update_Epic");

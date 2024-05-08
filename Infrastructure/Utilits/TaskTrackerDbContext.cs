@@ -1,7 +1,4 @@
-﻿
-
-
-namespace Infrastructure.Utilits;
+﻿namespace Infrastructure.Utilits;
 public partial class TaskTrackerDbContext : DbContext
 {
     public  TaskTrackerDbContext()
@@ -16,7 +13,7 @@ public partial class TaskTrackerDbContext : DbContext
     }
     public DbSet<User> Users { get; set; }
     public DbSet<UserProject> UsersProjects { get; set; }
-
+    public DbSet<Comment> Comments { get; set; }
     public DbSet<Note> Notes { get; set; }
     public DbSet<Project> Projects { get; set; }
     public DbSet<WorkTask> Tasks { get; set; }
@@ -37,6 +34,5 @@ public partial class TaskTrackerDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(TaskTrackerDbContext).Assembly);
     }
-
 
 }

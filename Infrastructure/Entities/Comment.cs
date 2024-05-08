@@ -8,14 +8,12 @@ namespace Infrastructure.Entities
 {
     public class Comment
     {
-        public Comment() => Date = DateTime.Now;
-
         public long Id { get; private set; }
         public required string Description { get; set; }
-
         public User User { get; set; } = null!;
+        public long UserId { get; set; }
 
-        public WorkTask Task { get; set; } = null!;
+        public required long WorkTaskId { get; set; }
         public DateTime Date { get; private set; }
     }
 }

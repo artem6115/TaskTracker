@@ -216,10 +216,13 @@ namespace TaskTrackerUI.Views
             _context.Refresh();
 
         }
-        private async void ProjectOnly_btn(object sender, EventArgs e)
+        private async void DropFilter_btn(object sender, EventArgs e)
         {
             Filter.Project = null;
             Projects_task.SelectedItem=null;
+            Filter.LocalOnly = false;
+            LocalOnly_checkbox.IsChecked= false;
+            EditTask_menu.Visibility = Visibility.Collapsed;
             Task_Types.SelectedIndex = Task_Types.Items.Count - 1;
             _context.Refresh();
 

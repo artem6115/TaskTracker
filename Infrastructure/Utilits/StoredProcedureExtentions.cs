@@ -2,6 +2,7 @@
 using Infrastructure.Entities;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlTypes;
@@ -69,10 +70,10 @@ namespace Infrastructure.Utilits
                 SqlDbType = System.Data.SqlDbType.BigInt,
                 Direction = System.Data.ParameterDirection.Output
             };
-            await context.Database.ExecuteSqlRawAsync("Create_Comment @Description, @UserId, @TaskId, @Date, @Id OUT",
+            await context.Database.ExecuteSqlRawAsync("Create_Comment @Description, @UserId, @WorkTaskId, @Date, @Id OUT",
                 new SqlParameter("@Date", DateTime.Now),
                 new SqlParameter("@Description", comment.Description),
-                new SqlParameter("@TaskId", comment.Task.Id),
+                new SqlParameter("@WorkTaskId", comment.WorkTaskId),
                 new SqlParameter("@UserId", comment.User.Id),
                 Id);
             return long.Parse(Id.Value.ToString());
@@ -181,6 +182,13 @@ namespace Infrastructure.Utilits
 
         #region Update
 
+
+        public async static Task Update_Comment(this TaskTrackerDbContext context, Comment comment)
+        {
+            await context.Database.ExecuteSqlRawAsync("Update_Comment @Id, @Description",
+                new SqlParameter("@Id", comment.Id),
+                new SqlParameter("@Description", comment.Description));
+        }
         public async static Task Update_Epic(this TaskTrackerDbContext context, Epic epic)
         {
 

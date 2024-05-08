@@ -131,11 +131,14 @@
                 <TextBlock  Style="{StaticResource base-text-task-black}" Text="{Binding Task.User.FullName}"/>
                 <TextBlock  Style="{StaticResource base-text-task-black}" Text="{Binding Task.User.Email}"/>
                 <Button
+                    x:Name="Comment_btn"
                     ToolTip="Открыть коментарии к задаче"
                     Width="35"
                     Height="35"
                     VerticalAlignment="Top"
                     Margin="20 0"
+                    Click="Open_Comments"
+                    IsEnabled="False"
                     Style="{StaticResource MenuButton}"
                     >
                     <Button.Background>

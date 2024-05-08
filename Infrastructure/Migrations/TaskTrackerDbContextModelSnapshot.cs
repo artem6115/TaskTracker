@@ -129,19 +129,19 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("TaskId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
+                    b.Property<long>("WorkTaskId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskId");
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment");
+                    b.HasIndex("WorkTaskId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Epic", b =>
@@ -341,19 +341,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Entities.Comment", b =>
                 {
-                    b.HasOne("Infrastructure.Entities.WorkTask", "Task")
-                        .WithMany("Comments")
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Infrastructure.Auth.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Task");
+                    b.HasOne("Infrastructure.Entities.WorkTask", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("WorkTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -426,7 +424,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Infrastructure.Entities.Epic", "Epic")
                         .WithMany("Tasks")
                         .HasForeignKey("EpicId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Infrastructure.Entities.WorkTask", "PreviousTask")
                         .WithMany()

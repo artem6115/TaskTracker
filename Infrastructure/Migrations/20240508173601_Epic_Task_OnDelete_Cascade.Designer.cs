@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(TaskTrackerDbContext))]
-    [Migration("20240326074737_Add_email_unique_remove_code")]
-    partial class Add_email_unique_remove_code
+    [Migration("20240508173601_Epic_Task_OnDelete_Cascade")]
+    partial class Epic_Task_OnDelete_Cascade
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Spice")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -113,7 +117,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Attachment");
                 });
 
-            modelBuilder.Entity("Infrastructure.Entities.Comments", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Comment", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,17 +132,17 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("WorkTaskId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
+                    b.Property<long>("WorkTaskId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WorkTaskId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("WorkTaskId");
 
                     b.ToTable("Comments");
                 });
@@ -152,7 +156,6 @@ namespace Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("ProjectId")
@@ -314,7 +317,10 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", t =>
+                        {
+                            t.HasTrigger("UpdateTaskTriger");
+                        });
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Attachment", b =>
@@ -336,21 +342,19 @@ namespace Infrastructure.Migrations
                     b.Navigation("WorkTask");
                 });
 
-            modelBuilder.Entity("Infrastructure.Entities.Comments", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Comment", b =>
                 {
-                    b.HasOne("Infrastructure.Entities.WorkTask", "Task")
-                        .WithMany("Comments")
-                        .HasForeignKey("WorkTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Infrastructure.Auth.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Task");
+                    b.HasOne("Infrastructure.Entities.WorkTask", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("WorkTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -423,7 +427,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Infrastructure.Entities.Epic", "Epic")
                         .WithMany("Tasks")
                         .HasForeignKey("EpicId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Infrastructure.Entities.WorkTask", "PreviousTask")
                         .WithMany()

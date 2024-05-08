@@ -1,4 +1,6 @@
-﻿using BuisnnesService.Commands.Epics.Create;
+﻿using BuisnnesService.Commands.Comment.Create;
+using BuisnnesService.Commands.Comment.Update;
+using BuisnnesService.Commands.Epics.Create;
 using BuisnnesService.Commands.Epics.Update;
 using Infrastructure.Entities;
 using Microsoft.Identity.Client;
@@ -65,8 +67,19 @@ namespace BuisnnesService.MappingProfile
             CreateMap<UpdateEpicCommand, Epic>();
             CreateMap<Epic,EpicDto>();
 
+            #endregion
+
+            #region Comment
+
+            CreateMap<CreateCommentCommand, Comment>()
+                .ForMember(e=>e.Date,cnf=>cnf.MapFrom(x=> DateTime.Now))
+                .ForMember(e => e.WorkTaskId, cnf => cnf.MapFrom(x => x.WorkTaskId))
+                .ForMember(e=>e.UserId,cnf=>cnf.MapFrom(x=> UserClaims.User.Id));
+            CreateMap<UpdateCommentCommand, Comment>()
+                .ForMember(e => e.Date, cnf => cnf.MapFrom(x => DateTime.Now));
 
             #endregion
+
 
 
 

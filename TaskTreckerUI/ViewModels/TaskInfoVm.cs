@@ -29,7 +29,7 @@ namespace TaskTrackerUI.ViewModels
             //    anotherTasks = await TaskService.GetMyTasksAsync();
             //else
             //    anotherTasks = await TaskService.GetTasksInEpic((long)EpicId);
-            //if(anotherTasks is not null)anotherTasks.RemoveAll(x => x.Id == TaskId);
+            //if(anotherTasks is not null)anotherTasks.RemoveAll(x => x.Id == WorkTaskId);
             //TasksInScope = anotherTasks;
             return resultTask != null;
         }

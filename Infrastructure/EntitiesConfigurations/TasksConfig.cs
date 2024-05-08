@@ -14,7 +14,7 @@ namespace Infrastructure.EntitiesConfigurations
             builder.HasOne(x => x.User).WithMany(x => x.Tasks)
                 .HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.SetNull);
             builder.HasOne(x => x.Epic).WithMany(x => x.Tasks)
-                .HasForeignKey(x=>x.EpicId).OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(x=>x.EpicId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

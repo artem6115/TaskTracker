@@ -212,14 +212,14 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comment",
+                name: "Comments",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    TaskId = table.Column<long>(type: "bigint", nullable: false),
+                    WorkTaskId = table.Column<long>(type: "bigint", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -227,7 +227,7 @@ namespace Infrastructure.Migrations
                     table.PrimaryKey("PK_Comment", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Comment_Tasks_TaskId",
-                        column: x => x.TaskId,
+                        column: x => x.WorkTaskId,
                         principalTable: "Tasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -251,12 +251,12 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comment_TaskId",
-                table: "Comment",
-                column: "TaskId");
+                table: "Comments",
+                column: "WorkTaskId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comment_UserId",
-                table: "Comment",
+                table: "Comments",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -307,7 +307,7 @@ namespace Infrastructure.Migrations
                 name: "Attachment");
 
             migrationBuilder.DropTable(
-                name: "Comment");
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Note");

@@ -117,7 +117,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Attachment");
                 });
 
-            modelBuilder.Entity("Infrastructure.Entities.Comment", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Comments", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -132,7 +132,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("TaskId")
+                    b.Property<long>("WorkTaskId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("UserId")
@@ -140,11 +140,11 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("WorkTaskId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Infrastructure.Entities.Epic", b =>
@@ -342,11 +342,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("WorkTask");
                 });
 
-            modelBuilder.Entity("Infrastructure.Entities.Comment", b =>
+            modelBuilder.Entity("Infrastructure.Entities.Comments", b =>
                 {
                     b.HasOne("Infrastructure.Entities.WorkTask", "Task")
                         .WithMany("Comments")
-                        .HasForeignKey("TaskId")
+                        .HasForeignKey("WorkTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
