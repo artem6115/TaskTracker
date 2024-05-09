@@ -35,7 +35,7 @@ namespace BuisnnesService.Commands.Tasks.Update
                 if (task.StatusTask == Infrastructure.Entities.TaskStatus.Free)
                     request.StatusTask = Infrastructure.Entities.TaskStatus.Work;
             }
-            if(task.UserId != request.UserId)
+            if(task.UserId != request.UserId && task.Epic is not null)
             {
                 if (task.UserId is not null)
                 {

@@ -36,7 +36,7 @@ namespace Infrastructure.Repository.CommentRepository
                 .SingleAsync(x=>x.Id == comment.WorkTaskId);
             if (task is null)
                 throw new FileNotFoundException("Задача не найдена");
-            if (task.UserId is not null) {
+            if (task.UserId is not null && task.UserId != UserClaims.User.Id) {
                 var notify = new Notify()
                 {
                     Message = $"Пользователь {UserClaims.User.Email}, написал коментарий для задаи : {task.Title}",

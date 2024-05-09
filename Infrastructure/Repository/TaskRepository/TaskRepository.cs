@@ -29,6 +29,12 @@ namespace Infrastructure.Repository.TaskRepository
             }
             if(await IsLockedTask(task))task.StatusTask = Entities.TaskStatus.Blocked;
             var resultTask = await _context.Tasks.AddAsync(task);
+            if(task.UserId is not null && task.EpicId is not null) {
+                await _context.Notifies.AddAsync(new Notify()
+                { Message = $"Вам назначена задача: {task.Title}",
+                    UserId=(long)task.UserId
+                });
+            }
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Task added, id - {resultTask.Entity.Id}, description - {resultTask.Entity.Description}");
             return resultTask.Entity;
@@ -113,7 +119,7 @@ namespace Infrastructure.Repository.TaskRepository
         {
             await CheckAccess(task);
             if (await IsLockedTask(task)) task.StatusTask = Entities.TaskStatus.Blocked;
-            if (task.UserId is not null) { 
+            if (task.UserId is not null && task.Epic is not null) { 
                 var notify = new Notify()
                 {
                     Message = $"Задача: {task.Title}, была изменена",
