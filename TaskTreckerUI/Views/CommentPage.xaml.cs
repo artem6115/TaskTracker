@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,10 +34,19 @@ namespace TaskTrackerUI.Views
             this.Navigator = navigator;
             _context = DataContext as CommentVm;
             _context.TaskId = Task.Id;
+            _context.PropertyChanged += Comments_CollectionChanged;
             if(Task.Epic is null )
                 Title = $"Мои задачи / {Task.Title} / Коментарии";
             else
                 Title = $"{Task.Epic.Project.Name} / {Task.Epic.Title} / {Task.Title} / Коментарии";
+        }
+
+        private void Comments_CollectionChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (CommentList.Items.Count == 0) return;
+            int lastItemIndex = CommentList.Items.Count - 1;
+            CommentList.ScrollIntoView(CommentList.Items[lastItemIndex]);
+            CommentList.UpdateLayout();
         }
 
         private async void Send(object sender, RoutedEventArgs e)
@@ -122,5 +132,6 @@ namespace TaskTrackerUI.Views
 
         private void Select_Comment(object sender, SelectionChangedEventArgs e)
             => CurrentComment = null;
+
     }
 }

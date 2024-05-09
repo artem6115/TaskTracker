@@ -19,7 +19,7 @@ namespace TaskTrackerUI.ViewModels
         {
             var comments = await CommentService.GetComments(TaskId);
             if(comments == null) return false;
-            Comments = new ObservableCollection<Comment>(comments);
+            Comments = new ObservableCollection<Comment>(comments.OrderBy(x=>x.Date));
             return true;
         }
     }

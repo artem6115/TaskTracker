@@ -8,11 +8,11 @@ namespace Infrastructure.Entities
 {
     public class Notify
     {
+        public Notify() => Date = DateTime.Now;
         public int Id { get;private set; }
-        public required string Title { get; set; }
+        public bool WasRead { get; set; } = false;
         public required string Message { get; set; }
         public DateTime Date { get; set; }
         public required long UserId { get; set; }
-        public User User { get; set; } = null!;
     }
 }

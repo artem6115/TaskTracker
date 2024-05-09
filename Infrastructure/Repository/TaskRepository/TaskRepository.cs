@@ -49,7 +49,12 @@ namespace Infrastructure.Repository.TaskRepository
                            .SingleOrDefaultAsync(x => x.Id == id);
             if (task is null)
                 throw new FileNotFoundException("Task not found");
-
+            if (task.UserId is not null)
+                await _context.Notifies.AddAsync(new Notify()
+                {
+                    Message = $"Задача: {task.Title}, была удалена",
+                    UserId = (long)task.UserId
+                });
             await CheckAccess(task);
             await UnclockTasksAsync(id);
             _context.Remove(task);
@@ -79,8 +84,7 @@ namespace Infrastructure.Repository.TaskRepository
                 .SingleOrDefaultAsync(task => task.Id == id);
             if (task is null)
                 throw new FileNotFoundException("Task not found");
-            if (task.EpicId == null && task.UserId != UserClaims.User.Id )
-                throw new AccessViolationException("Do not have access to this resource");
+           
             return task;
         }
 
@@ -109,6 +113,14 @@ namespace Infrastructure.Repository.TaskRepository
         {
             await CheckAccess(task);
             if (await IsLockedTask(task)) task.StatusTask = Entities.TaskStatus.Blocked;
+            if (task.UserId is not null) { 
+                var notify = new Notify()
+                {
+                    Message = $"Задача: {task.Title}, была изменена",
+                    UserId = (long)task.UserId
+                };
+                await _context.Notifies.AddAsync(notify);
+            }
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Task updated, id - {task.Id}, description - {task.Description}");
             return task;
@@ -135,15 +147,6 @@ namespace Infrastructure.Repository.TaskRepository
                     if (task.Epic.Project.AuthorId != UserClaims.User.Id)
                         throw new AccessViolationException("Do not have access to this resource");
                 }
-                //else
-                //{
-
-                //    var authResult = await _context.Epics.SingleOrDefaultAsync(x =>
-                //    x.Project.AuthorId == UserClaims.User.Id &&
-                //    x.Id == task.EpicId);
-                //    if (authResult is null)
-                //        throw new AccessViolationException("Do not have access to this resource");
-                //}
             }
 
         }

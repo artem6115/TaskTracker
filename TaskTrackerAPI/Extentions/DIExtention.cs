@@ -8,6 +8,7 @@ using Infrastructure.Repository.TaskRepository;
 using Infrastructure.Repository.ProjectRepository;
 using Infrastructure.Repository.EpicRepository;
 using Infrastructure.Repository.CommentRepository;
+using Infrastructure.Repository.NotifyRepository;
 
 namespace TaskTrackerAPI.DIExtentions
 {
@@ -39,6 +40,8 @@ namespace TaskTrackerAPI.DIExtentions
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IEpicRepository, EpicRepository>();
             services.AddTransient<ICommentRepository, CommentRepository>();
+            services.AddTransient<INotifyRepostitory, NotifyRepository>();
+
 
 
             return services;
@@ -52,6 +55,8 @@ namespace TaskTrackerAPI.DIExtentions
             services.AddTransient<IProjectRepository, ProjectProcedureRepository>();
             services.AddTransient<IEpicRepository, EpicProcedureRepository>();
             services.AddTransient<ICommentRepository, CommentProcedureRepository>();
+            services.AddTransient<INotifyRepostitory, NotifyProcedureRepository>();
+
 
 
             return services;

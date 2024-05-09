@@ -17,8 +17,7 @@ namespace TaskTrackerUI.Services
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://{LocalConnectionService.Adress}/api/Note");
             List<Note> notes = await AuthService.SendAsync<List<Note>>(request);
-            if (notes is null) return null!;
-            return notes.OrderByDescending(x=>x.DateOfCreated).ToList();
+            return notes;
         }
         public async static Task<Note> GetNoteAsync(long id)
         {

@@ -2,6 +2,7 @@
 using BuisnnesService.Commands.Comment.Update;
 using BuisnnesService.Commands.Epics.Create;
 using BuisnnesService.Commands.Epics.Update;
+using BuisnnesService.Commands.Notifies.Create;
 using Infrastructure.Entities;
 using Microsoft.Identity.Client;
 using System;
@@ -80,6 +81,10 @@ namespace BuisnnesService.MappingProfile
 
             #endregion
 
+            #region Notify
+            CreateMap<CreateNotifyCommand, Notify>()
+                .ForMember(x => x.Date, cnf => cnf.MapFrom(x => DateTime.Now));
+            #endregion
 
 
 

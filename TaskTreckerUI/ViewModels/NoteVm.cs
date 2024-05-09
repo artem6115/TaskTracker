@@ -28,7 +28,7 @@ namespace TaskTrackerUI.ViewModels
         public override async Task<bool> LoadData() {
             var list = await NoteService.GetNotesAsync();
             if(list is null ) return false;        
-            Notes = new ObservableCollection<Note>(list);
+            Notes = new ObservableCollection<Note>(list.OrderBy(x=>x.DateOfCreated));
             return true;  
         }
 

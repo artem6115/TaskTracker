@@ -121,9 +121,8 @@ namespace Infrastructure.Utilits
                 SqlDbType = System.Data.SqlDbType.BigInt,
                 Direction = System.Data.ParameterDirection.Output
             };
-            await context.Database.ExecuteSqlRawAsync("Create_Notify @Message, @Title, @UserId, @Id OUT",
+            await context.Database.ExecuteSqlRawAsync("Create_Notify @Message, @UserId, @Id OUT",
                 new SqlParameter("@Message", notify.Message),
-                new SqlParameter("@Title", notify.Title),
                 new SqlParameter("@UserId", notify.UserId),
                 Id);
             return long.Parse(Id.Value.ToString());
@@ -182,7 +181,12 @@ namespace Infrastructure.Utilits
 
         #region Update
 
-
+        public async static Task ReadAll_Notifies(this TaskTrackerDbContext context, DateTime time)
+        {
+            await context.Database.ExecuteSqlRawAsync("ReadAll_Notifies @UserId, @Date",
+                new SqlParameter("@UserId", UserClaims.User.Id),
+                new SqlParameter("@Date", time));
+        }
         public async static Task Update_Comment(this TaskTrackerDbContext context, Comment comment)
         {
             await context.Database.ExecuteSqlRawAsync("Update_Comment @Id, @Description",
@@ -254,6 +258,12 @@ namespace Infrastructure.Utilits
         #endregion
 
         #region Delete
+        public async static Task DeleteAll_Notifies(this TaskTrackerDbContext context, DateTime time)
+        {
+            await context.Database.ExecuteSqlRawAsync("DeleteAll_Notifies @UserId, @Date",
+                new SqlParameter("@UserId", UserClaims.User.Id),
+                new SqlParameter("@Date", time));
+        }
         public static async Task RemoveUserProject(this TaskTrackerDbContext context, IEnumerable<UserProject> usersProject)
         {
             foreach (var user in usersProject)

@@ -44,6 +44,7 @@
                    x:Name="CommentList"
                    ItemsSource="{Binding Comments}" 
                    SelectionChanged="Select_Comment"
+                   
                   >
             <ListView.ItemTemplate>
                 <DataTemplate>

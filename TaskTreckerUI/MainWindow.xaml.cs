@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System.Media;
+using System.Reflection;
+using System.Resources;
+using System.Text;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,13 +30,22 @@ namespace TaskTrackerUI
         Page[] Pages = new Page[Enum.GetNames(typeof(PagesEnum)).Length];
         Stack<Page> BackPage = new Stack<Page>();
         Stack<Page> NextPage = new Stack<Page>();
+        List<long> AcceptedNotifies = new List<long>();
+        SoundPlayer player;
         Page CurrentPage;
+        DispatcherTimer NotifyTimer = new DispatcherTimer();
         MainWindowVM _dataContext;
         Navigator Navigator;
 
+
         public MainWindow() 
         {
+            var sound = TaskTrackerUI.Properties.Resources.sound;
+            player = new SoundPlayer(sound);
+            player.Load();
             Services.SettingService.Setting = Models.Setting.LoadSettings();
+            NotifyTimer.Interval = new TimeSpan(0, 0, 5);
+            NotifyTimer.Tick += ReloadNotifies;
             InitializeComponent();
             Navigator = new Navigator(NavWindows,Page_Title,new DispatcherTimer());
 
@@ -55,16 +67,46 @@ namespace TaskTrackerUI
             StartupPages();
 
         }
+        private void Delete_NotifyWindow(object sender,EventArgs e)
+        {
+            Notify_window.Visibility= Visibility.Hidden;
+        }
+        private async void ReloadNotifies(object sender, EventArgs e)
+        {
+            var notifies = await NotifyService.GetNotifies();
+            if (notifies is null) return;
+            notifies = notifies.Where
+                (x => !x.WasRead && 
+                !AcceptedNotifies.Contains(x.Id)).ToList();
+            AcceptedNotifies.AddRange(notifies.Select(x=>x.Id));
+            if(notifies.Count > 0)
+            {
 
+                Notify_window.Visibility = Visibility.Visible;
+                if (notifies.Count == 1)
+                    Notify_message1.Text = notifies.First().Message;
+                else if (notifies.Count == 2)
+                {
+                    Notify_message1.Text = notifies.First().Message;
+                    Notify_message2.Text = notifies.Last().Message;
+                }
+                else
+                    Notify_message1.Text = "У вас есть не прочитаные уведомления";
+
+                NewNotify_icon.Visibility = Visibility.Visible;
+                player.Play();
+            }
+        }
         private void StartupPages()
         {
             Pages[(int)PagesEnum.Main] = new MainPage();
-            Pages[(int)PagesEnum.Notify] = new NotifiesPage();
+            Pages[(int)PagesEnum.Notify] = new NotifyPage(Navigator);
             Pages[(int)PagesEnum.Project] = new ProjectsPage(Navigator);
             Pages[(int)PagesEnum.Task] = new TasksPage(Navigator);
             Pages[(int)PagesEnum.Note] = new NotesPage(Navigator);
             Pages[(int)PagesEnum.Setting] = new SettingsPage(Navigator);
             Navigator.Open(Pages[(int)PagesEnum.Main]);
+            NotifyTimer.Start();
 
         }
 
@@ -110,5 +152,12 @@ namespace TaskTrackerUI
 
         }
 
+        private async void NotifiesReaded(object sender, NavigationEventArgs e)
+        {
+            if (Navigator.CurrentPage is not NotifyPage) return;
+            NotifyService.ReadAllNotifies();
+            NewNotify_icon.Visibility = Visibility.Collapsed;
+
+        }
     }
 }

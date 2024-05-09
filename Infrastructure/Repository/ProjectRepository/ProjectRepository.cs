@@ -20,6 +20,7 @@ namespace Infrastructure.Repository.ProjectRepository
 
         public async Task ChangeProjectTeam(long projectId, List<long> usersId)
             {
+            var project = await GetProjectAsync(projectId);
             if(usersId is null) return;
             var entities = await _context.UsersProjects
                .AsNoTracking()
@@ -31,8 +32,24 @@ namespace Infrastructure.Repository.ProjectRepository
                 .Select(x => new UserProject
                 { UserId = x, ProjectId = projectId }
                 ).ToList();
-            if(entityToAdd.Count > 0)await _context.UsersProjects.AddRangeAsync(entityToAdd);
-            if (entityToDelete.Count > 0) _context.UsersProjects.RemoveRange(entityToDelete);
+            if (entityToAdd.Count > 0)
+            {
+                await _context.UsersProjects.AddRangeAsync(entityToAdd);
+                var notifies = entityToAdd.Select(x => new Notify() {
+                    Message = $"Вы были добавлены в проект {project.Name}",
+                    UserId = x.UserId
+                    });
+                await _context.Notifies.AddRangeAsync(notifies);
+            }
+            if (entityToDelete.Count > 0) { 
+                _context.UsersProjects.RemoveRange(entityToDelete);
+                var notifies = entityToDelete.Select(x => new Notify()
+                {
+                    Message = $"Вы были удалены из проекта {project.Name}",
+                    UserId = x.UserId
+                });
+                await _context.Notifies.AddRangeAsync(notifies);
+            }
 
             await _context.SaveChangesAsync();
 
@@ -55,6 +72,12 @@ namespace Infrastructure.Repository.ProjectRepository
             if (entity.AuthorId != UserClaims.User.Id)
                 throw new AccessViolationException("Вы не можете удалить чужой проект");
             _context.Projects.Remove(entity);
+            var users = await GetUsers(Id);
+            var notifies = users.Select(x=>new Notify() { 
+                Message=$"Проект {entity.Name} был удален",
+                UserId = x.Id
+                });
+            await _context.Notifies.AddRangeAsync(notifies);
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Удален проект, наименоание {entity.Name}, id - {entity.Id}");
         }
@@ -106,6 +129,13 @@ namespace Infrastructure.Repository.ProjectRepository
 
         public async Task<Project> UpdateProjectAsync(Project project)
         {
+            var users = await GetUsers(project.Id);
+            var notifies = users.Select(x => new Notify()
+            {
+                Message = $"Проект {project.Name} был изменен",
+                UserId = x.Id
+            });
+            await _context.Notifies.AddRangeAsync(notifies);
             await _context.SaveChangesAsync();
             _logger.LogDebug($"Project updated, id - {project.Id}, description - {project.Name}");
             var projectNew = await GetProjectAsync(project.Id);

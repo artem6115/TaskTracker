@@ -32,8 +32,16 @@ namespace TaskTrackerUI.Views
             Navigator = navigator;
             InitializeComponent();
             _context = DataContext as NoteVm;
+            _context.PropertyChanged += Change_messages;
         }
 
+        private void Change_messages(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (NotesList.Items.Count == 0) return;
+            int lastItemIndex = NotesList.Items.Count - 1;
+            NotesList.ScrollIntoView(NotesList.Items[lastItemIndex]);
+            NotesList.UpdateLayout();
+        }
 
         private async void Send(object sender, RoutedEventArgs e)
         {
@@ -65,7 +73,7 @@ namespace TaskTrackerUI.Views
                     return;
                 }
                 Navigator.AddInformation("Заметка добавлена");
-                _context.Notes.Insert(0, note);
+                _context.Notes.Add(note);
             }
             Note_Text.Text = "";
 

@@ -29,7 +29,21 @@ namespace Infrastructure.Repository.CommentRepository
 
         public async Task<Comment> CreateComment(Comment comment)
         {
+
             var entity = await _context.Comments.AddAsync(comment);
+            var task = await _context.Tasks
+                .AsNoTracking()
+                .SingleAsync(x=>x.Id == comment.WorkTaskId);
+            if (task is null)
+                throw new FileNotFoundException("Задача не найдена");
+            if (task.UserId is not null) {
+                var notify = new Notify()
+                {
+                    Message = $"Пользователь {UserClaims.User.Email}, написал коментарий для задаи : {task.Title}",
+                    UserId = (long)task.UserId
+                };
+                await _context.Notifies.AddAsync(notify);
+            }
             await _context.SaveChangesAsync();
             var newComment = await _context.Comments
                 .AsNoTracking()

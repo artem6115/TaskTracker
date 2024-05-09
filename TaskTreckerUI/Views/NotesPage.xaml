@@ -57,7 +57,7 @@
                   >
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border  CornerRadius="10" Background="#FF1256D4">
+                    <Border  CornerRadius="10" Background="Green">
                         <Grid >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>

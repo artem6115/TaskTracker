@@ -74,7 +74,7 @@ namespace Infrastructure.Repository.TaskRepository
                 .SingleOrDefaultAsync(task => task.Id == id);
             if (task is null)
                 throw new FileNotFoundException("Task not found");
-            await CheckAccess(task);
+
             return task;
         }
 

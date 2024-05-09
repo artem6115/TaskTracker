@@ -395,17 +395,56 @@ namespace Infrastructure.Migrations
                 GO
 
                 CREATE PROCEDURE Create_Notify
-                    @Title nvarchar(max),
                     @Message nvarchar(max),
                     @UserId bigint,
                     @Id bigint OUTPUT
                 AS
                 BEGIN
                 	SET NOCOUNT ON;
-                    INSERT INTO Notifies (Title,Message,Date,UserId) VALUES
-                    (@Title,@Message, GETDATE(),@UserId)
+                    INSERT INTO Notifies (Message,Date,UserId) VALUES
+                    (@Message, GETDATE(),@UserId)
                     SET @Id = SCOPE_IDENTITY()
                 
+                END
+                GO
+                
+                """);
+            
+            //Update Read All Notify
+            migrationBuilder.Sql("""
+                SET ANSI_NULLS ON
+                GO
+                SET QUOTED_IDENTIFIER ON
+                GO
+
+                CREATE PROCEDURE ReadAll_Notifies
+                    @UserId bigint,
+                    @Date datetime2(7)
+                AS
+                BEGIN
+                	SET NOCOUNT ON;
+                    UPDATE Notifies SET WasRead = True
+                    WHERE UserId = @UserId And Date < @Date
+                END
+                GO
+                
+                """);
+
+            //Delete All Notify
+            migrationBuilder.Sql("""
+                SET ANSI_NULLS ON
+                GO
+                SET QUOTED_IDENTIFIER ON
+                GO
+
+                CREATE PROCEDURE DeleteAll_Notifies
+                    @UserId bigint,
+                    @Date datetime2(7)
+                AS
+                BEGIN
+                	SET NOCOUNT ON;
+                    DELETE Notifies 
+                    WHERE UserId = @UserId And Date < @Date
                 END
                 GO
                 
@@ -611,6 +650,8 @@ namespace Infrastructure.Migrations
             migrationBuilder.Sql("DROP PROCEDURE Delete_Note");
 
             migrationBuilder.Sql("DROP PROCEDURE Create_Notify");
+            migrationBuilder.Sql("DROP PROCEDURE ReadAll_Notifies");
+            migrationBuilder.Sql("DROP PROCEDURE DeleteAll_Notifies");
             migrationBuilder.Sql("DROP PROCEDURE Delete_Notify");
             migrationBuilder.Sql("DROP PROCEDURE Add_UserProject");
             migrationBuilder.Sql("DROP PROCEDURE Remove_UserProject");
