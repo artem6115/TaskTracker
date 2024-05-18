@@ -74,7 +74,7 @@ namespace Infrastructure.Utilits
                 new SqlParameter("@Date", DateTime.Now),
                 new SqlParameter("@Description", comment.Description),
                 new SqlParameter("@WorkTaskId", comment.WorkTaskId),
-                new SqlParameter("@UserId", comment.User.Id),
+                new SqlParameter("@UserId", comment.UserId),
                 Id);
             return long.Parse(Id.Value.ToString());
 
