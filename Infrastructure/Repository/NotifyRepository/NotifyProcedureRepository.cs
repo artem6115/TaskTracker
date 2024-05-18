@@ -43,7 +43,7 @@ namespace Infrastructure.Repository.NotifyRepository
         public async Task<Notify> CreatelNotify(Notify notify)
         {
             var Id = await _context.Create_Notify(notify);
-            return await _context.Notifies.FindAsync(Id);
+            return await _context.Notifies.SingleAsync(x=>x.Id == Id);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace TaskTrackerUI.Views
     public partial class MainPage : Page
     {
         const string Info = """
-            Task Trecker
+            Task Tracker
 
             Описание:
             Программа для организации и распределении задач в команде.

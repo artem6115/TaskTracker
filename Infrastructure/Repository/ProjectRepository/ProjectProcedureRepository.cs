@@ -54,7 +54,7 @@ namespace Infrastructure.Repository.ProjectRepository
 
         public async Task DeleteProjectAsync(long Id)
         {
-            var entity = await _context.Projects.FindAsync(Id);
+            var entity = await _context.Projects.SingleOrDefaultAsync(x=>x.Id == Id);
             if (entity == null)
                 throw new FileNotFoundException("Проект не найден");
             if (entity.AuthorId != UserClaims.User.Id)

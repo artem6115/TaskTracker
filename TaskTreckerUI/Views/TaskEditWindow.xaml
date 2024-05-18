@@ -56,7 +56,7 @@
                 <StackPanel Orientation="Vertical">
                     <TextBlock Style="{StaticResource task-edit-title}" Text="Предшедствующая задача"/>
                     <ComboBox HorizontalAlignment="Left" x:Name="tasks_combo" ItemsSource="{Binding TasksInScope}" DisplayMemberPath="Title" SelectedValuePath="Id" Width="237"/>
-                    <CheckBox Margin="0 10 0 0" x:Name="BackTask_check" Content="Не указывать вожность задачи" IsChecked="False"/>
+                    <CheckBox Margin="0 10 0 0" x:Name="BackTask_check" Content="Не указывать предшествующею задачи" IsChecked="False"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0 10 0 0">
